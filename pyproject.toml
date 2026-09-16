@@ -1,7 +1,7 @@
 [project]
 name = "calculator-mcp-rubens"
 keywords = ["ai", "calculator", "math", "llm", "mcp", "utility"]
-version = "0.0.1"
+version = "0.0.2"
 description = "A calculator MCP server"
 authors = [
     { name = "Rubens Gomes", email = "rubens.s.gomes@gmail.com" }
