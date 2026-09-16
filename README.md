@@ -189,8 +189,7 @@ server:
     # 0.0.0.0 binds all interfaces, which is required inside a container.
     # Use 127.0.0.1 to restrict the server to localhost only.
     host: "0.0.0.0"
-    # Port for the HTTP/MCP server, defaults to:
-    # port 8000
+    # Port for the HTTP/MCP server.
     port: 9000
     # timeout in seconds
     timeout: 10

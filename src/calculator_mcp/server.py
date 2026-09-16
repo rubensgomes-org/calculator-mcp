@@ -295,7 +295,9 @@ def floor_divide(a: float, b: float) -> float:
         ValueError: If b is zero.
     """
     logger.info("floor_divide called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.floor_divide")
+    logger.debug(
+        "delegating to library Calculator instance: _calc.floor_divide"
+    )
     return _calc.floor_divide(a, b)
 
 
@@ -486,5 +488,7 @@ def round_number(a: float, decimals: int = 0) -> float:
         The rounded value.
     """
     logger.info("round_number called with a=%s, decimals=%s", a, decimals)
-    logger.debug("delegating to library Calculator instance: _calc.round_number")
+    logger.debug(
+        "delegating to library Calculator instance: _calc.round_number"
+    )
     return _calc.round_number(a, decimals)

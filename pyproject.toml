@@ -1,7 +1,7 @@
 [project]
 name = "calculator-mcp-rubens"
 keywords = ["ai", "calculator", "math", "llm", "mcp", "utility"]
-version = "0.0.0"
+version = "0.0.1"
 description = "A calculator MCP server"
 authors = [
     { name = "Rubens Gomes", email = "rubens.s.gomes@gmail.com" }
@@ -31,7 +31,7 @@ Repository = "https://github.com/rubensgomes-org/calculator-mcp"
 packages = [{ include = "calculator_mcp", from = "src" }]
 
 [build-system]
-requires = ["poetry-core>=2.4.3,<3.0.0"]
+requires = ["poetry-core>=2.4.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.coverage.run]

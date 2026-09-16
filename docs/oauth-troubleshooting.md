@@ -8,7 +8,7 @@ client to a hosted FastMCP server using OAuth, and their solutions.
 - **Client**: Python 3.14+ running in WSL2 Ubuntu on Windows 11
 - **Server**: Hosted FastMCP at `https://rubens-calculator-mcp.fastmcp.app`
 - **Auth Provider**: WorkOS via Prefect Horizon (`auth.horizon.prefect.io`)
-- **Libraries**: `fastmcp>=3.1.0`, `mcp>=1.26.0`
+- **Libraries**: `fastmcp>=4.0.4`, `mcp>=1.26.0`
 
 ---
 
