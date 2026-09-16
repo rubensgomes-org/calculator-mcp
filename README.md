@@ -45,6 +45,8 @@ version 0.0.1.
 
     ```bash
     pip uninstall calculator-mcp-rubens
+    # recommend to purge the cache as well
+    pip cache purge
     ```
 
 ### Installation
@@ -53,11 +55,12 @@ The `calculator-mcp` can be installed by running
 `pip install calculator-mcp-rubens`. It requires `python` 3.14+ and `pip` to
 run.
 
-- To install locally into the user's home environment:
+- To install locally into the user's home environment run command below
 
     ```bash
     # install "calculator-mcp" and depdencies into user local pip environment
-    pip install --user calculator-mcp-rubens --verbose
+    # NOTE: use --no-cache-dir to avoid issues with earlier version in cache
+    pip --no-cache-dir install -U --user calculator-mcp-rubens --verbose
     ```
 
 - Confirm installed version with most recently released GitHub version at 

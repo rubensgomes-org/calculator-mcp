@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-09-16
+
+### Changed
+
+- README install instructions clarified: recommend `pip cache purge`
+  after uninstall, and use `--no-cache-dir -U` on install.
+
 ## [0.0.3] - 2026-09-16
 
 ### Changed

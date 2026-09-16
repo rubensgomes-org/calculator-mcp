@@ -12,12 +12,14 @@ disable-model-invocation: true
 
 1. If no argument is provided, respond with "Error: Git repository name is
    required." and stop.
-2. Run `scripts/gh-test.sh $ARGUMENTS`, and ensure it succeeds; otherwise,
-   it MUST report error and stop.
-3. Ensure the shell environment has the `PYPI_API_TOKEN` variable set. If
+2. Determine the absolute path of the directory containing this `SKILL.md`.
+3. Execute the bundled script `scripts/gh-test.sh $ARGUMENTS` using its
+   absolute path, and ensure it succeeds; otherwise, it MUST report error
+   and stop.
+4. Ensure the shell environment has the `PYPI_API_TOKEN` variable set. If
    not, stop and report error.
-4. Ensure a `CHANGELOG.md` file exists in the project root folder.
-5. Create a release plan containing following steps:
+5. Ensure a `CHANGELOG.md` file exists in the project root folder.
+6. Create a release plan containing following steps:
     - run `poetry run mypy src/` and fix any issues.
     - run `poetry run isort src/ tests/` and fix any issues.
     - run `poetry run black src/ tests/` and fix any issues.
@@ -65,4 +67,4 @@ disable-model-invocation: true
     - run `poetry config pypi-token.pypi "$PYPI_API_TOKEN"` to store the
       PyPI credential.
     - run `poetry publish -v` as the VERY LAST step in the release.
-6. MUST mark off checkboxes as steps in the plan are completed.
+7. MUST mark off checkboxes as steps in the plan are completed.
