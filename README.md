@@ -279,7 +279,8 @@ logging:
 
 ## License
 
-The project is licensed under the [MIT License](./LICENSE).
+The project is licensed under 
+[MIT License](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE).
 
 ---
 Author: [Rubens Gomes](https://rubensgomes.com/)

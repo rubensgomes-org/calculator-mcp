@@ -1,6 +1,6 @@
 [project]
 name = "calculator-mcp-rubens"
-keywords = ["math", "calculator", "utility"]
+keywords = ["ai", "calculator", "math", "llm", "mcp", "utility"]
 version = "0.0.0"
 description = "A calculator MCP server"
 authors = [
@@ -15,7 +15,7 @@ classifiers = [
 dependencies = [
     "fastmcp (>=4.0.4,<5.0.0)",
     "pyyaml (>=6.0.3,<7.0.0)",
-    "calculator-lib-rubens (>=0.2.0,<1.0.0)",
+    "calculator-lib-rubens (>=0.2.0,<2.0.0)",
     "py-key-value-aio[disk] (>=0.1.4,<1.0.0)",
 ]
 

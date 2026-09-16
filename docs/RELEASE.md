@@ -12,19 +12,14 @@
     - gawk 5.4.1 or later
     - gh version 2.97.0 or later (GitHub CLI tool)
     - git version 2.55.0 or later
-    - grep version 3.11, 2.6.0-FreeBSD,  or later
-
-2. Ensure a `release` branch is created in the remote Git repository.
-
-3. Ensure the `scripts/test_github.sh` is executed prior to running
-   a release to ensure connectivity to GitHub remote repository.
+    - grep version 3.11, 2.6.0-FreeBSD, or later
 
 ## Environment Variables
 
-The release process is done on a Linux machine using a "Claude Code" custom
-slash command `.claude/commands/release-plan.md`. Therefore, it is expected
-that a `Claude Code` CLI session is started running on an underlying Linux
-`bash` shell with the following environment variables set:
+The release process is done on a UNIX machine using a "Claude Code" custom
+skill `.claude/skills/pypi-plan-rel/SKILL.md`. Therefore, it is expected that a
+`Claude Code` CLI session is running with access to underlying `bash` shell and
+the following environment variables:
 
 - GIT_AUTHOR_NAME
 - GIT_AUTHOR_EMAIL
@@ -32,19 +27,19 @@ that a `Claude Code` CLI session is started running on an underlying Linux
 - GITHUB_USER
 - GITHUB_TOKEN
 - GH_TOKEN (should be same as GITHUB_TOKEN)
+- PYPI_API_TOKEN
 
 ## Starting a Release
 
-- Refer to [.claude/commands/release-plan.md](../.claude/commands/release-plan.md) for the list of
-  commands that are run during a release.
-
 - The release plan is generated/executed within `Claude Code`. You must start
-  `Claude Code`, and run the following custom slash command:
+  `Claude Code`, and run skill command `/pypi-plan-rel` from within Claude Code:
 
-    ```commandline
+    ```bash
     cd $(git rev-parse --show-toplevel) || exit
-    claude --debug --ide --model opus  --verbose
+    claude --debug --ide  --verbose
     # Claude Code edit mode command:
-    /release-plan <org-name>/<proj-name>
+    /pypi-plan-rel rubensgomes-org/calculator-mcp
     ```
 
+---
+Author: [Rubens Gomes](https://rubensgomes.com/)

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ################################################################################
 # GitHub Connectivity Test Script
 #
@@ -7,10 +7,10 @@
 #   network access, API availability, and authentication status.
 #
 # Usage:
-#   test_github.sh <owner/repo>
+#   gh-test.sh <owner/repo>
 #
 # Example:
-#   test_github.sh rubensgomes/javamcp
+#   gh-test.sh rubensgomes-org/calculator-mcp
 #
 # Exit Codes:
 #   0 - All critical tests passed
