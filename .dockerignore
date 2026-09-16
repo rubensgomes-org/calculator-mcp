@@ -1,0 +1,80 @@
+# =============================================================================
+# NOTE: This file was generated with the assistance of an AI tool.
+# =============================================================================
+#
+# Keeps the Docker build context minimal. Anything NOT excluded here is sent
+# to the daemon. pyproject.toml, poetry.lock, README.md, LICENSE and src/ are
+# required by the build and must stay.
+# =============================================================================
+
+# --- Version control ---------------------------------------------------------
+.git
+.gitignore
+.gitattributes
+.github
+
+# --- Python build / runtime artifacts ----------------------------------------
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+
+# --- Virtual environments ----------------------------------------------------
+.venv
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# --- Test / lint / type-check caches -----------------------------------------
+tests/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# --- Editors / IDE -----------------------------------------------------------
+.idea/
+.vscode/
+*.code-workspace
+*.swp
+*.swo
+
+# --- OS ----------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# --- Project docs and tooling not needed inside the image --------------------
+docs/
+scripts/
+.claude/
+CHANGELOG.md
+CLAUDE.md
+llms.txt
+.editorconfig
+.pylintrc
+.mcp.json
+
+# --- Docker's own files ------------------------------------------------------
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+# --- Secrets / local environment ---------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+*.crt
+secrets/

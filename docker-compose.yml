@@ -1,0 +1,65 @@
+# =============================================================================
+# NOTE: This file was generated with the assistance of an AI tool.
+# =============================================================================
+#
+# Calculator MCP Server — Docker Compose definition.
+#
+#   docker compose up --build -d
+#   docker compose ps
+#   docker compose logs -f calculator-mcp
+#   docker compose down
+# =============================================================================
+
+services:
+  calculator-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Set from the shell so the label tracks pyproject.toml:
+        #   VERSION="$(poetry version -s)" docker compose up --build -d
+        VERSION: "${VERSION:-0.0.0-dev}"
+    image: "calculator-mcp:${VERSION:-latest}"
+    container_name: calculator-mcp
+
+    # Runs tini as PID 1: reaps zombies and forwards SIGTERM. Not strictly
+    # required, since uvicorn installs its own SIGTERM handler, but it makes
+    # the stop exit code the conventional 143.
+    init: true
+
+    restart: unless-stopped
+
+    ports:
+      - "9000:9000"
+
+    environment:
+      # Suppresses the FastMCP startup banner, which otherwise makes a
+      # blocking HTTPS request to pypi.org on every start.
+      FASTMCP_SHOW_SERVER_BANNER: "false"
+      FASTMCP_CHECK_FOR_UPDATES: "off"
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:9000/health', timeout=4); sys.exit(0 if r.status == 200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    # FastMCP configures uvicorn with timeout_graceful_shutdown=2, so the
+    # container normally exits a couple of seconds after SIGTERM.
+    stop_grace_period: 15s
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
