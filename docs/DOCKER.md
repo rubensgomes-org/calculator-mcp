@@ -12,8 +12,9 @@ The image runs the FastMCP server over the Streamable HTTP transport.
 |-----------------|--------------------------------------------|
 | Base image      | `python:3.14-slim-trixie`                  |
 | Listen address  | `0.0.0.0:9000` (inside the container)      |
-| MCP endpoint    | `http://<host>:9000/mcp`                   |
-| Health endpoint | `http://<host>:9000/health` (returns `OK`) |
+| Published port  | `9999` on the host (maps to `9000`)        |
+| MCP endpoint    | `http://<host>:9999/mcp`                   |
+| Health endpoint | `http://<host>:9999/health` (returns `OK`) |
 | User            | non-root, `uid=1001 gid=1001` (`app`)      |
 | Image size      | ~304 MB                                    |
 | Logs            | stderr only, visible via `docker logs`     |
@@ -55,11 +56,11 @@ export PATH="$HOME/.docker/bin:$PATH"
 
     ```bash
     # Run
-    docker run -d --name calculator-mcp -p 9000:9000 \
+    docker run -d --name calculator-mcp -p 9999:9000 \
         --restart unless-stopped "calculator-mcp:$(poetry version -s)"
     
     # Verify
-    curl http://127.0.0.1:9000/health     # -> OK
+    curl http://127.0.0.1:9999/health     # -> OK
     ```
 
 - To stop the running container:
@@ -135,7 +136,7 @@ To override it, mount a replacement file and point `CALCULATOR_MCP_CONFIG`
 at it:
 
 ```bash
-docker run -d --name calculator-mcp -p 9000:9000 \
+docker run -d --name calculator-mcp -p 9999:9000 \
     -v "$(pwd)/my-config.yaml:/app/config.yaml:ro" \
     -e CALCULATOR_MCP_CONFIG=/app/config.yaml \
     "calculator-mcp:$(poetry version -s)"
@@ -205,7 +206,7 @@ Register the containerized server with Claude Code:
 
 ```bash
 claude mcp add --scope project --transport http \
-    calculator-mcp http://127.0.0.1:9000/mcp
+    calculator-mcp http://127.0.0.1:9999/mcp
 ```
 
 Exercise it directly with the FastMCP client:
@@ -215,7 +216,7 @@ poetry run python -c "
 import asyncio
 from fastmcp import Client
 async def main():
-    async with Client('http://127.0.0.1:9000/mcp') as c:
+    async with Client('http://127.0.0.1:9999/mcp') as c:
         await c.ping()
         print(len(await c.list_tools()), 'tools')
         print('add(2,3) ->', (await c.call_tool('add', {'a': 2, 'b': 3})).data)
@@ -231,7 +232,7 @@ The server is stateful by default, so a `tools/call` needs an `initialize`
 handshake first and must echo back the returned `mcp-session-id` header:
 
 ```bash
-curl -i -sS -X POST http://127.0.0.1:9000/mcp \
+curl -i -sS -X POST http://127.0.0.1:9999/mcp \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json, text/event-stream' \
     -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"curl","version":"0"}}}'
@@ -249,7 +250,7 @@ which currently points at the hosted FastMCP Cloud deployment with
 ```yaml
 client:
     is_oauth: false
-    url: "http://127.0.0.1:9000/mcp"
+    url: "http://127.0.0.1:9999/mcp"
 ```
 
 then run it with `CALCULATOR_MCP_CONFIG` pointing at that copy.
@@ -262,7 +263,7 @@ then run it with `CALCULATOR_MCP_CONFIG` pointing at that copy.
 3. Open the port in the firewall:
 
     ```bash
-    sudo firewall-cmd --add-port=9000/tcp --permanent
+    sudo firewall-cmd --add-port=9999/tcp --permanent
     sudo firewall-cmd --reload
     ```
 
@@ -291,9 +292,9 @@ emulation, which is correct but noticeably slower.
 |--------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `PackageNotFoundError: calculator-mcp`                 | An image built before the distribution-name fix in `src/calculator_mcp/server.py`. Rebuild.                                                            |
 | `docker-credential-desktop: executable file not found` | Docker Desktop helpers are not on `PATH`. Run `export PATH="$HOME/.docker/bin:$PATH"`.                                                                 |
-| Connection refused from the host                       | The active config binds `127.0.0.1` instead of `0.0.0.0`, or `-p 9000:9000` was omitted.                                                               |
+| Connection refused from the host                       | The active config binds `127.0.0.1` instead of `0.0.0.0`, or `-p 9999:9000` was omitted.                                                               |
 | `poetry check --lock` fails during build               | `poetry.lock` is stale. Run `poetry lock` and rebuild.                                                                                                 |
-| Port 9000 already in use                               | Publish a different host port, for example `-p 9100:9000`. The container port stays 9000.                                                              |
+| Port 9999 already in use                               | Publish a different host port, for example `-p 9100:9000`. The container port stays 9000.                                                              |
 | Container reports `unhealthy`                          | Inspect `docker logs calculator-mcp`; the probe needs `/health` to answer `OK` within 4 seconds.                                                       |
 | HTTP 421 or 403 on `/mcp` after a FastMCP upgrade      | A future FastMCP release may enable DNS-rebinding protection by default. Set `FASTMCP_HTTP_HOST_ORIGIN_PROTECTION=false` or configure `allowed_hosts`. |
 

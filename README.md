@@ -36,6 +36,17 @@ tools. For details on usage, limits, and review practices, please see the
 
 ## Installation and Usage
 
+**IMPORTANT**: It is recommended that you run `pip uninstall` to remove any
+previously installed versions of this software from your local machine. The
+application's release versioning was recently reset and to re-start again at
+version 0.0.1.
+
+- Uninstall earlier possible installed release:
+
+    ```bash
+    pip uninstall calculator-mcp-rubens
+    ```
+
 ### Installation
 
 The `calculator-mcp` can be installed by running
@@ -48,6 +59,15 @@ run.
     # install "calculator-mcp" and depdencies into user local pip environment
     pip install --user calculator-mcp-rubens --verbose
     ```
+
+- Confirm installed version with most recently released GitHub version at 
+[calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
+
+    ```bash
+    # install "calculator-mcp" and depdencies into user local pip environment
+    pip show calculator-mcp-rubens
+    ```
+
 
 ### Usage
 
@@ -186,11 +206,16 @@ server:
     # http: for web services using the Streamable HTTP protocol
     transport: "http"
     # Host IP address for the HTTP/MCP server.
-    # 0.0.0.0 binds all interfaces, which is required inside a container.
+    # The "0.0.0.0" is used because this application is meant to run from
+    # within a Docker container, which requires the wildcard address or
+    # NADDR_ANY to accept HTTP connections
+    # from outside the Docker container.
     # Use 127.0.0.1 to restrict the server to localhost only.
     host: "0.0.0.0"
-    # Port for the HTTP/MCP server.
+    #host: "127.0.0.1"
+    # Port for the HTTP/MCP server, defaults to:
     port: 9000
+    #port: 9090
     # timeout in seconds
     timeout: 10
 
@@ -278,7 +303,7 @@ logging:
 
 ## License
 
-The project is licensed under 
+The project is licensed under
 [MIT License](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE).
 
 ---

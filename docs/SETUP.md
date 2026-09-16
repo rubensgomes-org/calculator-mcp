@@ -365,14 +365,14 @@ the full reference.
 - **Run the container:**
 
     ```bash
-    docker run -d --name calculator-mcp -p 9000:9000 \
+    docker run -d --name calculator-mcp -p 9999:9000 \
         --restart unless-stopped "calculator-mcp:$(poetry version -s)"
     ```
 
 - **Verify it is up:**
 
     ```bash
-    curl http://127.0.0.1:9000/health     # -> OK
+    curl http://127.0.0.1:9999/health     # -> OK
     ```
 
 - To stop the running container:
@@ -392,8 +392,9 @@ the full reference.
 
 Notes:
 
-- The container listens on `0.0.0.0:9000`, per the bundled `config.yaml`.
-- The MCP endpoint is `http://127.0.0.1:9000/mcp`.
+- The container listens on `0.0.0.0:9000`, per the bundled `config.yaml`,
+  published on the host as `9999`.
+- The MCP endpoint is `http://127.0.0.1:9999/mcp`.
 - The server runs as a non-root user (`uid=1001`).
 - To use a custom configuration, mount it and set `CALCULATOR_MCP_CONFIG`
   to the mounted path.
@@ -585,8 +586,8 @@ preparation.
 - Configure firewall
 
     ```bash
-    # The MCP server listens on port 9000
-    sudo firewall-cmd --add-port=9000/tcp --permanent
+    # The container publishes port 9999 on the host
+    sudo firewall-cmd --add-port=9999/tcp --permanent
     sudo firewall-cmd --reload
     ```
 
@@ -601,7 +602,7 @@ preparation.
 - Verify:
 
     ```bash
-    curl http://127.0.0.1:9000/health     # -> OK
+    curl http://127.0.0.1:9999/health     # -> OK
     ```
 
 - The server speaks plain HTTP with no authentication. Put a TLS-terminating

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-09-16
+
+### Changed
+
+- Docker container now publishes on host port `9999` instead of `9000`
+  (internal container port and `config.yaml` remain `9000`).
+
 ## [0.0.2] - 2026-09-16
 
 ### Added

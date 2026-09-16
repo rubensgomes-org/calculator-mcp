@@ -4,7 +4,7 @@ description: >-
     Generate a release plan to build, package, and distribute this
     project to PyPI - The Python Package Index. Also, publish a release
     to the project's GitHub repository.
-argument-hint: "[owner/repo]"
+argument-hint: "[owner/repo] (e.g., rubensgomes-org/calculator-mcp)"
 disable-model-invocation: true
 ---
 
@@ -36,10 +36,10 @@ disable-model-invocation: true
 
         ```bash
         VER="$(poetry version -s)"
-        docker run -d --name calculator-mcp-rel -p 9000:9000 \
+        docker run -d --name calculator-mcp-rel -p 9999:9000 \
             "calculator-mcp:${VER}"
         sleep 5
-        curl -fsS http://127.0.0.1:9000/health   # MUST return OK
+        curl -fsS http://127.0.0.1:9999/health   # MUST return OK
 
         # The image label and the packaged distribution MUST both equal
         # ${VER}.
