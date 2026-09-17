@@ -30,7 +30,7 @@ FROM ${PYTHON_IMAGE} AS builder
 
 # Matches the Poetry release that generated poetry.lock, so the lock is
 # consumed as-is rather than re-resolved.
-ARG POETRY_VERSION=2.4.1
+ARG POETRY_VERSION=2.4.3
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -112,8 +112,8 @@ ARG VERSION=0.0.0-dev
 LABEL org.opencontainers.image.title="calculator-mcp" \
       org.opencontainers.image.description="MCP server exposing 16 calculator tools over Streamable HTTP" \
       org.opencontainers.image.version="${VERSION}" \
-      org.opencontainers.image.source="https://github.com/rubensgomes/calculator-mcp" \
-      org.opencontainers.image.url="https://github.com/rubensgomes/calculator-mcp" \
+      org.opencontainers.image.source="https://github.com/rubensgomes-org/calculator-mcp" \
+      org.opencontainers.image.url="https://github.com/rubensgomes-org/calculator-mcp" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.authors="Rubens Gomes <rubens.s.gomes@gmail.com>"
 

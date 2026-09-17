@@ -555,7 +555,7 @@ Once the above "Edit Configurations in PyCharm" are configure:
     git commit -m "initial commit" -a
     gh repo create --homepage "https://github.com/rubensgomes" \
         --public "${PROJ_NAME}"
-    git remote add origin "https://github.com/rubensgomes/${PROJ_NAME}"
+    git remote add origin "https://github.com/rubensgomes-org/${PROJ_NAME}"
     git push -u origin main
     ```
 

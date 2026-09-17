@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - sonar-project.properties file
+- `.github/workflows/release.yml`: resolves the version, verifies the
+  CHANGELOG, builds the package, and publishes it to PyPI and GitHub.
+
+### Fixed
+
+- `docker-compose.yml` healthcheck now also verifies the response body,
+  matching the Dockerfile's `HEALTHCHECK`.
 
 ## [0.0.5] - 2026-09-17
 
