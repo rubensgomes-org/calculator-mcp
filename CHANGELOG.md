@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `.github/workflows/acr-repo-delete.yml`: manually-triggered, destructive
+  workflow to delete a repository (all tags and manifests) from an Azure
+  Container Registry. Requires `AZURE_CLIENT_ID`, `AZURE_SUBSCRIPTION_ID`,
+  `AZURE_TENANT_ID` Actions variables and an `AZURE_CLIENT_SECRET` Actions
+  secret.
+- `scripts/initvars.sh` and `docs/SETUP.md` now manage the above Azure
+  Actions variables/secret.
+
 ## [0.0.6] - 2026-09-17
 
 ### Added

@@ -89,19 +89,40 @@ source "${HOME}/lib/sh-lib/sh_lib.sh" || exit
 #####################################################################
 ## MANAGED GITHUB ACTIONS VARIABLES #################################
 ##
-## This project's workflows do not consume any Actions variables.
-## The maps stay in place, empty, so the delete/create logic below
-## needs no special-casing if a workflow starts needing one.
+## Keys are Actions variable names exactly as they appear in the
+## repository settings and in docs/SETUP.md. Values are resolved
+## from the shell environment, falling back to the ARM_* equivalent.
+##
+## Bash does not preserve associative-array order, so
+## ACTION_VARIABLE_ORDER fixes a presentation order.
 #####################################################################
-declare -Ar ACTION_VARIABLES=()
+declare -Ar ACTION_VARIABLES=(
+  [AZURE_CLIENT_ID]=\
+"${AZURE_CLIENT_ID:-${ARM_CLIENT_ID:-}}"
+  [AZURE_SUBSCRIPTION_ID]=\
+"${AZURE_SUBSCRIPTION_ID:-${ARM_SUBSCRIPTION_ID:-}}"
+  [AZURE_TENANT_ID]=\
+"${AZURE_TENANT_ID:-${ARM_TENANT_ID:-}}"
+)
 
-declare -ar ACTION_VARIABLE_ORDER=()
+declare -ar ACTION_VARIABLE_ORDER=(
+  AZURE_CLIENT_ID
+  AZURE_SUBSCRIPTION_ID
+  AZURE_TENANT_ID
+)
 
 # Variables this script used to manage and no longer does. The
 # delete phase sweeps these too; the create phase ignores them.
 declare -ar RETIRED_ACTION_VARIABLES=()
 
-declare -Ar REQUIRED_VARIABLE_SOURCES=()
+declare -Ar REQUIRED_VARIABLE_SOURCES=(
+  [AZURE_CLIENT_ID]=\
+"AZURE_CLIENT_ID (or ARM_CLIENT_ID)"
+  [AZURE_SUBSCRIPTION_ID]=\
+"AZURE_SUBSCRIPTION_ID (or ARM_SUBSCRIPTION_ID)"
+  [AZURE_TENANT_ID]=\
+"AZURE_TENANT_ID (or ARM_TENANT_ID)"
+)
 
 
 #####################################################################
@@ -117,11 +138,14 @@ declare -Ar REQUIRED_VARIABLE_SOURCES=()
 #####################################################################
 declare -Ar ACTION_SECRETS=(
   [PYPI_API_TOKEN]="${PYPI_API_TOKEN:-}"
+  [AZURE_CLIENT_SECRET]=\
+"${AZURE_CLIENT_SECRET:-${ARM_CLIENT_SECRET:-}}"
   [SONAR_TOKEN]="${SONAR_TOKEN:-}"
 )
 
 declare -ar ACTION_SECRET_ORDER=(
   PYPI_API_TOKEN
+  AZURE_CLIENT_SECRET
   SONAR_TOKEN
 )
 
@@ -131,6 +155,8 @@ declare -ar RETIRED_ACTION_SECRETS=()
 
 declare -Ar REQUIRED_SECRET_SOURCES=(
   [PYPI_API_TOKEN]="PYPI_API_TOKEN"
+  [AZURE_CLIENT_SECRET]=\
+"AZURE_CLIENT_SECRET (or ARM_CLIENT_SECRET)"
   [SONAR_TOKEN]="SONAR_TOKEN"
 )
 

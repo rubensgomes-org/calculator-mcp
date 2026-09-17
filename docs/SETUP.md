@@ -561,6 +561,82 @@ Once the above "Edit Configurations in PyCharm" are configure:
 
 After previous steps go to GitHub remote repo and create a "release" branch.
 
+## GitHub Actions Secret
+
+### PYPI_API_TOKEN
+
+The `release` workflow reads an Action secret named `PYPI_API_TOKEN` to
+publish the package to PyPI.
+
+- Create an Action repository secret in this repository and name it
+  PYPI_API_TOKEN storing the PyPI API token:
+
+    ```text
+    Repo's Settings -- Secrets and variables -- Actions -- New repository secret
+    ```
+
+### AZURE_CLIENT_SECRET
+
+The `acr-repo-delete` workflow reads an Action secret named
+`AZURE_CLIENT_SECRET`, used to sign in to Azure Cloud.
+
+- Create an Action repository secret in this repository and name it
+  AZURE_CLIENT_SECRET storing the Azure Service Principal password:
+
+    ```text
+    Repo's Settings -- Secrets and variables -- Actions -- New repository secret
+    ```
+
+### SONAR_TOKEN
+
+The `build-verify` workflow reads an Action secret named `SONAR_TOKEN`, used
+during the SonarCloud analysis.
+
+- Create an Action repository secret in this repository and name it
+  SONAR_TOKEN storing the SonarCloud authentication token:
+
+    ```text
+    Repo's Settings -- Secrets and variables -- Actions -- New repository secret
+    ```
+
+## GitHub Actions Variables
+
+### AZURE_CLIENT_ID
+
+The `acr-repo-delete` workflow reads an Action variable named
+`AZURE_CLIENT_ID`, used to sign in to Azure Cloud.
+
+- Create an Action repository variable in this repository and name it
+  AZURE_CLIENT_ID storing the Azure Service Principal username:
+
+    ```text
+    Repo's Settings -- Secrets and variables -- Actions -- New variable
+    ```
+
+### AZURE_SUBSCRIPTION_ID
+
+The `acr-repo-delete` workflow reads an Action variable named
+`AZURE_SUBSCRIPTION_ID`, used to sign in to Azure Cloud.
+
+- Create an Action repository variable in this repository and name it
+  AZURE_SUBSCRIPTION_ID storing the Azure Subscription ID:
+
+    ```text
+    Repo's Settings -- Secrets and variables -- Actions -- New variable
+    ```
+
+### AZURE_TENANT_ID
+
+The `acr-repo-delete` workflow reads an Action variable named
+`AZURE_TENANT_ID`, used to sign in to Azure Cloud.
+
+- Create an Action repository variable in this repository and name it
+  AZURE_TENANT_ID storing the Azure Tenant ID:
+
+    ```text
+    Repo's Settings -- Secrets and variables -- Actions -- New variable
+    ```
+
 ## Deploy MCP Server
 
 - For more information: <https://docs.prefect.io/v3/get-started>
