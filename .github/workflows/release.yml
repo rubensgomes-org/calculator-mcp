@@ -2,8 +2,9 @@
 # release
 #
 # Resolves the version from pyproject.toml, verifies CHANGELOG.md has a
-# matching section, builds the package, publishes it to PyPI, then
-# publishes a GitHub Release with the CHANGELOG section as its notes.
+# matching section, builds the package, publishes it to PyPI, publishes a
+# GitHub Release with the CHANGELOG section as its notes, then bumps
+# pyproject.toml to the next patch version for the next development cycle.
 # Dispatch-only: run it once the release version, CHANGELOG, and tag are
 # already committed and pushed to main.
 #
@@ -59,6 +60,16 @@ jobs:
 
           if ! printf '%s' "${tag}" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "::error::'${tag}' is not vMAJOR.MINOR.PATCH."
+            exit 1
+          fi
+
+          # PyPI rejects re-uploading a filename it has already seen, so a
+          # stale pyproject.toml version must fail here, not deep inside
+          # 'poetry publish'. fetch-depth: 0 above brings every tag along.
+          if git rev-parse "${tag}" >/dev/null 2>&1; then
+            echo "::error::Tag '${tag}' already exists -- ${version} was" \
+                 "already released."
+            echo "Bump the version in pyproject.toml, then re-run." >&2
             exit 1
           fi
 
@@ -180,3 +191,24 @@ jobs:
           gh release create "${RELEASE_TAG}" \
             --title "${RELEASE_TAG}" \
             --notes-file release-notes.md
+
+      - name: Bump the version for the next development cycle
+        shell: bash
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          echo "=============================================================="
+          echo " STEP: Bump the version for the next development cycle"
+          echo "=============================================================="
+          set -euo pipefail
+
+          poetry version patch
+          next_version="$(poetry version -s)"
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add pyproject.toml
+          git commit -m "Bump version to ${next_version}"
+          git push origin "HEAD:${BRANCH}"

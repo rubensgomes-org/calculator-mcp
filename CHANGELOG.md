@@ -7,11 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-09-17
+
 ### Added
 
 - sonar-project.properties file
 - `.github/workflows/release.yml`: resolves the version, verifies the
-  CHANGELOG, builds the package, and publishes it to PyPI and GitHub.
+  CHANGELOG, builds the package, and publishes it to PyPI and GitHub. Fails
+  fast if the resolved tag already exists, instead of failing inside
+  `poetry publish`. Bumps `pyproject.toml` to the next patch version and
+  pushes it to main after a successful release.
 
 ### Fixed
 
