@@ -4,7 +4,7 @@ This file describes steps to set up your local Python development environment.
 
 ## Prerequisites
 
-The following tools and versions are required:
+The following tools and versions are being used in this project:
 
 - Ubuntu Linux 26.04+ LTS or macOS 26.6.2+
 - gh version 2.100.0+ (GitHub CLI tool)
@@ -17,6 +17,7 @@ The following tools and versions are required:
 - pylint 4.0.8+
 - pytest 9.1.1+
 - python 3.14.7+
+- pysonar 1.8.0+
 - uv 0.10.7+
 
 Optional Tools:
@@ -110,7 +111,7 @@ Optional Tools:
     pipx --version
     ```
 
-### `poetry` `pylint` `pytest` ...
+### `poetry` `pylint` `pytest`  `pysonar` ...
 
 - Install several required utilities:
 
@@ -120,6 +121,7 @@ Optional Tools:
     pipx install poetry
     pipx install pylint
     pipx install pytest
+    pipx install pysonar
     pipx install uv
     uv tool install cookiecutter
     ```

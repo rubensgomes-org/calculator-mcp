@@ -157,3 +157,15 @@ id_ecdsa
 id_ed25519
 jwt.secret
 certs/
+
+###############################################################################
+# Sonar (static analysis built files)
+###############################################################################
+
+# SonarQube scanner files
+.sonar/
+.scannerwork/
+**/.scannerwork/
+
+# SonarLint local files (if using IDE plugins)
+.sonarlint/

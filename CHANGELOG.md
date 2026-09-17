@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.5] - 2026-09-17
+
+### Added
+
+- SonarQube static analysis via `pysonar`, run during release when
+  `SONAR_TOKEN` is set.
+
 ## [0.0.4] - 2026-09-16
 
 ### Changed

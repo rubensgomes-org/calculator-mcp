@@ -1,14 +1,14 @@
 [project]
 name = "calculator-mcp-rubens"
 keywords = ["ai", "calculator", "math", "llm", "mcp", "utility"]
-version = "0.0.4"
+version = "0.0.5"
 description = "A calculator MCP server"
 authors = [
     { name = "Rubens Gomes", email = "rubens.s.gomes@gmail.com" }
 ]
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.14.0,<4.0.0"
+requires-python = ">=3.14,<4.0.0"
 classifiers = [
     "Programming Language :: Python :: 3"
 ]
@@ -19,28 +19,9 @@ dependencies = [
     "py-key-value-aio[disk] (>=0.1.4,<1.0.0)",
 ]
 
-[project.scripts]
-calculator-mcp = "calculator_mcp.main:main"
-
-[project.urls]
-Homepage = "https://github.com/rubensgomes-org/calculator-mcp"
-Documentation = "https://github.com/rubensgomes-org/calculator-mcp/blob/main/README.md"
-Repository = "https://github.com/rubensgomes-org/calculator-mcp"
-
-[tool.poetry]
-packages = [{ include = "calculator_mcp", from = "src" }]
-
 [build-system]
-requires = ["poetry-core>=2.4.0,<3.0.0"]
+requires = ["poetry-core>=2.4,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.coverage.run]
-source = ["calculator_mcp"]
-branch = true
-
-[tool.coverage.report]
-show_missing = true
-fail_under = 90
 
 [dependency-groups]
 dev = [
@@ -52,6 +33,7 @@ dev = [
     "poethepoet (>=0.48.0,<1.0.0)",
     "poetry (>=2.4.3,<3.0.0)",
     "pylint (>=4.0.8,<5.0.0)",
+    "pysonar (>=1.8.0.5390,<3.0.0)",
     "types-pyyaml (>=6.0.12.2,<7.0.0.0)",
     "uv (>=0.12.15,<1.0.0)",
 ]
@@ -62,8 +44,28 @@ test = [
     "pytest-cov (>=7.1.0,<8.0.0)",
 ]
 
+[project.scripts]
+calculator-mcp = "calculator_mcp.main:main"
+
+[project.urls]
+Homepage = "https://github.com/rubensgomes-org/calculator-mcp"
+Documentation = "https://github.com/rubensgomes-org/calculator-mcp/blob/main/README.md"
+Repository = "https://github.com/rubensgomes-org/calculator-mcp"
+
+################################################################################
+# ---------- >>> Tools <<< -----------------------------------------------------
+################################################################################
+
 [tool.black]
 line-length = 80
+
+[tool.coverage.run]
+source = ["calculator_mcp"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
 
 [tool.isort]
 line_length = 80
@@ -73,8 +75,26 @@ profile = "black"
 mypy_path = "src"
 ignore_missing_imports = true
 
+[tool.poetry]
+packages = [{ include = "calculator_mcp", from = "src" }]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+[tool.sonar]
+# SONAR_TOKEN must be defined as an environment variable
+organization = "rubensgomes-org"
+projectKey = "rubensgomes-org"
+projectName = "calculator-mcp"
+qualitygate.wait = true
+sources = "src/"
+sourceEncoding = "UTF-8"
+
+# ---------- >>> poethepoet tasks <<< -----------------------------------------
+
+# To run a poe task:
+# `poetry run poe <task-name>` OR
+# `poe <task-name` (e.g., poe clean)
 
 [tool.poe.tasks]
 # Poe the Poetry "poethepoet" task runner needs to be installed.
@@ -85,9 +105,8 @@ _clean_pyc = "find . -name '*.pyc' -delete"
 _clean_pycache = "find . -name '__pycache__' -type d -exec rm -rf {} +"
 _clean_pytest = "rm -rf .pytest_cache"
 _clean_venv = "poetry env remove --all"
+
 # Combine them into one 'clean' command.  Similar to `make clean`
-# `poetry run poe clean` OR
-# `poe clean`
 [tool.poe.tasks.clean]
 sequence = [
     "_clean_cache",

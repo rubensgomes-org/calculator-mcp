@@ -20,11 +20,14 @@ disable-model-invocation: true
    not, stop and report error.
 5. Ensure a `CHANGELOG.md` file exists in the project root folder.
 6. Create a release plan containing following steps:
-    - run `poetry run mypy src/` and fix any issues.
     - run `poetry run isort src/ tests/` and fix any issues.
     - run `poetry run black src/ tests/` and fix any issues.
     - run `poetry run pylint src/ tests/` and fix any issues.
-    - run `poetry run pytest` and fix any issues.
+    - run `poetry run mypy src/` and fix any issues.
+    - run `poetry run pytest --cov=src` and fix any issues.
+7. If the `SONAR_TOKEN` environment variable is set, then run:
+    - run `poetry run pysonar` and stop if it fails.
+8. Continue with remaing steps:
     - run `export SOURCE_DATE_EPOCH=$(date +%s); poetry build -v` and fix any
       issues.
     - run `docker build --build-arg VERSION="$(poetry version -s)" -t
@@ -67,4 +70,4 @@ disable-model-invocation: true
     - run `poetry config pypi-token.pypi "$PYPI_API_TOKEN"` to store the
       PyPI credential.
     - run `poetry publish -v` as the VERY LAST step in the release.
-7. MUST mark off checkboxes as steps in the plan are completed.
+9. MUST mark off checkboxes as steps in the plan are completed.
