@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.8] - 2026-09-18
+
+### Added
+
 - `.github/workflows/release.yml` now renames `[Unreleased]` to the release
   version and commits a fresh empty `[Unreleased]` to `main` itself, so
   that step no longer needs to be done manually before running the workflow.
