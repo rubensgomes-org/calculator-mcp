@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-#
 # =============================================================================
 # NOTE: This file was generated with the assistance of an AI tool.
 # =============================================================================
@@ -49,8 +47,9 @@ RUN python -m venv /opt/venv
 
 # Poetry is installed into the *system* interpreter, never into /opt/venv, so
 # it is not carried into the runtime image.
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
-    /usr/local/bin/python -m pip install "poetry==${POETRY_VERSION}"
+#
+# No --mount=type=cache: az acr build (ACR Tasks) builds without BuildKit.
+RUN /usr/local/bin/python -m pip install "poetry==${POETRY_VERSION}"
 
 # --- dependency layer: invalidated only by pyproject.toml / poetry.lock ------
 COPY pyproject.toml poetry.lock ./
@@ -69,8 +68,7 @@ RUN touch README.md
 #
 # poetry export is deliberately not used — that command moved out of Poetry
 # into the separate poetry-plugin-export package in Poetry 2.x.
-RUN --mount=type=cache,target=/root/.cache/pypoetry,sharing=locked \
-    poetry check --lock \
+RUN poetry check --lock \
  && poetry install --only main --no-root
 
 # --- project layer: invalidated by source changes ---------------------------

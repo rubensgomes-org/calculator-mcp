@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `AZURE_CLIENT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_TENANT_ID` Actions
   variables and an `AZURE_CLIENT_SECRET` Actions secret.
 
+### Fixed
+
+- `Dockerfile` no longer uses BuildKit-only `RUN --mount=type=cache`: `az acr
+  build` (ACR Tasks) builds without BuildKit and failed with "the --mount
+  option requires BuildKit".
+
 ## [0.0.7] - 2026-09-17
 
 ### Added
