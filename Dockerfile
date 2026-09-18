@@ -148,6 +148,7 @@ EXPOSE 9000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD ["python", "-c", "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:9000/health', timeout=4); sys.exit(0 if r.status == 200 and r.read() == b'OK' else 1)"]
 
-# Exec form, so the console script becomes PID 1 and receives SIGTERM
-# directly from `docker stop`.
-CMD ["calculator-mcp"]
+# Exec form ENTRYPOINT: the console script becomes PID 1 and receives
+# SIGTERM directly from `docker stop`, and arguments passed to `docker run`
+# (e.g. --version) are appended to it instead of replacing it.
+ENTRYPOINT ["calculator-mcp"]

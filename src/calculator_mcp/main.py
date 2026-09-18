@@ -38,16 +38,28 @@
 
 """CLI entry point for the calculator-mcp server."""
 
+import argparse
 import logging
+from importlib.metadata import version
 
 from calculator_mcp.config import get_host, get_port, get_transport
 from calculator_mcp.server import mcp
 
 logger = logging.getLogger(__name__)
 
+_DISTRIBUTION_NAME = "calculator-mcp-rubens"
 
-def main() -> None:
+
+def main(argv: list[str] | None = None) -> None:
     """Entry point for the calculator-mcp application."""
+    parser = argparse.ArgumentParser(prog="calculator-mcp")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=version(_DISTRIBUTION_NAME),
+    )
+    parser.parse_args(argv)
+
     transport = get_transport()
     try:
         if transport == "http":

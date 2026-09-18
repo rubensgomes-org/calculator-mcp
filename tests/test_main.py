@@ -38,7 +38,10 @@
 
 """Unit tests for calculator_mcp.main module."""
 
+from importlib.metadata import version
 from unittest.mock import patch
+
+import pytest
 
 from calculator_mcp.main import main
 
@@ -50,7 +53,7 @@ def test_main_http_transport():
         patch("calculator_mcp.main.get_port", return_value=9000),
         patch("calculator_mcp.main.mcp") as mock_mcp,
     ):
-        main()
+        main([])
     mock_mcp.run.assert_called_once_with(
         transport="http", host="127.0.0.1", port=9000
     )
@@ -61,7 +64,7 @@ def test_main_stdio_transport():
         patch("calculator_mcp.main.get_transport", return_value="stdio"),
         patch("calculator_mcp.main.mcp") as mock_mcp,
     ):
-        main()
+        main([])
     mock_mcp.run.assert_called_once_with(transport="stdio")
 
 
@@ -71,4 +74,11 @@ def test_main_keyboard_interrupt():
         patch("calculator_mcp.main.mcp") as mock_mcp,
     ):
         mock_mcp.run.side_effect = KeyboardInterrupt
-        main()
+        main([])
+
+
+def test_main_version_prints_and_exits(capsys):
+    with pytest.raises(SystemExit) as exc_info:
+        main(["--version"])
+    assert exc_info.value.code == 0
+    assert capsys.readouterr().out.strip() == version("calculator-mcp-rubens")
