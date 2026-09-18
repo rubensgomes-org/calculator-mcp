@@ -5,10 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## How this file is used
+
+`.github/workflows/release.yml` extracts the section matching the version
+being released and uses it verbatim as the GitHub Release notes. An empty or
+missing section fails the run, so the section must exist before the release
+is cut.
+
+The order is:
+
+1. Write what changed under `[Unreleased]`, commit, and push to `main`.
+2. Run the `release` workflow.
+
+It renames `[Unreleased]` to the version being released, adds a fresh empty
+`[Unreleased]` above it, and pushes that change to `main` itself. It rejects
+an `[Unreleased]` section that still holds only the empty `### Added` /
+`### Changed` / `### Fixed` skeleton, since there is nothing to rename.
+
 ## [Unreleased]
 
 ### Added
 
+- `.github/workflows/release.yml` now renames `[Unreleased]` to the release
+  version and commits a fresh empty `[Unreleased]` to `main` itself, so
+  that step no longer needs to be done manually before running the workflow.
 - `.github/workflows/acr-build-deploy.yml`: manually-triggered workflow to
   build the application, publish its container image to an Azure Container
   Registry, and purge orphaned untagged manifests. Requires
