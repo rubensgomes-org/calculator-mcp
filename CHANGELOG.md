@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `.github/workflows/acr-build-deploy.yml`: manually-triggered workflow to
+  build the application, publish its container image to an Azure Container
+  Registry, and purge orphaned untagged manifests. Requires
+  `AZURE_CLIENT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_TENANT_ID` Actions
+  variables and an `AZURE_CLIENT_SECRET` Actions secret.
+
 ## [0.0.7] - 2026-09-17
 
 ### Added

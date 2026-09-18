@@ -1,0 +1,59 @@
+# =============================================================================
+# acr-build-deploy (calculator-mcp)
+#
+# Builds the application and its container image, pushes the image to an
+# EXISTING Azure Container Registry, verifies the push, smoke-tests the image
+# and purges the untagged manifests it orphaned.
+#
+# The EXISTING Azure Container Registry is expected to be provisioned using
+# one of the workflows in the Terraform IaC `azure-iac` repo.
+#
+# This project's source code and documentation were generated with the
+# assistance of Artificial Intelligence (AI). For more information, please
+# refer to the `AI_DISCLAIMER.md` document located in the project's root
+# directory.
+# =============================================================================
+name: acr-build-deploy (calculator-mcp)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Image namespace, used as <environment>/<artifactId>:<tag>.'
+        required: false
+        default: dev
+        type: string
+      tag:
+        description: 'Image tag. Empty defaults to the application version (from pyproject.toml).'
+        required: false
+        type: string
+      registry_name:
+        description: 'Name of the EXISTING Azure Container Registry to push to (not the login server).'
+        required: true
+        type: choice
+        options:
+          - crrgomesdev01
+          - crrgomeslab02
+
+permissions:
+  contents: read
+
+concurrency:
+  group: acr-build-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: rubensgomes-org/azure-workflows/.github/workflows/acr-build-deploy-python.yml@v0
+    with:
+      environment: ${{ inputs.environment }}
+      tag: ${{ inputs.tag }}
+      registry-name: ${{ inputs.registry_name }}
+      artifact-id: calculator-mcp
+      python-version: '3.14'
+      poetry-version: '2.4.3'
+      azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
+      azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
+      azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+    secrets:
+      azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
