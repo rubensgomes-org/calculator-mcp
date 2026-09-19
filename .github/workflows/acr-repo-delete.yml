@@ -9,7 +9,7 @@
 # refer to the `AI_DISCLAIMER.md` document located in the project's root
 # directory.
 # =============================================================================
-name: acr-repo-delete (calculator-mcp)
+name: acr-repo-delete
 
 on:
   workflow_dispatch:

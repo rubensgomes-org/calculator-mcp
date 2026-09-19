@@ -26,6 +26,8 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `docs/AZ_CMD.md`: reference of `az acr` CLI commands used in this project.
+
 ### Changed
 
 ### Fixed
