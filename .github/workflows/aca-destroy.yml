@@ -44,7 +44,7 @@ concurrency:
 
 jobs:
   destroy:
-    uses: rubensgomes-org/azure-iac/.github/workflows/aca-destroy.yml@v0.0.16
+    uses: rubensgomes-org/azure-iac/.github/workflows/aca-destroy.yml@v0
     with:
       environment_name: ${{ inputs.environment_name }}
       confirm: ${{ inputs.confirm }}

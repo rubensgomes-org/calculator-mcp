@@ -103,12 +103,23 @@ declare -Ar ACTION_VARIABLES=(
 "${AZURE_SUBSCRIPTION_ID:-${ARM_SUBSCRIPTION_ID:-}}"
   [AZURE_TENANT_ID]=\
 "${AZURE_TENANT_ID:-${ARM_TENANT_ID:-}}"
+  [TF_VAR_apps]="${TF_VAR_apps:-}"
+  [TF_VAR_backend_resource_group_name]=\
+"${TF_VAR_backend_resource_group_name:-}"
+  [TF_VAR_container_name]="${TF_VAR_container_name:-}"
+  [TF_VAR_location]="${TF_VAR_location:-}"
+  [TF_VAR_storage_account_id]="${TF_VAR_storage_account_id:-}"
 )
 
 declare -ar ACTION_VARIABLE_ORDER=(
   AZURE_CLIENT_ID
   AZURE_SUBSCRIPTION_ID
   AZURE_TENANT_ID
+  TF_VAR_apps
+  TF_VAR_backend_resource_group_name
+  TF_VAR_container_name
+  TF_VAR_location
+  TF_VAR_storage_account_id
 )
 
 # Variables this script used to manage and no longer does. The
@@ -122,6 +133,12 @@ declare -Ar REQUIRED_VARIABLE_SOURCES=(
 "AZURE_SUBSCRIPTION_ID (or ARM_SUBSCRIPTION_ID)"
   [AZURE_TENANT_ID]=\
 "AZURE_TENANT_ID (or ARM_TENANT_ID)"
+  [TF_VAR_apps]="TF_VAR_apps"
+  [TF_VAR_backend_resource_group_name]=\
+"TF_VAR_backend_resource_group_name"
+  [TF_VAR_container_name]="TF_VAR_container_name"
+  [TF_VAR_location]="TF_VAR_location"
+  [TF_VAR_storage_account_id]="TF_VAR_storage_account_id"
 )
 
 

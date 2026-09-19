@@ -38,6 +38,9 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `aca-create.yml` and `aca-destroy.yml` now call the `azure-iac` reusable
+  workflows at `@v0` instead of a pinned patch version.
+
 ### Fixed
 
 ## [0.0.8] - 2026-09-18

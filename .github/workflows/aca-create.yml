@@ -40,7 +40,7 @@ concurrency:
 
 jobs:
   create:
-    uses: rubensgomes-org/azure-iac/.github/workflows/aca-create.yml@v0.0.16
+    uses: rubensgomes-org/azure-iac/.github/workflows/aca-create.yml@v0
     with:
       environment_name: ${{ inputs.environment_name }}
       acr_name: ${{ inputs.acr_name }}
