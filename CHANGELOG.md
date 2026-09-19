@@ -33,6 +33,9 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 - `scripts/initvars.sh` no longer manages `TF_VAR_apps`; it deletes the
   variable from the repository instead.
+- `scripts/initvars.sh` now creates all Actions variable names upper-cased
+  (e.g. `TF_VAR_BACKEND_RESOURCE_GROUP_NAME`), matching how GitHub stores
+  them.
 
 ### Fixed
 
