@@ -103,7 +103,6 @@ declare -Ar ACTION_VARIABLES=(
 "${AZURE_SUBSCRIPTION_ID:-${ARM_SUBSCRIPTION_ID:-}}"
   [AZURE_TENANT_ID]=\
 "${AZURE_TENANT_ID:-${ARM_TENANT_ID:-}}"
-  [TF_VAR_apps]="${TF_VAR_apps:-}"
   [TF_VAR_backend_resource_group_name]=\
 "${TF_VAR_backend_resource_group_name:-}"
   [TF_VAR_container_name]="${TF_VAR_container_name:-}"
@@ -115,7 +114,6 @@ declare -ar ACTION_VARIABLE_ORDER=(
   AZURE_CLIENT_ID
   AZURE_SUBSCRIPTION_ID
   AZURE_TENANT_ID
-  TF_VAR_apps
   TF_VAR_backend_resource_group_name
   TF_VAR_container_name
   TF_VAR_location
@@ -124,7 +122,9 @@ declare -ar ACTION_VARIABLE_ORDER=(
 
 # Variables this script used to manage and no longer does. The
 # delete phase sweeps these too; the create phase ignores them.
-declare -ar RETIRED_ACTION_VARIABLES=()
+declare -ar RETIRED_ACTION_VARIABLES=(
+  TF_VAR_apps
+)
 
 declare -Ar REQUIRED_VARIABLE_SOURCES=(
   [AZURE_CLIENT_ID]=\
@@ -133,7 +133,6 @@ declare -Ar REQUIRED_VARIABLE_SOURCES=(
 "AZURE_SUBSCRIPTION_ID (or ARM_SUBSCRIPTION_ID)"
   [AZURE_TENANT_ID]=\
 "AZURE_TENANT_ID (or ARM_TENANT_ID)"
-  [TF_VAR_apps]="TF_VAR_apps"
   [TF_VAR_backend_resource_group_name]=\
 "TF_VAR_backend_resource_group_name"
   [TF_VAR_container_name]="TF_VAR_container_name"

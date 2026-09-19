@@ -30,6 +30,11 @@ on:
         options:
           - crrgomesdev01
           - crrgomeslab02
+      app_name:
+        description: 'Name of the app to provision.'
+        required: true
+        type: string
+        default: "mathmcp"
 
 permissions:
   contents: read
@@ -44,5 +49,6 @@ jobs:
     with:
       environment_name: ${{ inputs.environment_name }}
       acr_name: ${{ inputs.acr_name }}
+      apps: '["${{ inputs.app_name }}"]'
     secrets:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}

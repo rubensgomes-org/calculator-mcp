@@ -26,7 +26,13 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `aca-create.yml` and `aca-destroy.yml`: `app_name` input (default
+  `mathmcp`), passed to the callee `azure-iac` reusable workflows as `apps`.
+
 ### Changed
+
+- `scripts/initvars.sh` no longer manages `TF_VAR_apps`; it deletes the
+  variable from the repository instead.
 
 ### Fixed
 
