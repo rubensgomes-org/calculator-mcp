@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.10] - 2026-09-19
+
+### Added
+
 - `aca-create.yml` and `aca-destroy.yml`: `app_name` input (default
   `mathmcp`), passed to the callee `azure-iac` reusable workflows as `apps`.
 
