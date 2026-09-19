@@ -24,7 +24,10 @@ on:
         description: 'Image namespace, used as <environment>/<artifactId>:<tag>.'
         required: false
         default: dev
-        type: string
+        type: choice
+        options:
+          - dev
+          - lab
       tag:
         description: 'Image tag. Empty defaults to the application version (from pyproject.toml).'
         required: false
