@@ -11,8 +11,8 @@ The image runs the FastMCP server over the Streamable HTTP transport.
 | Property        | Value                                      |
 |-----------------|--------------------------------------------|
 | Base image      | `python:3.14-slim-trixie`                  |
-| Listen address  | `0.0.0.0:9000` (inside the container)      |
-| Published port  | `9999` on the host (maps to `9000`)        |
+| Listen address  | `0.0.0.0:8080` (inside the container)      |
+| Published port  | `9999` on the host (maps to `8080`)        |
 | MCP endpoint    | `http://<host>:9999/mcp`                   |
 | Health endpoint | `http://<host>:9999/health` (returns `OK`) |
 | User            | non-root, `uid=1001 gid=1001` (`app`)      |
@@ -56,7 +56,7 @@ export PATH="$HOME/.docker/bin:$PATH"
 
     ```bash
     # Run
-    docker run -d --name calculator-mcp -p 9999:9000 \
+    docker run -d --name calculator-mcp -p 9999:8080 \
         --restart unless-stopped "calculator-mcp:$(poetry version -s)"
     
     # Verify
@@ -129,14 +129,14 @@ Design notes:
 ## Configuration
 
 The bundled `src/calculator_mcp/config.yaml` is baked into the wheel with
-`transport: http`, `host: 0.0.0.0` and `port: 9000`, so the image needs no
+`transport: http`, `host: 0.0.0.0` and `port: 8080`, so the image needs no
 configuration to run.
 
 To override it, mount a replacement file and point `CALCULATOR_MCP_CONFIG`
 at it:
 
 ```bash
-docker run -d --name calculator-mcp -p 9999:9000 \
+docker run -d --name calculator-mcp -p 9999:8080 \
     -v "$(pwd)/my-config.yaml:/app/config.yaml:ro" \
     -e CALCULATOR_MCP_CONFIG=/app/config.yaml \
     "calculator-mcp:$(poetry version -s)"
@@ -174,7 +174,7 @@ docker inspect --format '{{.State.Health.Status}}' calculator-mcp
 ```
 
 The probe allows a 10s start period and then polls every 30s. For Kubernetes,
-point a `readinessProbe` and `livenessProbe` at `GET /health` on port 9000.
+point a `readinessProbe` and `livenessProbe` at `GET /health` on port 8080.
 
 ## Security posture
 
@@ -292,9 +292,9 @@ emulation, which is correct but noticeably slower.
 |--------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `PackageNotFoundError: calculator-mcp`                 | An image built before the distribution-name fix in `src/calculator_mcp/server.py`. Rebuild.                                                            |
 | `docker-credential-desktop: executable file not found` | Docker Desktop helpers are not on `PATH`. Run `export PATH="$HOME/.docker/bin:$PATH"`.                                                                 |
-| Connection refused from the host                       | The active config binds `127.0.0.1` instead of `0.0.0.0`, or `-p 9999:9000` was omitted.                                                               |
+| Connection refused from the host                       | The active config binds `127.0.0.1` instead of `0.0.0.0`, or `-p 9999:8080` was omitted.                                                               |
 | `poetry check --lock` fails during build               | `poetry.lock` is stale. Run `poetry lock` and rebuild.                                                                                                 |
-| Port 9999 already in use                               | Publish a different host port, for example `-p 9100:9000`. The container port stays 9000.                                                              |
+| Port 9999 already in use                               | Publish a different host port, for example `-p 9100:8080`. The container port stays 8080.                                                              |
 | Container reports `unhealthy`                          | Inspect `docker logs calculator-mcp`; the probe needs `/health` to answer `OK` within 4 seconds.                                                       |
 | HTTP 421 or 403 on `/mcp` after a FastMCP upgrade      | A future FastMCP release may enable DNS-rebinding protection by default. Set `FASTMCP_HTTP_HOST_ORIGIN_PROTECTION=false` or configure `allowed_hosts`. |
 

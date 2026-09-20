@@ -367,7 +367,7 @@ the full reference.
 - **Run the container:**
 
     ```bash
-    docker run -d --name calculator-mcp -p 9999:9000 \
+    docker run -d --name calculator-mcp -p 9999:8080 \
         --restart unless-stopped "calculator-mcp:$(poetry version -s)"
     ```
 
@@ -394,7 +394,7 @@ the full reference.
 
 Notes:
 
-- The container listens on `0.0.0.0:9000`, per the bundled `config.yaml`,
+- The container listens on `0.0.0.0:8080`, per the bundled `config.yaml`,
   published on the host as `9999`.
 - The MCP endpoint is `http://127.0.0.1:9999/mcp`.
 - The server runs as a non-root user (`uid=1001`).
@@ -427,12 +427,12 @@ and calls each one with sample arguments.
   added to the project root folder:
 
     ```bash
-    # It is assumed that the MCP server is running on http://127.0.0.1:9000
+    # It is assumed that the MCP server is running on http://127.0.0.1:8080
     cd $(git rev-parse --show-toplevel) || exit
     claude mcp add \
         --scope project \
         --transport http \
-        calculator-mcp http://127.0.0.1:9000/mcp
+        calculator-mcp http://127.0.0.1:8080/mcp
     ```
 
 ## MCP Protocol

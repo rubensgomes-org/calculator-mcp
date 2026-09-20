@@ -150,7 +150,7 @@ else:
     mcp.run(transport="stdio")
 ```
 
-The shipped default is `http` on `0.0.0.0:9000` — bound to all interfaces
+The shipped default is `http` on `0.0.0.0:8080` — bound to all interfaces
 deliberately so the server is reachable from outside the container. The
 `stdio` path is what a host would use to launch it as a subprocess. Note the
 logging config sends handlers to `ext://sys.stderr`; under `stdio` that's

@@ -141,12 +141,12 @@ COPY --from=builder --chown=root:root /opt/venv /opt/venv
 USER app
 WORKDIR /home/app
 
-EXPOSE 9000
+EXPOSE 8080
 
 # python:*-slim ships neither curl nor wget, so the probe uses the standard
 # library. 127.0.0.1 is reachable because the server binds 0.0.0.0.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD ["python", "-c", "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:9000/health', timeout=4); sys.exit(0 if r.status == 200 and r.read() == b'OK' else 1)"]
+    CMD ["python", "-c", "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=4); sys.exit(0 if r.status == 200 and r.read() == b'OK' else 1)"]
 
 # Exec form ENTRYPOINT: the console script becomes PID 1 and receives
 # SIGTERM directly from `docker stop`, and arguments passed to `docker run`

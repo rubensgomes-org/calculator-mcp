@@ -41,7 +41,7 @@ disable-model-invocation: true
 
         ```bash
         VER="$(poetry version -s)"
-        docker run -d --name calculator-mcp-rel -p 9999:9000 \
+        docker run -d --name calculator-mcp-rel -p 9999:8080 \
             "calculator-mcp:${VER}"
         sleep 5
         curl -fsS http://127.0.0.1:9999/health   # MUST return OK

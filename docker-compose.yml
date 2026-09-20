@@ -30,7 +30,7 @@ services:
     restart: unless-stopped
 
     ports:
-      - "9999:9000"
+      - "9999:8080"
 
     environment:
       # Suppresses the FastMCP startup banner, which otherwise makes a
@@ -43,7 +43,7 @@ services:
         - CMD
         - python
         - -c
-        - "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:9000/health', timeout=4); sys.exit(0 if r.status == 200 and r.read() == b'OK' else 1)"
+        - "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=4); sys.exit(0 if r.status == 200 and r.read() == b'OK' else 1)"
       interval: 30s
       timeout: 5s
       retries: 3
