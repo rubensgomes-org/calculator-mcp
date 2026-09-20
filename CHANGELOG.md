@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.11] - 2026-09-20
+
+### Added
+
 - `scripts/initvars.sh`: manages the `TF_VAR_TARGET_PORT` repository
   variable.
 - `docs/AZ_CMD.md`: commands to delete an ACR image and show the ACA
