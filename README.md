@@ -80,7 +80,7 @@ run.
 
     ```bash
     # Launches the Streamable HTTP MCP server locally at:
-    # http://0.0.0.0:9000/mcp
+    # http://0.0.0.0:8080/mcp
     # The "0.0.0.0" is used because this application is meant to run from
     # within a Docker container, which requires the wildcard address, or
     # INADDR_ANY, to accept HTTP connections from outside the container.
@@ -92,7 +92,7 @@ run.
 1. Health check
 
     ```bash
-    curl -v http://localhost:9000/health
+    curl -v http://localhost:8080/health
     # Expect: OK
     ```
 
@@ -127,7 +127,7 @@ Run these in order:
 
   ```bash
   # Look for the "mcp-session-id: <SID>" header in the output
-  curl -i http://localhost:9000/mcp \
+  curl -i http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -d @/tmp/initialize.json
@@ -139,7 +139,7 @@ Run these in order:
   ```bash
   SID="<paste-mcp-session-id-here>"
   # Expect "202 Accepted" response
-  curl -v http://localhost:9000/mcp \
+  curl -v http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Session-Id: $SID" \
@@ -151,7 +151,7 @@ Run these in order:
 - Once you have initialized your MCP session, list all the tools:
 
   ```bash
-  curl -s http://localhost:9000/mcp \
+  curl -s http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Session-Id: $SID" \
@@ -166,7 +166,7 @@ modulo, floor_divide, sqrt, absolute, floor, ceil, log10, ln, exp, round_number.
 - To call one of the tools (e.g., `add`)
 
     ```bash
-    curl -s http://localhost:9000/mcp \
+    curl -s http://localhost:8080/mcp \
       -H "Content-Type: application/json" \
       -H "Accept: application/json, text/event-stream" \
       -H "Mcp-Session-Id: $SID" \
@@ -217,7 +217,7 @@ server:
     host: "0.0.0.0"
     #host: "127.0.0.1"
     # Port for the HTTP/MCP server, defaults to:
-    port: 9000
+    port: 8080
     #port: 9090
     # timeout in seconds
     timeout: 10
@@ -228,7 +228,7 @@ server:
 client:
     # the URL the client should use when the server transport is "http"
     #    is_oauth: false
-    #    url: "http://127.0.0.1:9000/mcp"
+    #    url: "http://127.0.0.1:8080/mcp"
     is_oauth: true
     url: "https://rubens-calculator-mcp.fastmcp.app/mcp"
     # location to store OAuth token

@@ -42,6 +42,14 @@ This file contains handy az-cli commands used in this project.
     # 0.0.9
     ```
 
+- Delete a specific image from the repo:
+
+    ```bash
+    az acr repository delete \
+      --name crrgomesdev01 \
+      --image dev/calculator-mcp:0.0.9
+    ```
+
 - Image and registry name:
 
     ```bash
@@ -61,6 +69,15 @@ This file contains handy az-cli commands used in this project.
     ```
 
 ## ACA Commands
+
+- Display the container app currently configured ingress target port:
+
+    ```bash
+    az containerapp ingress show \
+      --name "ca-mathmcp-dev" \
+      --resource-group "rg-rgomesapp-dev" \
+      --query targetPort
+    ```
 
 - Cointainer Appp full settings (image, env vars, resources, scale, ingress,
   registries...)

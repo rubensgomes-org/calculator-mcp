@@ -5,19 +5,32 @@ server:
     # the home page of this project
     homepage: "https://github.com/rubensgomes-org/calculator-mcp"
     # MCP transport: "stdio" or "http"
+    #
+    # NOTES:
+    # 1) I plan to have this MCP server running within an Azure Container
+    # App (ACA) deployed into a CAE in a private VNet subnet.
+    # 2) The ACA ingress port is provisioned as NON external facing.  That
+    # is, ingress is only reachable within the CAE private VNet.
+    # 3) The ACA ingress target port is 8080.  Therefore, this app MUST
+    # be bound to port 8080 when to sync with the ACA ingress target port --
+    # this is an Azure ACA requirement.
+    # 4) The app must bound to the container NADDR_ANY "0.0.0.0" IP
+    # address to allows the CAE ingress proxy to reach it
+    #
     # http: for web services using the Streamable HTTP protocol
     transport: "http"
     # Host IP address for the HTTP/MCP server.
+    #
     # The "0.0.0.0" is used because this application is meant to run from
-    # within a Docker container, which requires the wildcard address or
-    # NADDR_ANY to accept HTTP connections
+    # within a Azure Container App container, which requires the wildcard
+    # address or NADDR_ANY to accept HTTP connections
     # from outside the Docker container.
-    # Use 127.0.0.1 to restrict the server to localhost only.
+    # Use 127.0.0.1 to restrict the server to accept ingress from the
+    # container itself localhost only.
     host: "0.0.0.0"
-    #host: "127.0.0.1"
-    # Port for the HTTP/MCP server, defaults to:
-    port: 9000
-    #port: 9090
+    # This port numbre must match the Azure Container Appp port provisioned
+    # ingress target port, which current it is 8080.
+    port: 8080
     # timeout in seconds
     timeout: 10
 

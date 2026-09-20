@@ -12,7 +12,7 @@
 #
 # Build:  docker build --build-arg VERSION="$(poetry version -s)" \
 #             -t "calculator-mcp:$(poetry version -s)" -t calculator-mcp:latest .
-# Run:    docker run --rm -p 9999:9000 "calculator-mcp:$(poetry version -s)"
+# Run:    docker run --rm -p 9999:8080 "calculator-mcp:$(poetry version -s)"
 # Verify: curl http://127.0.0.1:9999/health   ->   OK
 # =============================================================================
 
