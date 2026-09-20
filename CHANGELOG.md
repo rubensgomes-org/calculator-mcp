@@ -26,7 +26,18 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `scripts/initvars.sh`: manages the `TF_VAR_TARGET_PORT` repository
+  variable.
+- `docs/AZ_CMD.md`: commands to delete an ACR image and show the ACA
+  ingress target port.
+
 ### Changed
+
+- Application now listens on port `8080` instead of `9000`, so its
+  bind port matches the Azure Container Apps ingress target port
+  (`config.yaml`, `Dockerfile`, `docker-compose.yml`, `README.md`,
+  `docs/DOCKER.md`, `docs/SETUP.md`, `docs/MCP.md`, and the
+  `pypi-plan-rel` skill).
 
 ### Fixed
 
