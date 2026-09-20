@@ -149,48 +149,79 @@ This file contains handy az-cli commands used in this project.
       --query "{state:properties.provisioningState, fqdn:properties.configuration.ingress.fqdn}"
     ```
 
-- Live log stream
-
-    ```bash
-    az containerapp logs show \
-      -g "rg-rgomesapp-dev" \
-      -n "ca-mathmcp-dev" --follow
-    ```
-
 - Show the scale setting provisioned:
 
-```bash
-az containerapp revision list \
-  -n ca-mathmcp-dev \
-  -g "rg-rgomesapp-dev" \
-  --query "[].{name:name, active:properties.active, replicas:properties.replicas, provisioningState:properties.provisioningState}" \
-  -o table
-```
+    ```bash
+    az containerapp revision list \
+      -n "ca-mathmcp-dev" \
+      -g "rg-rgomesapp-dev" \
+      --query "[].{name:name, active:properties.active, replicas:properties.replicas, provisioningState:properties.provisioningState}" \
+      -o table
+    ```
 
-- List live container app replicas:
+- List live container app replicas (empty response means no replica running):
 
     ```bash
     az containerapp replica list \
-      -n ca-mathmcp-dev \
-      -g "rg-rgomesapp-dev"
+      --name "ca-mathmcp-dev" \
+      --resource-group "rg-rgomesapp-dev" \
+      --output table
     ```
 
 - Ensure you have one replica up and running:
 
     ```bash
     az containerapp update \
-      -n ca-mathmcp-dev \
+      -n "ca-mathmcp-dev" \
       -g "rg-rgomesapp-dev" \
       --min-replicas 1
     ```
 
+- Shutdown all replicas
+
+    ```bash
+    az containerapp update \
+      -n "ca-mathmcp-dev" \
+      -g "rg-rgomesapp-dev" \
+      --min-replicas 0
+    ```
+
 ### ACA Troublehooting
 
-- Shell into a container app:
+- Shell into a container app shell:
 
     ```bash
     az containerapp exec \
-      --name ca-mathmcp-dev \
+      --name "ca-mathmcp-dev" \
       --resource-group "rg-rgomesapp-dev" \
       --command /bin/sh
+    ```
+
+- Shell into a **debug** container app shell:
+
+    ```bash
+    az extension add --name containerapp --upgrade
+    az containerapp debug \
+      --name "ca-mathmcp-dev" \
+      --resource-group "rg-rgomesapp-dev"
+    ```
+
+
+- Find the HTTP endpoint URL:
+
+    ```bash
+    az containerapp show \
+      --name "ca-mathmcp-dev" \
+      --resource-group "rg-rgomesapp-dev" \
+      --query properties.configuration.ingress.fqdn \
+      --output tsv
+        # http://"ca-mathmcp-dev".internal.wittygrass-3e0d023f.centralus.azurecontainerapps.io:8080/health
+    ```
+  
+- Live log stream
+
+    ```bash
+    az containerapp logs show \
+      -g "rg-rgomesapp-dev" \
+      -n "ca-mathmcp-dev" --follow
     ```
