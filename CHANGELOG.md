@@ -28,17 +28,11 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
-### Fixed
-
-## [0.0.14] - 2026-09-21
-
-### Added
-
-### Changed
-
-- `.github/workflows/build-deploy.yml` and `aca-create.yml` now derive the
-  registry name from the selected environment instead of taking it as a
-  manual input.
+- `.github/workflows/build-deploy.yml`, `aca-create.yml` and
+  `repo-delete.yml` now derive the registry name from the selected
+  environment instead of taking it as a manual input.
+- `.github/workflows/aca-create.yml` and `aca-destroy.yml`: removed the
+  `app_name` input; the app name is now the constant `mathmcp`.
 
 ### Fixed
 

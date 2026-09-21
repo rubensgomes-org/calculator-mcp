@@ -1,5 +1,5 @@
 # =============================================================================
-# aca-create (calculator-mcp)
+# aca-create
 #
 # Provisions the Azure Container App estate (resource groups, networking,
 # log analytics, managed identity, key vault, ACR, container app environment
@@ -23,11 +23,6 @@ on:
         options:
           - dev
           - lab
-      app_name:
-        description: 'Name of the app to provision.'
-        required: true
-        type: string
-        default: "mathmcp"
 
 permissions:
   contents: read
@@ -55,6 +50,6 @@ jobs:
     with:
       environment_name: ${{ inputs.environment_name }}
       acr_name: ${{ needs.resolve-acr.outputs.acr_name }}
-      apps: '["${{ inputs.app_name }}"]'
+      apps: '["mathmcp"]'
     secrets:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
