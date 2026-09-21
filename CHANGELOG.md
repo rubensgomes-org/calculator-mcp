@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.14] - 2026-09-21
+
+### Added
+
+### Changed
+
 - `.github/workflows/build-deploy.yml` and `aca-create.yml` now derive the
   registry name from the selected environment instead of taking it as a
   manual input.
