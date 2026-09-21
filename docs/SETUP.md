@@ -577,7 +577,7 @@ publish the package to PyPI.
 
 ### AZURE_CLIENT_SECRET
 
-The `acr-repo-delete` workflow reads an Action secret named
+The `repo-delete` workflow reads an Action secret named
 `AZURE_CLIENT_SECRET`, used to sign in to Azure Cloud.
 
 - Create an Action repository secret in this repository and name it
@@ -603,7 +603,7 @@ during the SonarCloud analysis.
 
 ### AZURE_CLIENT_ID
 
-The `acr-repo-delete` workflow reads an Action variable named
+The `repo-delete` workflow reads an Action variable named
 `AZURE_CLIENT_ID`, used to sign in to Azure Cloud.
 
 - Create an Action repository variable in this repository and name it
@@ -615,7 +615,7 @@ The `acr-repo-delete` workflow reads an Action variable named
 
 ### AZURE_SUBSCRIPTION_ID
 
-The `acr-repo-delete` workflow reads an Action variable named
+The `repo-delete` workflow reads an Action variable named
 `AZURE_SUBSCRIPTION_ID`, used to sign in to Azure Cloud.
 
 - Create an Action repository variable in this repository and name it
@@ -627,7 +627,7 @@ The `acr-repo-delete` workflow reads an Action variable named
 
 ### AZURE_TENANT_ID
 
-The `acr-repo-delete` workflow reads an Action variable named
+The `repo-delete` workflow reads an Action variable named
 `AZURE_TENANT_ID`, used to sign in to Azure Cloud.
 
 - Create an Action repository variable in this repository and name it

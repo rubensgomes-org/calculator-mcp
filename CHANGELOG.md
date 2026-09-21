@@ -44,6 +44,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
   `acr-build-deploy-python.yml`.
 - `README.md`: license/AI-disclaimer badges now link to GitHub instead of
   local files; MCP usage steps note their JSON-RPC method names.
+- `.github/workflows/acr-repo-delete.yml` renamed to `repo-delete.yml`.
 
 ### Fixed
 

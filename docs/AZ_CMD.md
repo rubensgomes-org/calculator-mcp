@@ -6,7 +6,7 @@ This file contains handy az-cli commands used in this project.
 
 ### CAE Commands
 
-- Shows if the below CAE is provisioned:
+- Responds "Succeeded" if the below CAE is provisioned:
 
     ```bash
     az containerapp env show \
