@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.12] - 2026-09-21
+
+### Added
+
 - `docs/AZ_CMD.md`: commands to show the ACA scale setting, shut down all
   replicas, open a debug container shell, and find the HTTP endpoint URL.
 
