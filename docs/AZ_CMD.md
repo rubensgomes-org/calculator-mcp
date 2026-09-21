@@ -68,7 +68,7 @@ This file contains handy az-cli commands used in this project.
     crrgomesdev01.azurecr.io/dev/calculator-mcp:0.0.9
     ```
 
-## ACA Commands
+## Display ACA Settings
 
 - Display the container app currently configured ingress target port:
 
@@ -99,14 +99,14 @@ This file contains handy az-cli commands used in this project.
       --query "properties.template.containers[].{image:image, env:env}"
     ```
 
-- Ingress config (external/internal, target port, transport)  
+- Ingress config (external/internal, target port, transport)
 
     ```bash
     az containerapp ingress show \
       -g "rg-rgomesapp-dev" \
       -n "ca-mathmcp-dev"
     ```
-  
+
 - Registries configured for pulling images, and which identity they use
 
     ```bash
@@ -114,7 +114,7 @@ This file contains handy az-cli commands used in this project.
       -g "rg-rgomesapp-dev" \
       -n "ca-mathmcp-dev"
     ```
-  
+
 - Managed identity assigned to the app (needed for AcrPull)
 
     ```bash
@@ -168,7 +168,9 @@ This file contains handy az-cli commands used in this project.
       --output table
     ```
 
-- Ensure you have one replica up and running:
+### Start / Stop Container APP
+
+1. Start by ensuring you have one replica
 
     ```bash
     az containerapp update \
@@ -177,7 +179,7 @@ This file contains handy az-cli commands used in this project.
       --min-replicas 1
     ```
 
-- Shutdown all replicas
+2. Stop by ensuring you have 0 replicas
 
     ```bash
     az containerapp update \
@@ -186,9 +188,9 @@ This file contains handy az-cli commands used in this project.
       --min-replicas 0
     ```
 
-### ACA Troublehooting
+### Connect to Container App Console + Debug Console
 
-- Shell into a container app shell:
+1. Shell into the real container app shell:
 
     ```bash
     az containerapp exec \
@@ -197,7 +199,8 @@ This file contains handy az-cli commands used in this project.
       --command /bin/sh
     ```
 
-- Shell into a **debug** container app shell:
+2. Shell into a **debug** container app shell. This is a separate, ephemeral
+   debug container that Azure attaches alongside the real replica.
 
     ```bash
     az extension add --name containerapp --upgrade
@@ -206,8 +209,9 @@ This file contains handy az-cli commands used in this project.
       --resource-group "rg-rgomesapp-dev"
     ```
 
+### Other Miscellaneous Container App Commands
 
-- Find the HTTP endpoint URL:
+1. Find the HTTP endpoint URL:
 
     ```bash
     az containerapp show \
@@ -217,8 +221,8 @@ This file contains handy az-cli commands used in this project.
       --output tsv
         # http://"ca-mathmcp-dev".internal.wittygrass-3e0d023f.centralus.azurecontainerapps.io:8080/health
     ```
-  
-- Live log stream
+
+2. Live log stream
 
     ```bash
     az containerapp logs show \

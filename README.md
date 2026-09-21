@@ -1,5 +1,5 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![AI Assisted](https://img.shields.io/badge/AI--Assisted-Development-007ACC)](./AI_DISCLAIMER.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE)
+[![AI Assisted](https://img.shields.io/badge/AI--Assisted-Development-007ACC)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
 
 # Calculator MCP Server
 
@@ -12,7 +12,7 @@ package.
 
 ## Features
 
-16 calculator tools available via MCP:
+16 calculator tools available via MCP based on JSON-RPC 2.0 messages:
 
 **Two-operand operations**: `add`, `subtract`, `multiply`, `divide`, `power`,
 `nth_root`, `modulo`, `floor_divide`
@@ -63,14 +63,13 @@ run.
     pip --no-cache-dir install -U --user calculator-mcp-rubens --verbose
     ```
 
-- Confirm installed version with most recently released GitHub version at 
-[calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
+- Confirm installed version with most recently released GitHub version at
+  [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
 
     ```bash
     # install "calculator-mcp" and depdencies into user local pip environment
     pip show calculator-mcp-rubens
     ```
-
 
 ### Usage
 
@@ -133,8 +132,8 @@ Run these in order:
   -d @/tmp/initialize.json
   ```
 
-- c) MCP client sends the required "initialized" notification (use the SID from
-  step b)
+- c) `notifications/initialized` MCP client sends the required "initialized"
+  notification (use the SID from step b)
 
   ```bash
   SID="<paste-mcp-session-id-here>"
@@ -146,9 +145,9 @@ Run these in order:
   -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
   ```
 
-3. List tools
+3. List tools - `tools/list`
 
-- Once you have initialized your MCP session, list all the tools:
+- `tools/list` once you have initialized your MCP session, list all the tools:
 
   ```bash
   curl -s http://localhost:8080/mcp \
@@ -161,9 +160,9 @@ Run these in order:
 This returns all 16 tools: add, subtract, multiply, divide, power, nth_root,
 modulo, floor_divide, sqrt, absolute, floor, ceil, log10, ln, exp, round_number.
 
-4. Call a tool (e.g. `add`)
+4. Call a tool (e.g. `add`) - `tools/call`
 
-- To call one of the tools (e.g., `add`)
+- `tools/call` To call one of the tools (e.g., `add`)
 
     ```bash
     curl -s http://localhost:8080/mcp \

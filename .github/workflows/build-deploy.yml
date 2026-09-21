@@ -49,7 +49,7 @@ concurrency:
 
 jobs:
   build:
-    uses: rubensgomes-org/azure-workflows/.github/workflows/acr-build-deploy-python.yml@v0
+    uses: rubensgomes-org/azure-workflows/.github/workflows/acr-build-push-python.yml@v0
     with:
       environment: ${{ inputs.environment }}
       tag: ${{ inputs.tag }}

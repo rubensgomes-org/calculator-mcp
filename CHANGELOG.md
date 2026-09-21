@@ -26,7 +26,16 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `docs/AZ_CMD.md`: commands to show the ACA scale setting, shut down all
+  replicas, open a debug container shell, and find the HTTP endpoint URL.
+
 ### Changed
+
+- `.github/workflows/build-deploy.yml` now calls the
+  `acr-build-push-python.yml` reusable workflow instead of
+  `acr-build-deploy-python.yml`.
+- `README.md`: license/AI-disclaimer badges now link to GitHub instead of
+  local files; MCP usage steps note their JSON-RPC method names.
 
 ### Fixed
 
