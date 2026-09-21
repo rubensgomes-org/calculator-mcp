@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.13] - 2026-09-21
+
+### Added
+
+### Changed
+
 - `fastmcp` bumped to `>=4.0.5`; `calculator-lib-rubens` upper bound
   narrowed to `<1.0.0`; `py-key-value-aio` bumped to `>=0.4.6` and no
   longer pins the `[disk]` extra; added `cryptography` and `key-value`
