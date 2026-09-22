@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.17] - 2026-09-22
+
+### Added
+
+### Changed
+
 - update documentation
 
 ### Fixed
