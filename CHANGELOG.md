@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.16] - 2026-09-22
+
+### Added
+
+### Changed
+
 - `README.md`: restructured the Installation and Legacy Era sections, and
   wrapped long lines to keep Markdown within the 80-character limit.
 
