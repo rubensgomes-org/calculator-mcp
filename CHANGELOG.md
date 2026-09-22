@@ -26,6 +26,10 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `.github/workflows/aca-create.yml`: passes
+  `health_probe_paths: '{"mathmcp":"/health"}'` so ACA probes `/health`
+  over HTTP (requires the next `azure-iac` `v0` release).
+
 ### Changed
 
 ### Fixed
