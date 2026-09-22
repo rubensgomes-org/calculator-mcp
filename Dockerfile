@@ -124,8 +124,9 @@ ENV PYTHONUNBUFFERED=1 \
     VIRTUAL_ENV=/opt/venv \
     PATH=/opt/venv/bin:$PATH \
     HOME=/home/app \
-    FASTMCP_SHOW_SERVER_BANNER=false \
-    FASTMCP_CHECK_FOR_UPDATES=off
+    FASTMCP_SHOW_SERVER_BANNER=true \
+    FASTMCP_CHECK_FOR_UPDATES=off \
+    FASTMCP_STATELESS_HTTP=true
 
 # Non-root service account with a fixed uid/gid, stable for volume ownership
 # and for Kubernetes runAsUser.

@@ -51,11 +51,26 @@ def test_main_http_transport():
         patch("calculator_mcp.main.get_transport", return_value="http"),
         patch("calculator_mcp.main.get_host", return_value="127.0.0.1"),
         patch("calculator_mcp.main.get_port", return_value=9000),
+        patch("calculator_mcp.main.get_stateless", return_value=False),
         patch("calculator_mcp.main.mcp") as mock_mcp,
     ):
         main([])
     mock_mcp.run.assert_called_once_with(
-        transport="http", host="127.0.0.1", port=9000
+        transport="http", host="127.0.0.1", port=9000, stateless_http=False
+    )
+
+
+def test_main_http_transport_stateless():
+    with (
+        patch("calculator_mcp.main.get_transport", return_value="http"),
+        patch("calculator_mcp.main.get_host", return_value="127.0.0.1"),
+        patch("calculator_mcp.main.get_port", return_value=9000),
+        patch("calculator_mcp.main.get_stateless", return_value=True),
+        patch("calculator_mcp.main.mcp") as mock_mcp,
+    ):
+        main([])
+    mock_mcp.run.assert_called_once_with(
+        transport="http", host="127.0.0.1", port=9000, stateless_http=True
     )
 
 

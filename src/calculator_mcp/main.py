@@ -42,7 +42,12 @@ import argparse
 import logging
 from importlib.metadata import version
 
-from calculator_mcp.config import get_host, get_port, get_transport
+from calculator_mcp.config import (
+    get_host,
+    get_port,
+    get_stateless,
+    get_transport,
+)
 from calculator_mcp.server import mcp
 
 logger = logging.getLogger(__name__)
@@ -63,7 +68,12 @@ def main(argv: list[str] | None = None) -> None:
     transport = get_transport()
     try:
         if transport == "http":
-            mcp.run(transport="http", host=get_host(), port=get_port())
+            mcp.run(
+                transport="http",
+                host=get_host(),
+                port=get_port(),
+                stateless_http=get_stateless(),
+            )
         else:
             mcp.run(transport="stdio")
     except KeyboardInterrupt:

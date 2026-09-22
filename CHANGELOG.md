@@ -28,7 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `README.md`: restructured the Installation and Legacy Era sections, and
+  wrapped long lines to keep Markdown within the 80-character limit.
+
 ### Fixed
+
+- `README.md`: fixed typos (`depdencies`, `serever`), a wrong install
+  comment, and a broken reference to a nonexistent step 4 in the
+  `Mcp-Session-Id` reuse note.
 
 ## [0.0.15] - 2026-09-21
 

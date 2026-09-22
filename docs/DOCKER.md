@@ -129,8 +129,8 @@ Design notes:
 ## Configuration
 
 The bundled `src/calculator_mcp/config.yaml` is baked into the wheel with
-`transport: http`, `host: 0.0.0.0` and `port: 8080`, so the image needs no
-configuration to run.
+`transport: http`, `host: 0.0.0.0`, `port: 8080` and `stateless: true`, so the
+image needs no configuration to run.
 
 To override it, mount a replacement file and point `CALCULATOR_MCP_CONFIG`
 at it:
@@ -161,8 +161,11 @@ Caveats:
 | `CALCULATOR_MCP_CONFIG`      | Absolute path to a replacement `config.yaml`.                                                                   |
 | `FASTMCP_SHOW_SERVER_BANNER` | Set to `false` in the image. The banner otherwise performs a blocking HTTPS request to pypi.org on every start. |
 | `FASTMCP_CHECK_FOR_UPDATES`  | Set to `off` in the image, for the same reason.                                                                 |
-| `FASTMCP_STATELESS_HTTP`     | Set to `true` to drop MCP session affinity, which makes single-shot `curl` tool calls possible.                 |
 | `FASTMCP_LOG_LEVEL`          | Overrides the FastMCP log level.                                                                                |
+
+Stateless HTTP mode is controlled by `server.stateless` in `config.yaml`, not
+an environment variable — the app always passes that value to FastMCP
+explicitly, so `FASTMCP_STATELESS_HTTP` has no effect.
 
 ## Health checks
 
@@ -228,18 +231,21 @@ Expected output: `16 tools` and `add(2,3) -> 5.0`.
 
 ### Raw JSON-RPC
 
-The server is stateful by default, so a `tools/call` needs an `initialize`
-handshake first and must echo back the returned `mcp-session-id` header:
+The image ships `stateless: true`, so a single-shot `tools/call` needs no
+`initialize` handshake or session ID — each request carries its own protocol
+version and capabilities in `params._meta`:
 
 ```bash
 curl -i -sS -X POST http://127.0.0.1:9999/mcp \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json, text/event-stream' \
-    -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"curl","version":"0"}}}'
+    -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"add","arguments":{"a":2,"b":3},"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}'
 ```
 
-For single-shot `curl` testing, start the container with
-`-e FASTMCP_STATELESS_HTTP=true` instead.
+To exercise the Legacy Era (pre-2026-07-28) `initialize` handshake instead,
+mount a replacement `config.yaml` with `stateless: false` (see
+[Configuration](#configuration) above and the main
+[README](../README.md#legacy-era-pre-july-2026)).
 
 ### Using `tests/integration/client.py`
 

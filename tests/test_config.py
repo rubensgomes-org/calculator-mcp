@@ -50,6 +50,7 @@ _SAMPLE_CONFIG = {
         "host": "127.0.0.1",
         "port": 9000,
         "timeout": 10,
+        "stateless": False,
     },
     "client": {
         "is_oauth": True,
@@ -133,6 +134,32 @@ def test_get_host():
 def test_get_port():
     with _patch_load():
         assert config.get_port() == 9000
+
+
+# --- get_stateless ---
+
+
+def test_get_stateless_false():
+    with _patch_load():
+        assert config.get_stateless() is False
+
+
+def test_get_stateless_true():
+    cfg = {
+        **_SAMPLE_CONFIG,
+        "server": {**_SAMPLE_CONFIG["server"], "stateless": True},
+    }
+    with _patch_load(cfg):
+        assert config.get_stateless() is True
+
+
+def test_get_stateless_missing_defaults_false():
+    server_no_stateless = {
+        k: v for k, v in _SAMPLE_CONFIG["server"].items() if k != "stateless"
+    }
+    cfg = {**_SAMPLE_CONFIG, "server": server_no_stateless}
+    with _patch_load(cfg):
+        assert config.get_stateless() is False
 
 
 # --- is_oauth ---

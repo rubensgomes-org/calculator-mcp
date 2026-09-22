@@ -36,12 +36,15 @@ tools. For details on usage, limits, and review practices, please see the
 
 ## Installation and Usage
 
-**IMPORTANT**: It is recommended that you run `pip uninstall` to remove any
-previously installed versions of this software from your local machine. The
-application's release versioning was recently reset and to re-start again at
-version 0.0.1.
+### Installation
 
-- Uninstall earlier possible installed release:
+The `calculator-mcp` can be installed by running
+`pip install calculator-mcp-rubens`. 
+
+**IMPORTANT**: release versioning was recently reset to start again at
+version 0.0.1. Uninstall any previously installed version first.
+
+- Uninstall any previously installed release:
 
     ```bash
     pip uninstall calculator-mcp-rubens
@@ -49,16 +52,10 @@ version 0.0.1.
     pip cache purge
     ```
 
-### Installation
-
-The `calculator-mcp` can be installed by running
-`pip install calculator-mcp-rubens`. It requires `python` 3.14+ and `pip` to
-run.
-
 - To install locally into the user's home environment run command below
 
     ```bash
-    # install "calculator-mcp" and depdencies into user local pip environment
+    # install "calculator-mcp" and dependencies into user local pip environment
     # NOTE: use --no-cache-dir to avoid issues with earlier version in cache
     pip --no-cache-dir install -U --user calculator-mcp-rubens --verbose
     ```
@@ -67,120 +64,13 @@ run.
   [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
 
     ```bash
-    # install "calculator-mcp" and depdencies into user local pip environment
+    # show the installed version of calculator-mcp-rubens
     pip show calculator-mcp-rubens
     ```
 
 ### Usage
 
-#### Running the MCP Server
-
-- Launch `calculator-mcp` locally with sensible defaults:
-
-    ```bash
-    # Launches the Streamable HTTP MCP server locally at:
-    # http://0.0.0.0:8080/mcp
-    # The "0.0.0.0" is used because this application is meant to run from
-    # within a Docker container, which requires the wildcard address, or
-    # INADDR_ANY, to accept HTTP connections from outside the container.
-    calculator-mcp
-    ```
-
-#### Exercise the MCP Server Endpoints
-
-1. Health check
-
-    ```bash
-    curl -v http://localhost:8080/health
-    # Expect: OK
-    ```
-
-2. Initialize MCP session
-
-The MCP endpoint requires a session, established via initialize first.
-Run these in order:
-
-- a) Store JSON below in a local file `/tmp/initialize.json`:
-
-    ```bash
-    # remove indentation spaces when copying/pasting this command to the shell
-    cat > /tmp/initialize.json <<EOF
-    {
-      "jsonrpc": "2.0",
-      "id": 1,
-      "method": "initialize",
-      "params": {
-        "protocolVersion": "2025-06-18",
-        "capabilities": {},
-        "clientInfo": {
-          "name": "curl-test",
-          "version": "1.0"
-        }
-      }
-    }
-    EOF
-    ```
-
-- b) MCP client initializes session — grab the `Mcp-Session-Id` from the
-  response headers
-
-  ```bash
-  # Look for the "mcp-session-id: <SID>" header in the output
-  curl -i http://localhost:8080/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -d @/tmp/initialize.json
-  ```
-
-- c) `notifications/initialized` MCP client sends the required "initialized"
-  notification (use the SID from step b)
-
-  ```bash
-  SID="<paste-mcp-session-id-here>"
-  # Expect "202 Accepted" response
-  curl -v http://localhost:8080/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "Mcp-Session-Id: $SID" \
-  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
-  ```
-
-3. List tools - `tools/list`
-
-- `tools/list` once you have initialized your MCP session, list all the tools:
-
-  ```bash
-  curl -s http://localhost:8080/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "Mcp-Session-Id: $SID" \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
-  ```
-
-This returns all 16 tools: add, subtract, multiply, divide, power, nth_root,
-modulo, floor_divide, sqrt, absolute, floor, ceil, log10, ln, exp, round_number.
-
-4. Call a tool (e.g. `add`) - `tools/call`
-
-- `tools/call` To call one of the tools (e.g., `add`)
-
-    ```bash
-    curl -s http://localhost:8080/mcp \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -H "Mcp-Session-Id: $SID" \
-      -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"add","arguments":{"a":2,"b":3}}}'
-    ```
-
-Returns `{"result": 5.0}` in `structuredContent`. Swap `name` and `arguments`
-to call any other tool, e.g.
-`{"name": "divide", "arguments": {"a": 15, "b": 4}}`
-or `{"name": "sqrt", "arguments": {"a": 16}}`.
-
-**Note**: the same `Mcp-Session-Id` must be reused across steps b, c, 3, and 4
-— the server ties the session to that ID.
-
-## Configuration
+#### Configuration
 
 The server ships with a default `config.yaml` bundled inside the package. To
 override it, set the `CALCULATOR_MCP_CONFIG` environment variable to the
@@ -220,6 +110,9 @@ server:
     #port: 9090
     # timeout in seconds
     timeout: 10
+    # Stateless HTTP mode (Modern Era, 2026-07-28 spec): true drops session
+    # affinity for single-shot tools/call requests. Ignored for "stdio".
+    stateless: false
 
 # =============================================================================
 # Client Configuration
@@ -273,19 +166,19 @@ logging:
             handlers:
                 - console
             propagate: false
-        # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
+        # Server: inbound JSON-RPC — set to DEBUG for parsed requests
         mcp.server.lowlevel.server:
             level: INFO
             handlers:
                 - console
             propagate: false
-        # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
+        # Server: StreamableHTTP transport — DEBUG for method-level tracing
         mcp.server.streamable_http:
             level: INFO
             handlers:
                 - console
             propagate: false
-        # Server: session/transport lifecycle — set to DEBUG for session details
+        # Server: session/transport lifecycle — DEBUG for session details
         mcp.server.streamable_http_manager:
             level: INFO
             handlers:
@@ -302,6 +195,142 @@ logging:
         handlers:
             - console
 ```
+
+#### Running the MCP Server
+
+- Launch `calculator-mcp` locally with sensible defaults:
+
+    ```bash
+    # Launches the Streamable HTTP MCP server locally at:
+    # http://0.0.0.0:8080/mcp
+    # The "0.0.0.0" is used because this application is meant to run from
+    # within a Docker container, which requires the wildcard address, or
+    # INADDR_ANY, to accept HTTP connections from outside the container.
+    calculator-mcp
+    ```
+
+- Health check
+
+    ```bash
+    curl -v http://localhost:8080/health
+    # Expect: OK
+    ```
+
+#### Legacy Era (Pre-July 2026)
+
+The Legacy Era MCP server is based on a stateful session state that requires
+a connection setup handshake using `initialize` / `initialized` JSON-RPC
+messages.
+
+**NOTE** Change the config.yaml server -- > stateless to `false`.
+
+**1. Initialize MCP session**
+
+The MCP endpoint requires a session, established via initialize first.
+Run these in order:
+
+- Store the JSON below in a local file `/tmp/initialize.json`:
+
+    ```bash
+    # remove indentation spaces when copying/pasting this command to the shell
+    cat > /tmp/initialize.json <<EOF
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-06-18",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "curl-test",
+          "version": "1.0"
+        }
+      }
+    }
+    EOF
+    ```
+
+- Initialize the session and grab the `Mcp-Session-Id` from the response
+  headers:
+
+    ```bash
+    # Look for the "mcp-session-id: <SID>" header in the output
+    curl -i http://localhost:8080/mcp \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json, text/event-stream" \
+      -d @/tmp/initialize.json
+    ```
+
+- Send the required `notifications/initialized` notification (use the SID
+  obtained above):
+
+    ```bash
+    SID="<paste-mcp-session-id-here>"
+    # Expect "202 Accepted" response
+    curl -v http://localhost:8080/mcp \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json, text/event-stream" \
+      -H "Mcp-Session-Id: $SID" \
+      -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+    ```
+
+**2. List tools** — `tools/list`
+
+Once you have initialized your MCP session, list all the tools:
+
+```bash
+curl -s http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+```
+
+This returns all 16 tools: add, subtract, multiply, divide, power, nth_root,
+modulo, floor_divide, sqrt, absolute, floor, ceil, log10, ln, exp,
+round_number.
+
+**3. Call a tool** (e.g. `add`) — `tools/call`
+
+```bash
+curl -s http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SID" \
+  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":
+       {"name":"add","arguments":{"a":2,"b":3}}}'
+```
+
+**Note**: reuse the same `Mcp-Session-Id` (obtained during initialization)
+for every subsequent request — the server ties the session to that ID.
+
+#### Modern Era (2026-07-28 Spec)
+
+The Modern Era MCP server is stateless. Single-shot tools/call, no handshake
+needed.
+
+**NOTE** Change the config.yaml server -- > stateless to `true`.
+
+- Tools call to add two number
+
+    ```bash
+    curl -i -sS -X POST http://localhost:8080/mcp \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json, text/event-stream" \
+      -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "add",
+      "arguments": {"a": 2, "b": 3},
+      "_meta": {
+        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+        "io.modelcontextprotocol/clientCapabilities": {}
+        }
+      }
+    }'
+    ```
 
 ## License
 

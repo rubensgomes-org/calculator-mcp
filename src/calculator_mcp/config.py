@@ -147,6 +147,18 @@ def get_port() -> int:
     return port
 
 
+def get_stateless() -> bool:
+    """Return whether stateless HTTP mode is enabled from config.yaml.
+
+    Returns:
+        True if the server stateless setting is true, False otherwise.
+    """
+    config = _load_config()
+    stateless: bool = config["server"].get("stateless", False)
+    logger.info("MCP stateless HTTP: %s", stateless)
+    return stateless
+
+
 def is_oauth() -> bool:
     """Return whether OAuth is enabled from config.yaml.
 

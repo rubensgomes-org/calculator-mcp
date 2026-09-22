@@ -33,6 +33,11 @@ server:
     port: 8080
     # timeout in seconds
     timeout: 10
+    # Stateless HTTP mode (Modern Era, 2026-07-28 spec): true drops session
+    # affinity so each request carries its own protocol version and
+    # capabilities in params._meta, enabling single-shot tool calls. Ignored
+    # when transport is "stdio".
+    stateless: true
 
 # =============================================================================
 # Client Configuration
