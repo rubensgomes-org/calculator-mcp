@@ -46,6 +46,9 @@ server:
 # To run the client program:
 #   poetry install
 #   poetry run python tests/integration/client.py
+# **NOTE** This procedure will open a browser for OAuth authorizaion. Only
+# Rubens is authorized to use it right now being previously logged in to the
+# github.com/rubensgomes account.
 # =============================================================================
 client:
     # the URL the local integration test client should use to connect to
