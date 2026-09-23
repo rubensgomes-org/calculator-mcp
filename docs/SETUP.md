@@ -348,6 +348,7 @@ There are three ways to start the server:
     # requires poetry to be installed
     poetry install # only needed once
     export CALCULATOR_MCP_CONFIG=/path/to/your/config.yaml
+    # export CALCULATOR_MCP_CONFIG="${HOME}/config.yaml"
     poetry run calculator-mcp
     ```
 
@@ -637,11 +638,13 @@ The `repo-delete` workflow reads an Action variable named
     Repo's Settings -- Secrets and variables -- Actions -- New variable
     ```
 
-## Deploy MCP Server
+## Deploy MCP Server - FREE
 
 - For more information: <https://docs.prefect.io/v3/get-started>
 
 1. Login to <https://www.prefect.io/horizon> using GitHub credentials.
+2. Deployment: `rubens-calculator-mcp`
+3. End point URL: `https://rubens-calculator-mcp.fastmcp.app/mcp`
 
 ## Deploy MCP Server with Docker
 

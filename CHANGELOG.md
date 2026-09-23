@@ -32,8 +32,17 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 - `.github/workflows/aca-create.yml`: passes
   `health_probe_paths: '{"mathmcp":"/health"}'` so ACA probes `/health`
   over HTTP (requires the next `azure-iac` `v0` release).
+- `diskcache` and `pathvalidate` test dependencies.
 
 ### Changed
+
+- Bundled `config.yaml`: all loggers, including `root`, default to `DEBUG`;
+  client section documents the Horizon-hosted OAuth endpoint.
+- `README.md`: removed the inlined `config.yaml` and replaced the curl
+  examples with Modern Era `server/discover` and `tools/list` requests.
+- `docs/DEMO.md`, `docs/SETUP.md`, `docs/MCP.md`: added demo commands and
+  Prefect Horizon deployment details.
+- Bumped `uv` dev dependency to `>=0.12.18`.
 
 ### Fixed
 

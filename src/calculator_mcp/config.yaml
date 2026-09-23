@@ -40,15 +40,25 @@ server:
     stateless: true
 
 # =============================================================================
-# Client Configuration
+# Client Configuration - used by this project local client integration test
+# code to connect to live FastMCP server deployed for free at
+# https://www.prefect.io/horizon.
+# To run the client program:
+#   poetry install
+#   poetry run python tests/integration/client.py
 # =============================================================================
 client:
-    # the URL the client should use when the server transport is "http"
-    #    is_oauth: false
-    #    url: "http://127.0.0.1:8080/mcp"
-    is_oauth: true
+    # the URL the local integration test client should use to connect to
+    # FastMCP server deployed and running at prefect.io/horizon servers.
     url: "https://rubens-calculator-mcp.fastmcp.app/mcp"
-    # location to store OAuth token
+    # This FastMCP server deployed at prefect.io/horizon requires
+    # OAuth authentication; therefore, is_ouath MUST be `true`
+    # NOTE: For OAuth to work, you also need to export an environment
+    # variable OAUTH_STORAGE_ENCRYPTION_KEY containing a secret key
+    # (a Fernet key).
+    is_oauth: true
+    # A local folder that is used by OAuth to store secret information such
+    # as an OAuth token
     token_dir: "~/.fastmcp"
     # fixed port for the OAuth callback server
     callback_port: 10000
@@ -75,7 +85,7 @@ logging:
             propagate: false
         # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
         mcp.client.streamable_http:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
@@ -87,25 +97,25 @@ logging:
             propagate: false
         # HTTP wire-level tracing (headers, TCP) — set to DEBUG for detail
         httpcore:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
         mcp.server.lowlevel.server:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
         mcp.server.streamable_http:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: session/transport lifecycle — set to DEBUG for session details
         mcp.server.streamable_http_manager:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
@@ -116,6 +126,6 @@ logging:
                 - console
             propagate: false
     root:
-        level: WARNING
+        level: DEBUG
         handlers:
             - console

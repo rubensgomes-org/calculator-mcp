@@ -39,7 +39,7 @@ tools. For details on usage, limits, and review practices, please see the
 ### Installation
 
 The `calculator-mcp` can be installed by running
-`pip install calculator-mcp-rubens`. 
+`pip install calculator-mcp-rubens`.
 
 **IMPORTANT**: release versioning was recently reset to start again at
 version 0.0.1. Uninstall any previously installed version first.
@@ -76,136 +76,20 @@ The server ships with a default `config.yaml` bundled inside the package. To
 override it, set the `CALCULATOR_MCP_CONFIG` environment variable to the
 absolute path of your custom configuration file:
 
+When `CALCULATOR_MCP_CONFIG` is not set, the bundled default is used
+automatically. For more information about how to set up the `config.yaml`
+and further documentation, refer
+to [config.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/src/calculator_mcp/config.yaml)
+
 ```bash
 export CALCULATOR_MCP_CONFIG=/path/to/your/config.yaml
 ```
 
-When `CALCULATOR_MCP_CONFIG` is not set, the bundled default is used
-automatically.
-
-The configuration file has three sections. The `logging` section controls Python
-logging via `dictConfig`. The default configuration logs `calculator_mcp`
-messages at `DEBUG` level to stderr.
-
-```yaml
-# =============================================================================
-# Server Configuration
-# =============================================================================
-server:
-    # the home page of this project
-    homepage: "https://github.com/rubensgomes-org/calculator-mcp"
-    # MCP transport: "stdio" or "http"
-    # http: for web services using the Streamable HTTP protocol
-    transport: "http"
-    # Host IP address for the HTTP/MCP server.
-    # The "0.0.0.0" is used because this application is meant to run from
-    # within a Docker container, which requires the wildcard address or
-    # NADDR_ANY to accept HTTP connections
-    # from outside the Docker container.
-    # Use 127.0.0.1 to restrict the server to localhost only.
-    host: "0.0.0.0"
-    #host: "127.0.0.1"
-    # Port for the HTTP/MCP server, defaults to:
-    port: 8080
-    #port: 9090
-    # timeout in seconds
-    timeout: 10
-    # Stateless HTTP mode (Modern Era, 2026-07-28 spec): true drops session
-    # affinity for single-shot tools/call requests. Ignored for "stdio".
-    stateless: false
-
-# =============================================================================
-# Client Configuration
-# =============================================================================
-client:
-    # the URL the client should use when the server transport is "http"
-    #    is_oauth: false
-    #    url: "http://127.0.0.1:8080/mcp"
-    is_oauth: true
-    url: "https://rubens-calculator-mcp.fastmcp.app/mcp"
-    # location to store OAuth token
-    token_dir: "~/.fastmcp"
-    # fixed port for the OAuth callback server
-    callback_port: 10000
-
-# =============================================================================
-# Logging Configuration
-# =============================================================================
-logging:
-    version: 1
-    disable_existing_loggers: false
-    formatters:
-        standard:
-            format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-    handlers:
-        console:
-            class: logging.StreamHandler
-            formatter: standard
-            stream: ext://sys.stderr
-    loggers:
-        calculator_mcp:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
-        mcp.client.streamable_http:
-            level: INFO
-            handlers:
-                - console
-            propagate: false
-        # HTTP request/response summaries — set to DEBUG for detail
-        httpx:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # HTTP wire-level tracing (headers, TCP) — set to DEBUG for detail
-        httpcore:
-            level: INFO
-            handlers:
-                - console
-            propagate: false
-        # Server: inbound JSON-RPC — set to DEBUG for parsed requests
-        mcp.server.lowlevel.server:
-            level: INFO
-            handlers:
-                - console
-            propagate: false
-        # Server: StreamableHTTP transport — DEBUG for method-level tracing
-        mcp.server.streamable_http:
-            level: INFO
-            handlers:
-                - console
-            propagate: false
-        # Server: session/transport lifecycle — DEBUG for session details
-        mcp.server.streamable_http_manager:
-            level: INFO
-            handlers:
-                - console
-            propagate: false
-        # Server: HTTP request lines (method, path, status)
-        uvicorn.access:
-            level: INFO
-            handlers:
-                - console
-            propagate: false
-    root:
-        level: WARNING
-        handlers:
-            - console
-```
-
 #### Running the MCP Server
 
-- Launch `calculator-mcp` locally with sensible defaults:
+- Launch `calculator-mcp` locally:
 
     ```bash
-    # Launches the Streamable HTTP MCP server locally at:
-    # http://0.0.0.0:8080/mcp
-    # The "0.0.0.0" is used because this application is meant to run from
-    # within a Docker container, which requires the wildcard address, or
-    # INADDR_ANY, to accept HTTP connections from outside the container.
     calculator-mcp
     ```
 
@@ -311,25 +195,48 @@ needed.
 
 **NOTE** Change the config.yaml server -- > stateless to `true`.
 
-- Tools call to add two number
+- Server discovery:
 
     ```bash
-    curl -i -sS -X POST http://localhost:8080/mcp \
+    curl -sS -X POST http://localhost:8080/mcp \
       -H "Content-Type: application/json" \
       -H "Accept: application/json, text/event-stream" \
+      -H "Mcp-Protocol-Version: 2026-07-28" \
+      -H "Mcp-Method: server/discover" \
       -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "add",
-      "arguments": {"a": 2, "b": 3},
-      "_meta": {
-        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
-        "io.modelcontextprotocol/clientCapabilities": {}
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "server/discover",
+        "params": {
+          "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
+            "io.modelcontextprotocol/clientCapabilities": {}
+          }
         }
-      }
-    }'
+      }'
+    ```
+
+- List tools:
+
+    ```bash
+    curl -sS -X POST http://localhost:8080/mcp \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json, text/event-stream" \
+      -H "Mcp-Protocol-Version: 2026-07-28" \
+      -H "Mcp-Method: tools/list" \
+      -d '{
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "tools/list",
+        "params": {
+          "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
+            "io.modelcontextprotocol/clientCapabilities": {}
+          }
+        }
+      }'
     ```
 
 ## License

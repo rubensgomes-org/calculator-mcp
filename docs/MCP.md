@@ -14,7 +14,7 @@ is exchanged between the client and server after initialization.
 
 ### MCP Lifecycle
 
-#### Initial MCP Client < -- > Server Handshake
+#### Legacy Initial MCP Client < -- > Server Handshake
 
 1. The MCP client POSTs an `initialize` request
 2. The MCP server responds with:
@@ -185,3 +185,7 @@ calling the Python functions directly.
 `httpx`/`httpcore` — at INFO (`httpx` at DEBUG) with a comment saying to flip
 them to DEBUG to see the raw JSON-RPC messages or HTTP wire traffic. That's
 the debugging path when a host and this server disagree.
+
+## Free FastMCP Deployment
+
+- <https://horizon.prefect.io>
