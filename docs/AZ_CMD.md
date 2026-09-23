@@ -219,7 +219,7 @@ This file contains handy az-cli commands used in this project.
       --resource-group "rg-rgomesapp-dev" \
       --query properties.configuration.ingress.fqdn \
       --output tsv
-        # http://"ca-mathmcp-dev".internal.wittygrass-3e0d023f.centralus.azurecontainerapps.io:8080/health
+        # https://ca-mathmcp-dev.internal.wittygrass-3e0d023f.centralus.azurecontainerapps.io/health
     ```
 
 2. Live log stream

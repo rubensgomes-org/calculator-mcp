@@ -26,6 +26,9 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `.github/dependabot.yml`: daily version updates for Poetry dependencies
+  (minor and patch grouped) and GitHub Actions.
+- `pip-audit` dev dependency for dependency vulnerability scanning.
 - `.github/workflows/aca-create.yml`: passes
   `health_probe_paths: '{"mathmcp":"/health"}'` so ACA probes `/health`
   over HTTP (requires the next `azure-iac` `v0` release).
