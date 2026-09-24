@@ -32,7 +32,6 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 - `.github/workflows/aca-create.yml`: passes
   `health_probe_paths: '{"mathmcp":"/health"}'` so ACA probes `/health`
   over HTTP (requires the next `azure-iac` `v0` release).
-- `diskcache` and `pathvalidate` test dependencies.
 
 ### Changed
 
@@ -60,6 +59,10 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
   Claude Code skill.
 
 ### Fixed
+
+- `pip-audit` failure on `diskcache` (PYSEC-2026-2447): the integration
+  client stores OAuth tokens in a `FileTreeStore` instead of a `DiskStore`,
+  and the `diskcache` and `pathvalidate` test dependencies are removed.
 
 ## [0.0.17] - 2026-09-22
 

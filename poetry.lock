@@ -872,28 +872,27 @@ xml-validation = ["lxml (>=4,<7)"]
 
 [[package]]
 name = "cyclopts"
-version = "4.25.3"
+version = "5.0.0"
 description = "Intuitive, easy CLIs based on type hints."
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "cyclopts-4.25.3-py3-none-any.whl", hash = "sha256:40e76b3153ea90e885abd8d3a4d8184db5a5eec2fde8540025aae8d72fc973fc"},
-    {file = "cyclopts-4.25.3.tar.gz", hash = "sha256:7d3a067bc7699a1a65fe2ea0b092a925855bb711a05adc1e65c5b9ba307acea4"},
+    {file = "cyclopts-5.0.0-py3-none-any.whl", hash = "sha256:69c5d98bd48827a0f7c663b76f966f730652cbc48daa7625f1e69ae429b82376"},
+    {file = "cyclopts-5.0.0.tar.gz", hash = "sha256:8bee8822319f5cd90711f568aec54a0a02bd3571ddff45c94aa62405beed38b6"},
 ]
 
 [package.dependencies]
 attrs = ">=23.1.0"
 docstring-parser = ">=0.15,<4.0"
 rich = ">=13.6.0"
-rich-rst = ">=1.3.1,<3.0.0"
+rich-rst = ">=2.0.1,<3"
 
 [package.extras]
 debug = ["ipdb (>=0.13.9)", "line-profiler (>=3.5.1)"]
 dev = ["coverage[toml] (>=5.1)", "mkdocs (>=1.4.0)", "pexpect (>=4.9.0) ; sys_platform != \"win32\"", "pre-commit (>=2.16.0)", "pydantic (>=2.11.2,<3.0.0)", "pytest (>=8.2.0)", "pytest-cov (>=3.0.0)", "pytest-mock (>=3.7.0)", "pytest-timeout (>=2.3.0)", "pyyaml (>=6.0.1)", "syrupy (>=4.0.0)", "toml (>=0.10.2,<1.0.0)", "trio (>=0.10.0)"]
-docs = ["gitpython (>=3.1.31)", "myst-parser[linkify] (>=3.0.1,<5.0.0)", "sphinx (>=7.4.7,<8.2.0)", "sphinx-autodoc-typehints (>=1.25.2,<4.0.0)", "sphinx-copybutton (>=0.5,<1.0)", "sphinx-rtd-dark-mode (>=1.3.0,<2.0.0)", "sphinx-rtd-theme (>=3.0.0,<4.0.0)"]
+docs = ["gitpython (>=3.1.31)", "myst-parser[linkify] (>=3.0.1,<6.0.0)", "sphinx (>=7.4.7,<8.2.0)", "sphinx-autodoc-typehints (>=1.25.2,<4.0.0)", "sphinx-copybutton (>=0.5,<1.0)", "sphinx-rtd-dark-mode (>=1.3.0,<2.0.0)", "sphinx-rtd-theme (>=3.0.0,<4.0.0)"]
 mkdocs = ["markdown (>=3.3)", "mkdocs (>=1.4.0)", "pymdown-extensions (>=10.0)"]
-toml = ["tomli (>=2.0.0) ; python_version < \"3.11\""]
 trio = ["trio (>=0.10.0)"]
 yaml = ["pyyaml (>=6.0.1)"]
 
@@ -924,18 +923,6 @@ files = [
 [package.extras]
 graph = ["objgraph (>=1.7.2)"]
 profile = ["gprof2dot (>=2022.7.29)"]
-
-[[package]]
-name = "diskcache"
-version = "5.6.3"
-description = "Disk Cache -- Disk and file backed persistent cache."
-optional = false
-python-versions = ">=3"
-groups = ["test"]
-files = [
-    {file = "diskcache-5.6.3-py3-none-any.whl", hash = "sha256:5e31b2d5fbad117cc363ebaf6b689474db18a1f6438bc82358b024abd4c2ca19"},
-    {file = "diskcache-5.6.3.tar.gz", hash = "sha256:2c3a3fa2743d8535d832ec61c2054a1641f41775aa7c556758a109941e33e4fc"},
-]
 
 [[package]]
 name = "distlib"
@@ -1197,14 +1184,14 @@ server = ["authlib (>=1.6.11)", "cyclopts (>=4.0.0)", "exceptiongroup (>=1.2.2)"
 
 [[package]]
 name = "filelock"
-version = "4.0.1"
+version = "4.0.3"
 description = "A platform independent file lock."
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "filelock-4.0.1-py3-none-any.whl", hash = "sha256:481a321a27bef441e23c53371c6abc8d7d16e26b97090074ba44f7538a3fd55a"},
-    {file = "filelock-4.0.1.tar.gz", hash = "sha256:fdefc3f3e87716d855ae2b732c1cfd521dd99799ef2b4d00e8c0d4dcdc7cc94b"},
+    {file = "filelock-4.0.3-py3-none-any.whl", hash = "sha256:30cd166e2aee2c7534ce2c33c6367c4cd051b8368e20e2c4eb0c34f699bacfab"},
+    {file = "filelock-4.0.3.tar.gz", hash = "sha256:87296d60478e14204fd9406e79831400fef76693bae2895deec236c98e87a8aa"},
 ]
 
 [[package]]
@@ -2231,23 +2218,6 @@ optional = ["typing-extensions (>=4)"]
 re2 = ["google-re2 (>=1.1)"]
 
 [[package]]
-name = "pathvalidate"
-version = "3.3.1"
-description = "pathvalidate is a Python library to sanitize/validate a string such as filenames/file-paths/etc."
-optional = false
-python-versions = ">=3.9"
-groups = ["test"]
-files = [
-    {file = "pathvalidate-3.3.1-py3-none-any.whl", hash = "sha256:5263baab691f8e1af96092fa5137ee17df5bdfbd6cff1fcac4d6ef4bc2e1735f"},
-    {file = "pathvalidate-3.3.1.tar.gz", hash = "sha256:b18c07212bfead624345bb8e1d6141cdcf15a39736994ea0b94035ad2b1ba177"},
-]
-
-[package.extras]
-docs = ["Sphinx (>=2.4)", "sphinx_rtd_theme (>=1.2.2)", "urllib3 (<2)"]
-readme = ["path (>=13,<18)", "readmemaker (>=1.2.0)"]
-test = ["Faker (>=1.0.8)", "allpairspy (>=2)", "click (>=6.2)", "pytest (>=6.0.1)", "pytest-md-report (>=0.6.2)"]
-
-[[package]]
 name = "pbs-installer"
 version = "2026.9.1"
 description = "Installer for Python Build Standalone"
@@ -2725,14 +2695,14 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pyjwt"
-version = "2.14.0"
+version = "2.15.0"
 description = "JSON Web Token implementation in Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "pyjwt-2.14.0-py3-none-any.whl", hash = "sha256:ad0cef71c756a56e74863c2919cf0985f72decbcfcb550ee2f422e7c62b5eedc"},
-    {file = "pyjwt-2.14.0.tar.gz", hash = "sha256:77283c83fb56ecf566a886c757a714bc83668e38156de2cce8263302f42e0b86"},
+    {file = "pyjwt-2.15.0-py3-none-any.whl", hash = "sha256:7a3742debf6b879e912dbb9819ceec1594be812452b78c5f2e2dfc56564954f8"},
+    {file = "pyjwt-2.15.0.tar.gz", hash = "sha256:b11c5f9791d7bf51c2b39a81ed669f6b2dbbd669df2942f6c60167e9e3d1abe4"},
 ]
 
 [package.dependencies]
@@ -4052,4 +4022,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4.0.0"
-content-hash = "586b700facb4471ea3852118c83f536e934298441be6b73b48172f77f81ed37a"
+content-hash = "423b910ba8f38963e37c522bfe9f86a72c91c3c15f2ef3c88e0c314c6e1a1460"

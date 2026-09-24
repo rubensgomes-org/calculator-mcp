@@ -169,7 +169,7 @@ from the same config module. It does the full round trip: `client.ping()`,
 `client.list_tools()`, then `call_tool` on each discovered tool with sample
 arguments. For the deployed instance at
 <https://rubens-calculator-mcp.fastmcp.app/mcp> it wraps
-`fastmcp.client.auth.OAuth`, persisting tokens in a `DiskStore` behind a
+`fastmcp.client.auth.OAuth`, persisting tokens in a `FileTreeStore` behind a
 `FernetEncryptionWrapper` keyed from `OAUTH_STORAGE_ENCRYPTION_KEY`, with a
 fixed callback port so the OAuth redirect URI stays stable across runs.
 

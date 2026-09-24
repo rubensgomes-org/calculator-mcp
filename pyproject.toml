@@ -53,8 +53,6 @@ dev = [
 ]
 test = [
     "coverage (>=7.16.0,<8.0.0)",
-    "diskcache (>=5.6.3,<6.0.0)",
-    "pathvalidate (>=3.3.1,<4.00)",
     "pytest (>=9.1.1,<10.0.0)",
     "pytest-asyncio (>=1.4.0,<2.0.0)",
     "pytest-cov (>=7.1.0,<8.0.0)",
@@ -74,6 +72,7 @@ Repository = "https://github.com/rubensgomes-org/calculator-mcp"
 
 [tool.black]
 line-length = 80
+target-version = ["py314"]
 
 [tool.coverage.run]
 source = ["calculator_mcp"]
