@@ -34,9 +34,9 @@ tools. For details on usage, limits, and review practices, please see the
 - pip 26.2+
 - curl 8.7+
 
-## Installation and Usage
+## Installation
 
-### Installation
+### Installation Using PiPY Installed Package
 
 **IMPORTANT**: release versioning was recently reset to start again at
 version 0.0.1. Uninstall any previously installed version first.
@@ -65,39 +65,103 @@ version 0.0.1. Uninstall any previously installed version first.
     pip show calculator-mcp-rubens
     ```
 
-### Usage
+### Installation Using GitHub Project Clone
 
-#### Configuration
+- Clone the project from GitHub:
 
-The server ships with a default `config.yaml` bundled inside the package. To
-override it, set the `CALCULATOR_MCP_CONFIG` environment variable to the
-absolute path of your custom configuration file:
+    ```bash
+    git clone https://github.com/rubensgomes-org/calculator-mcp.git
+    ```
+
+- Install depenencies and application into `poetry` virtual environment:
+
+    ```bash
+    # change to project git local directory
+    cd $(git rev-parse --show-toplevel) || exit
+    poetry install
+    ```
+
+## Configuration
+
+The server ships with a default `config.yaml` bundled inside the PiPY
+package. To override it, set the `CALCULATOR_MCP_CONFIG` environment
+variable to the absolute path of your custom configuration file:
 
 ```bash
 export CALCULATOR_MCP_CONFIG=/path/to/your/config.yaml
 ```
 
-When `CALCULATOR_MCP_CONFIG` is not set, the bundled default is used
-automatically. For more information about how to set up the `config.yaml`
-and further documentation, refer
-to [config.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/src/calculator_mcp/config.yaml)
+## Running the MCP Server
 
-#### Running the MCP Server
+### Running the MCP Server Using PyPI Installed Package
 
-- Launch `calculator-mcp` locally:
+- Launch the PiPY installed `calculator-mcp` package:
 
     ```bash
+    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_local.yaml"
+    export CALCULATOR_MCP_CONFIG="/path/to/your/config.yaml"
+    # using installed package from PyPI:
     calculator-mcp
     ```
 
 - Health check
 
     ```bash
+    # curl -v http://localhost:<port>/health, e.g.:
     curl -v http://localhost:8080/health
     # Expect: OK
     ```
 
-#### Legacy Era (Pre-July 2026)
+### Running the MCP Server Using GitHub Cloned Project
+
+- Launch the `calculator-mcp` from the local Git repo folder. **NOTE** the
+  project must be previousley installed in `poetry` venv (e.g., poetry install):
+
+    ```bash
+    # change to project git local directory
+    cd $(git rev-parse --show-toplevel) || exit
+    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_local.yaml"
+    export CALCULATOR_MCP_CONFIG="/path/to/your/config.yaml"
+    poetry run calculator-mcp    
+    ```
+
+- Health check
+
+    ```bash
+    # curl -v http://localhost:<port>/health, e.g.:
+    curl -v http://localhost:8080/health
+    # Expect: OK
+    ```
+
+1. Integration test using local MCP server:
+
+    ```bash
+    # change to project git local directory
+    cd $(git rev-parse --show-toplevel) || exit
+    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_local.yaml"
+    export CALCULATOR_MCP_CONFIG="/path/to/your/config_local.yaml"
+    poetry run python tests/integration/client.py
+    ```
+
+2. Integration test using remote MCP server.
+
+- **NOTE** Requires OAuth authentication which currently only Rubens is able to
+  authorize using his personal GitHub account.
+
+    ```bash
+    # change to project git local directory
+    cd $(git rev-parse --show-toplevel) || exit
+    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_remote.yaml"
+    export CALCULATOR_MCP_CONFIG="/path/to/your/config_remote.yaml"
+    # clean up previously created OAuth tokens
+    # e.g. rm -fr "~/.calculator-mcp-token-remote" 
+    rm -fr <token-dir-from-config>
+    poetry run python tests/integration/client.py
+    ```
+
+## Usage
+
+### Legacy Era (Pre-July 2026)
 
 The Legacy Era MCP server is based on a stateful session state that requires
 a connection setup handshake using `initialize` / `initialized` JSON-RPC
@@ -186,7 +250,7 @@ curl -s http://localhost:8080/mcp \
 **Note**: reuse the same `Mcp-Session-Id` (obtained during initialization)
 for every subsequent request — the server ties the session to that ID.
 
-#### Modern Era (2026-07-28 Spec)
+### Modern Era (2026-07-28 Spec)
 
 The Modern Era MCP server is stateless. Single-shot tools/call, no handshake
 needed.

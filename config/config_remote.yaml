@@ -21,19 +21,17 @@ server:
 # Client Configuration - used ONLY by this project client integration test
 # =============================================================================
 client:
-    # url: "http://127.0.0.1:8080/mcp"
     # Hosted, deployed and running for free at Prefect
     #   https://www.prefect.io/horizon
     url: "https://rubens-calculator-mcp.fastmcp.app/mcp"
-    # is_oauth: false
     # Prefect requires OAuth authentication. Currently only Rubens is able
     # to authorize using his personal GitHub account.
     is_oauth: true
     # location to store OAuth token
-    token_dir: "~/.calculator-mcp-token"
+    token_dir: "~/.calculator-mcp-token-remote"
     # local port temporarily used by the OAuth callback server during
     # OAuth handshaking.
-    callback_port: 10000
+    callback_port: 10101
 
 # =============================================================================
 # Logging Configuration

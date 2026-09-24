@@ -145,8 +145,6 @@ async def run_client() -> None:
     client = create_client()
 
     async with client:
-        await client.ping()
-
         tools = await client.list_tools()
         print(f"Connected — {len(tools)} tools available:\n")
         for tool in tools:

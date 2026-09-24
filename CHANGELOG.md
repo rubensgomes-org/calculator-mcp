@@ -26,7 +26,15 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `config/config_local.yaml` and `config/config_remote.yaml`: sample
+  configurations for the local and Horizon-hosted integration tests.
+
 ### Changed
+
+- `README.md`: split into Installation, Configuration, Running and Usage
+  sections; added clone-based install, run and integration test steps.
+- Bundled `config.yaml`: shortened comments and reordered `server` keys.
+- `tests/integration/client.py`: removed the initial `ping()` call.
 
 ### Fixed
 

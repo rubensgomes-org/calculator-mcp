@@ -1105,39 +1105,39 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 
 [[package]]
 name = "fastmcp"
-version = "4.0.8"
+version = "4.0.9"
 description = "The fast, Pythonic way to build MCP servers and clients."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp-4.0.8-py3-none-any.whl", hash = "sha256:672c7f2a483551f84e1b965c19003ff3d8e87ff681612374ad40bb4e860c726e"},
-    {file = "fastmcp-4.0.8.tar.gz", hash = "sha256:770cdd36a0a7f2bcdfcaa7021f19a92c3b1c9d68eb0a9af7eca909e80d60402c"},
+    {file = "fastmcp-4.0.9-py3-none-any.whl", hash = "sha256:d4faffb9be2e51821a9a2f253caf9dc778257348d18029d2a92653c9306fec23"},
+    {file = "fastmcp-4.0.9.tar.gz", hash = "sha256:c2b54aafd59d2f68bbd251a2337797ae4b7fdf9b9cff41a0d9c4cc04f129c7e3"},
 ]
 
 [package.dependencies]
-fastmcp-slim = {version = "4.0.8", extras = ["client", "server"]}
+fastmcp-slim = {version = "4.0.9", extras = ["client", "server"]}
 
 [package.extras]
-anthropic = ["fastmcp-slim[anthropic] (==4.0.8)"]
-apps = ["fastmcp-slim[apps] (==4.0.8)"]
-azure = ["fastmcp-slim[azure] (==4.0.8)"]
-code-mode = ["fastmcp-slim[code-mode] (==4.0.8)"]
-gemini = ["fastmcp-slim[gemini] (==4.0.8)"]
-jev = ["fastmcp-slim[jev] (==4.0.8)"]
-openai = ["fastmcp-slim[openai] (==4.0.8)"]
-tasks = ["fastmcp-tasks (==4.0.8)"]
+anthropic = ["fastmcp-slim[anthropic] (==4.0.9)"]
+apps = ["fastmcp-slim[apps] (==4.0.9)"]
+azure = ["fastmcp-slim[azure] (==4.0.9)"]
+code-mode = ["fastmcp-slim[code-mode] (==4.0.9)"]
+gemini = ["fastmcp-slim[gemini] (==4.0.9)"]
+jev = ["fastmcp-slim[jev] (==4.0.9)"]
+openai = ["fastmcp-slim[openai] (==4.0.9)"]
+tasks = ["fastmcp-tasks (==4.0.9)"]
 
 [[package]]
 name = "fastmcp-slim"
-version = "4.0.8"
+version = "4.0.9"
 description = "The dependency-slim FastMCP package."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp_slim-4.0.8-py3-none-any.whl", hash = "sha256:1411cec585b2024309d5e01780c91a16ff4e2e070a5c0a8ede653af90d3ac3fb"},
-    {file = "fastmcp_slim-4.0.8.tar.gz", hash = "sha256:839cfd4dd8d529be1b48739f5766588657256c20c365bb1ba1ed1d827ce497cb"},
+    {file = "fastmcp_slim-4.0.9-py3-none-any.whl", hash = "sha256:ec2937b30be8eca91c253e396ce6169e6f91f3c6d6dfb40438868d5522462452"},
+    {file = "fastmcp_slim-4.0.9.tar.gz", hash = "sha256:ba01644465ffea16f60b1afe1b8976cc484c9ad948f92b4ec0455024e6c57ba3"},
 ]
 
 [package.dependencies]
@@ -3732,14 +3732,14 @@ standard = ["httptools (>=0.8.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "
 
 [[package]]
 name = "virtualenv"
-version = "21.11.1"
+version = "21.12.1"
 description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "virtualenv-21.11.1-py3-none-any.whl", hash = "sha256:00596e6238363a1a69fd899a6e67365830be0b0bff9a9c83bdcad6e9aee3c419"},
-    {file = "virtualenv-21.11.1.tar.gz", hash = "sha256:6266bdc327ed2a760f628ecbdadc776745fe08c3cac6139417bc2437e4d061dd"},
+    {file = "virtualenv-21.12.1-py3-none-any.whl", hash = "sha256:878db9e963d0ef0b38561a344a4f9b12dc5c7741b6245d7ed10e9291cfea28bc"},
+    {file = "virtualenv-21.12.1.tar.gz", hash = "sha256:be5a0a62cb2d1529ff6999652e2e7826f95bf7faa9b96b88cc39847c023d90a0"},
 ]
 
 [package.dependencies]
@@ -4022,4 +4022,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4.0.0"
-content-hash = "423b910ba8f38963e37c522bfe9f86a72c91c3c15f2ef3c88e0c314c6e1a1460"
+content-hash = "653ebbb5edb05fb631246f7b6baaa921e652e1163f4db4871da01a8f42157b0d"

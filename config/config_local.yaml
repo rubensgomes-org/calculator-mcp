@@ -3,8 +3,7 @@
 # =============================================================================
 server:
     # IP address the server binds to at start-up
-    # Use 0.0.0.0 when server is planeed to start from a container.
-    host: "0.0.0.0"
+    host: "127.0.0.1"
     # The transport protocol used -- stdio not used in this project
     transport: "http"
     # The port on host the MCP server binds to at start-up
@@ -21,19 +20,13 @@ server:
 # Client Configuration - used ONLY by this project client integration test
 # =============================================================================
 client:
-    # url: "http://127.0.0.1:8080/mcp"
-    # Hosted, deployed and running for free at Prefect
-    #   https://www.prefect.io/horizon
-    url: "https://rubens-calculator-mcp.fastmcp.app/mcp"
-    # is_oauth: false
-    # Prefect requires OAuth authentication. Currently only Rubens is able
-    # to authorize using his personal GitHub account.
-    is_oauth: true
-    # location to store OAuth token
-    token_dir: "~/.calculator-mcp-token"
-    # local port temporarily used by the OAuth callback server during
-    # OAuth handshaking.
-    callback_port: 10000
+    # MUST match the server host and port for local integration
+    url: "http://127.0.0.1:8080/mcp"
+    is_oauth: false
+    # token_dir not needed when OAuth is not used.
+    token_dir: ""
+    # callback_port not needed when OAuth is not used.
+    callback_port: 0
 
 # =============================================================================
 # Logging Configuration
