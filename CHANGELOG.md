@@ -43,6 +43,8 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
   Prefect Horizon deployment details.
 - Bumped `uv` dev dependency to `>=0.12.18`.
 - Bumped `fastmcp` dependency to `>=4.0.7`.
+- `release.yml`: a `verify` job runs the `build-verify` checks and tests;
+  the release job starts only after it passes.
 - `Dockerfile`: clarified comments on the dependency layer, `ENV`,
   `EXPOSE` and `HEALTHCHECK` (the latter two are ignored by ACA).
 - `docs/DOCKER.md`: environment variables table converted to a list;

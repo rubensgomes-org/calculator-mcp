@@ -1,10 +1,12 @@
 # =============================================================================
 # release
 #
-# Resolves the version from pyproject.toml, verifies CHANGELOG.md has a
-# matching section, builds the package, publishes it to PyPI, publishes a
-# GitHub Release with the CHANGELOG section as its notes, then bumps
-# pyproject.toml to the next patch version for the next development cycle.
+# Runs the same checks as build-verify (the verify job must pass before
+# anything is pushed or published), then resolves the version from
+# pyproject.toml, verifies CHANGELOG.md has a matching section, builds the
+# package, publishes it to PyPI, publishes a GitHub Release with the
+# CHANGELOG section as its notes, then bumps pyproject.toml to the next
+# patch version for the next development cycle.
 # Dispatch-only: run it once the release version, CHANGELOG, and tag are
 # already committed and pushed to main.
 #
@@ -17,18 +19,36 @@ name: release
 
 on:
   workflow_dispatch:
+    inputs:
+      run-sonar:
+        description: 'Run the SonarCloud analysis and quality gate.'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release
   cancel-in-progress: false
 
 jobs:
+  # Same reusable workflow as build-verify.yml, so a release runs exactly
+  # the checks and tests that build-verify runs.
+  verify:
+    uses: rubensgomes-org/azure-workflows/.github/workflows/poetry-build-verify.yml@v0
+    with:
+      run-sonar: ${{ inputs.run-sonar }}
+    secrets:
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
+
   release:
     name: release
+    needs: verify
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     timeout-minutes: 15
 
     steps:
