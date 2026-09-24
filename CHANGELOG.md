@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.19] - 2026-09-24
+
+### Added
+
 - `config/config_local.yaml` and `config/config_remote.yaml`: sample
   configurations for the local and Horizon-hosted integration tests.
 
