@@ -40,8 +40,19 @@ logging:
     version: 1
     disable_existing_loggers: false
     formatters:
+        # Colors level name and message; plain if stderr is not a TTY or NO_COLOR
+        # set environment variable NO_COLOR=true for plain text with no color.
         standard:
-            format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+            (): colorlog.ColoredFormatter
+            fmt: "%(asctime)s %(log_color)s[%(levelname)s]%(reset)s %(fg_147)s%(name)s %(filename)s:%(lineno)d%(reset)s: %(log_color)s%(message)s%(reset)s"
+            datefmt: "%H:%M:%S"
+            log_colors:
+                DEBUG: cyan
+                INFO: light_green
+                WARNING: yellow
+                ERROR: red
+                CRITICAL: bold_red
+            stream: ext://sys.stderr
     handlers:
         console:
             class: logging.StreamHandler
@@ -55,13 +66,13 @@ logging:
             propagate: false
         # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
         mcp.client.streamable_http:
-            level: DEBUG
+            level: INFO
             handlers:
                 - console
             propagate: false
         # HTTP request/response summaries — set to DEBUG for detail
         httpx:
-            level: DEBUG
+            level: INFO
             handlers:
                 - console
             propagate: false
@@ -73,19 +84,25 @@ logging:
             propagate: false
         # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
         mcp.server.lowlevel.server:
-            level: DEBUG
+            level: INFO
             handlers:
                 - console
             propagate: false
         # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
         mcp.server.streamable_http:
-            level: DEBUG
+            level: INFO
             handlers:
                 - console
             propagate: false
         # Server: session/transport lifecycle — set to DEBUG for session details
         mcp.server.streamable_http_manager:
-            level: DEBUG
+            level: INFO
+            handlers:
+                - console
+            propagate: false
+        # Server: startup, shutdown, and errors
+        uvicorn:
+            level: INFO
             handlers:
                 - console
             propagate: false
@@ -96,6 +113,6 @@ logging:
                 - console
             propagate: false
     root:
-        level: DEBUG
+        level: WARNING
         handlers:
             - console

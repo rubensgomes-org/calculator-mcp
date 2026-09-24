@@ -26,7 +26,15 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- Colored log level names in console output via `colorlog`; plain when
+  stderr is not a terminal or `NO_COLOR` is set.
+- `uvicorn` logger in the bundled and sample configs, so server startup and
+  error logs use the project's log format.
+
 ### Changed
+
+- Log format adds source file and line number; timestamps show time only.
+- `mcp.*` and `httpx` loggers default to `INFO`, and `root` to `WARNING`.
 
 ### Fixed
 
