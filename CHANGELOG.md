@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.18] - 2026-09-24
+
+### Added
+
 - `.github/dependabot.yml`: daily version updates for Poetry dependencies
   (minor and patch grouped) and GitHub Actions.
 - `pip-audit` dev dependency for dependency vulnerability scanning.
