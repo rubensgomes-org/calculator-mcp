@@ -169,3 +169,6 @@ certs/
 
 # SonarLint local files (if using IDE plugins)
 .sonarlint/
+
+# do not added coverage results
+coverage.xml
