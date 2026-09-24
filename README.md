@@ -3,7 +3,7 @@
 
 # Calculator MCP Server
 
-`calculator-mcp` is a small Streamable HTTP MCP (Model Context Protocol) server
+`calculator-mcp` is a Streamable HTTP MCP (Model Context Protocol) server
 that exposes 16 arithmetic operations as callable tools for an AI LLM (Large
 Language Model) to consume. It contains no math of its own — every tool is a
 thin synchronous wrapper that logs its arguments and delegates to an
@@ -38,9 +38,6 @@ tools. For details on usage, limits, and review practices, please see the
 
 ### Installation
 
-The `calculator-mcp` can be installed by running
-`pip install calculator-mcp-rubens`.
-
 **IMPORTANT**: release versioning was recently reset to start again at
 version 0.0.1. Uninstall any previously installed version first.
 
@@ -52,7 +49,7 @@ version 0.0.1. Uninstall any previously installed version first.
     pip cache purge
     ```
 
-- To install locally into the user's home environment run command below
+- To install into the user's home environment run command below
 
     ```bash
     # install "calculator-mcp" and dependencies into user local pip environment
@@ -64,7 +61,7 @@ version 0.0.1. Uninstall any previously installed version first.
   [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
 
     ```bash
-    # show the installed version of calculator-mcp-rubens
+    # show the installed version
     pip show calculator-mcp-rubens
     ```
 
@@ -76,14 +73,14 @@ The server ships with a default `config.yaml` bundled inside the package. To
 override it, set the `CALCULATOR_MCP_CONFIG` environment variable to the
 absolute path of your custom configuration file:
 
+```bash
+export CALCULATOR_MCP_CONFIG=/path/to/your/config.yaml
+```
+
 When `CALCULATOR_MCP_CONFIG` is not set, the bundled default is used
 automatically. For more information about how to set up the `config.yaml`
 and further documentation, refer
 to [config.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/src/calculator_mcp/config.yaml)
-
-```bash
-export CALCULATOR_MCP_CONFIG=/path/to/your/config.yaml
-```
 
 #### Running the MCP Server
 
@@ -106,7 +103,8 @@ The Legacy Era MCP server is based on a stateful session state that requires
 a connection setup handshake using `initialize` / `initialized` JSON-RPC
 messages.
 
-**NOTE** Change the config.yaml server -- > stateless to `false`.
+**NOTE** To run the "Legacy Era" protocol change the config.yaml server -- >
+stateless to `false`.
 
 **1. Initialize MCP session**
 
@@ -193,7 +191,8 @@ for every subsequent request — the server ties the session to that ID.
 The Modern Era MCP server is stateless. Single-shot tools/call, no handshake
 needed.
 
-**NOTE** Change the config.yaml server -- > stateless to `true`.
+**NOTE** To run the "Modern Era" protocol change the config.yaml server -- >
+stateless to `true`.
 
 - Server discovery:
 

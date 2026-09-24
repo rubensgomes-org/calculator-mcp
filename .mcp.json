@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "calculator-mcp": {
-      "type": "http",
-      "url": "https://rubens-calculator-mcp.fastmcp.app/mcp"
-    }
-  }
-}

@@ -43,6 +43,21 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 - `docs/DEMO.md`, `docs/SETUP.md`, `docs/MCP.md`: added demo commands and
   Prefect Horizon deployment details.
 - Bumped `uv` dev dependency to `>=0.12.18`.
+- Bumped `fastmcp` dependency to `>=4.0.7`.
+- `Dockerfile`: clarified comments on the dependency layer, `ENV`,
+  `EXPOSE` and `HEALTHCHECK` (the latter two are ignored by ACA).
+- `docs/DOCKER.md`: environment variables table converted to a list;
+  `FASTMCP_SHOW_SERVER_BANNER` documented as `true`.
+- `README.md`: installation and protocol-era notes reworded.
+
+### Removed
+
+- `FASTMCP_STATELESS_HTTP` from the `Dockerfile`; `server.stateless` in
+  `config.yaml` controls stateless mode.
+- `docker-compose.yml`: `environment` and `healthcheck` blocks that
+  duplicated the image.
+- `.mcp.json`, `docs/oauth-troubleshooting.md` and the `pypi-plan-rel`
+  Claude Code skill.
 
 ### Fixed
 

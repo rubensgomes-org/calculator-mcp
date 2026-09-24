@@ -156,12 +156,11 @@ Caveats:
 
 ### Environment variables
 
-| Variable                     | Purpose                                                                                                         |
-|------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `CALCULATOR_MCP_CONFIG`      | Absolute path to a replacement `config.yaml`.                                                                   |
-| `FASTMCP_SHOW_SERVER_BANNER` | Set to `false` in the image. The banner otherwise performs a blocking HTTPS request to pypi.org on every start. |
-| `FASTMCP_CHECK_FOR_UPDATES`  | Set to `off` in the image, for the same reason.                                                                 |
-| `FASTMCP_LOG_LEVEL`          | Overrides the FastMCP log level.                                                                                |
+- `CALCULATOR_MCP_CONFIG`: absolute path to a replacement `config.yaml`.
+- `FASTMCP_SHOW_SERVER_BANNER`: set to `true` in the image.
+- `FASTMCP_CHECK_FOR_UPDATES`: set to `off` in the image to skip a blocking
+  pypi.org request on start.
+- `FASTMCP_LOG_LEVEL`: overrides the FastMCP log level.
 
 Stateless HTTP mode is controlled by `server.stateless` in `config.yaml`, not
 an environment variable — the app always passes that value to FastMCP

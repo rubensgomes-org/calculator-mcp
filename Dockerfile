@@ -62,12 +62,9 @@ RUN touch README.md
 # poetry check --lock fails the build when poetry.lock is stale with respect
 # to pyproject.toml, so the image can never ship unpinned dependencies.
 #
-# --only main excludes the dev dependencies even though they are declared in a
-# PEP 735 [dependency-groups] table: Poetry 2.4 records groups = ["dev"] for
-# those packages in poetry.lock.
-#
-# poetry export is deliberately not used — that command moved out of Poetry
-# into the separate poetry-plugin-export package in Poetry 2.x.
+# --only main: install only main dependencies, exclude dev/test dependencies
+# --no-root: do not install the source code yet
+# Changing source code or the README doesn't trigger a slow dependency reinstall.
 RUN poetry check --lock \
  && poetry install --only main --no-root
 
@@ -115,9 +112,12 @@ LABEL org.opencontainers.image.title="calculator-mcp" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.authors="Rubens Gomes <rubens.s.gomes@gmail.com>"
 
-# FASTMCP_SHOW_SERVER_BANNER / FASTMCP_CHECK_FOR_UPDATES suppress the startup
-# banner, which otherwise performs a blocking HTTPS request to pypi.org and
-# writes a cache file under $HOME on every container start.
+# PYTHONUNBUFFERED=1: sends stdout and stderr straight out without buffering,
+#   so logs show up right away.
+# PYTHONDONTWRITEBYTECODE=1: stops Python from writing .pyc files.
+# PYTHONFAULTHANDLER=1: prints a Python traceback when the process dies from a
+#   fatal signal such as a segfault or abort.
+# FASTMCP_CHECK_FOR_UPDATES: "off" prevents code from sending GET to pypi.org.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONFAULTHANDLER=1 \
@@ -125,8 +125,7 @@ ENV PYTHONUNBUFFERED=1 \
     PATH=/opt/venv/bin:$PATH \
     HOME=/home/app \
     FASTMCP_SHOW_SERVER_BANNER=true \
-    FASTMCP_CHECK_FOR_UPDATES=off \
-    FASTMCP_STATELESS_HTTP=true
+    FASTMCP_CHECK_FOR_UPDATES=off
 
 # Non-root service account with a fixed uid/gid, stable for volume ownership
 # and for Kubernetes runAsUser.
@@ -142,10 +141,15 @@ COPY --from=builder --chown=root:root /opt/venv /opt/venv
 USER app
 WORKDIR /home/app
 
+# EXPOSE is not used by Azure Container Apps (ACA). Traffic reaches the
+# container through the ingress targetPort set on the container app.
+# Left this setting here to be used by `docker run`.
 EXPOSE 8080
 
-# python:*-slim ships neither curl nor wget, so the probe uses the standard
-# library. 127.0.0.1 is reachable because the server binds 0.0.0.0.
+# HEALTHCHECK is ignored by Azure Container Apps (ACA). ACA runs on Kubernetes,
+# which doesn't run the Docker HEALTHCHECK baked into an image. It uses its
+# own probes instead.
+ # Left this setting here to be used by `docker ps`.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD ["python", "-c", "import sys, urllib.request; r = urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=4); sys.exit(0 if r.status == 200 and r.read() == b'OK' else 1)"]
 

@@ -1,4 +1,6 @@
 [project]
+# the name "calculator-mcp" was already taken at the public PyPI repo.
+# Therefor, I had to add "-rubens" to the name below.
 name = "calculator-mcp-rubens"
 keywords = ["ai", "calculator", "math", "llm", "mcp", "utility"]
 version = "0.0.18"
@@ -22,7 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14"
 ]
 dependencies = [
-    "fastmcp (>=4.0.5,<5.0.0)",
+    "fastmcp (>=4.0.8,<5.0.0)",
     "pyyaml (>=6.0.3,<7.0.0)",
     "calculator-lib-rubens (>=0.2.0,<1.0.0)",
     "py-key-value-aio (>=0.4.6,<1.0.0)",
