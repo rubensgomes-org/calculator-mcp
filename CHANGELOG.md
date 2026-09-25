@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.20] - 2026-09-25
+
+### Added
+
 - Colored log level names in console output via `colorlog`; plain when
   stderr is not a terminal or `NO_COLOR` is set.
 - `uvicorn` logger in the bundled and sample configs, so server startup and
