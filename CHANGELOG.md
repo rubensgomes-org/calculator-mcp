@@ -28,7 +28,17 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `docs/SETUP.md` split into `docs/DEVELOPMENT_SETUP.md`, `docs/MISC.md`,
+  and `docs/PYCHARM.md`; `docs/DOCKER.md` trimmed.
+- README Legacy MCP examples cover session setup and an invalid session.
+- `docker-compose.yml` publishes port `8080` instead of `9999`.
+- Bumped `fastmcp` dependency to `>=4.0.10`; removed `poetry` dev dependency.
+- `app_config` test fixture moved from `tests/conftest.py` to
+  `tests/test_config.py`.
+
 ### Fixed
+
+- Typos in `AI_DISCLAIMER.md` and `README.md`.
 
 ## [0.0.22] - 2026-09-25
 
