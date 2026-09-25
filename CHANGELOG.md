@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.21] - 2026-09-25
+
+### Added
+
+### Changed
+
 - SonarCloud analysis targets Python 3.14.
 
 ### Fixed
