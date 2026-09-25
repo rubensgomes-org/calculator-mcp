@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.22] - 2026-09-25
+
+### Added
+
 - Debug log of each tool's result.
 
 ### Changed
