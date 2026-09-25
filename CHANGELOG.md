@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.23] - 2026-09-25
+
+### Added
+
+### Changed
+
 - `docs/SETUP.md` split into `docs/DEVELOPMENT_SETUP.md`, `docs/MISC.md`,
   and `docs/PYCHARM.md`; `docs/DOCKER.md` trimmed.
 - README Legacy MCP examples cover session setup and an invalid session.
