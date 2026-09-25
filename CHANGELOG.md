@@ -28,7 +28,11 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- Docker image sets `NO_COLOR` to disable colored log output.
+
 ### Fixed
+
+- pytest did not collect coverage, since `addopts` omitted `--cov`.
 
 ## [0.0.21] - 2026-09-25
 

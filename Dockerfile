@@ -118,6 +118,7 @@ LABEL org.opencontainers.image.title="calculator-mcp" \
 # PYTHONFAULTHANDLER=1: prints a Python traceback when the process dies from a
 #   fatal signal such as a segfault or abort.
 # FASTMCP_CHECK_FOR_UPDATES: "off" prevents code from sending GET to pypi.org.
+# NO_COLOR: disables ANSI color codes in log output.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONFAULTHANDLER=1 \
@@ -125,7 +126,8 @@ ENV PYTHONUNBUFFERED=1 \
     PATH=/opt/venv/bin:$PATH \
     HOME=/home/app \
     FASTMCP_SHOW_SERVER_BANNER=true \
-    FASTMCP_CHECK_FOR_UPDATES=off
+    FASTMCP_CHECK_FOR_UPDATES=off \
+    NO_COLOR=true
 
 # Non-root service account with a fixed uid/gid, stable for volume ownership
 # and for Kubernetes runAsUser.
