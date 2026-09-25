@@ -26,13 +26,19 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- Debug log of each tool's result.
+
 ### Changed
 
 - Docker image sets `NO_COLOR` to disable colored log output.
+- README reorganized, with `curl` examples for the Modern (2026-07-28) and
+  Legacy (2025-06-18) MCP protocols.
 
 ### Fixed
 
 - pytest did not collect coverage, since `addopts` omitted `--cov`.
+- Tool debug logs named the wrong library method for `ceil` and `exp`, and
+  omitted it for `sqrt`.
 
 ## [0.0.21] - 2026-09-25
 

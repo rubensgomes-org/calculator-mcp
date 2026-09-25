@@ -136,8 +136,10 @@ def add(a: float, b: float) -> float:
         The sum a + b.
     """
     logger.info("add called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.add")
-    return _calc.add(a, b)
+    logger.debug("delegating to library: _calc.add")
+    result: float = _calc.add(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -159,8 +161,10 @@ def subtract(a: float, b: float) -> float:
         The difference a - b.
     """
     logger.info("subtract called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.subtract")
-    return _calc.subtract(a, b)
+    logger.debug("delegating to library: _calc.subtract")
+    result: float = _calc.subtract(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -182,8 +186,10 @@ def multiply(a: float, b: float) -> float:
         The product a * b.
     """
     logger.info("multiply called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.multiply")
-    return _calc.multiply(a, b)
+    logger.debug("delegating to library: _calc.multiply")
+    result: float = _calc.multiply(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -208,8 +214,10 @@ def divide(a: float, b: float) -> float:
         ValueError: If b is zero.
     """
     logger.info("divide called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.divide")
-    return _calc.divide(a, b)
+    logger.debug("delegating to library: _calc.divide")
+    result: float = _calc.divide(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -231,8 +239,10 @@ def power(a: float, b: float) -> float:
         The result of a ** b.
     """
     logger.info("power called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.power")
-    return _calc.power(a, b)
+    logger.debug("delegating to library: _calc.power")
+    result: float = _calc.power(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -257,8 +267,10 @@ def nth_root(a: float, b: float) -> float:
         ValueError: If the input is invalid (e.g. even root of negative).
     """
     logger.info("nth_root called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.nth_root")
-    return _calc.nth_root(a, b)
+    logger.debug("delegating to library: _calc.nth_root")
+    result: float = _calc.nth_root(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -283,8 +295,10 @@ def modulo(a: float, b: float) -> float:
         ValueError: If b is zero.
     """
     logger.info("modulo called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library Calculator instance: _calc.modulo")
-    return _calc.modulo(a, b)
+    logger.debug("delegating to library: _calc.modulo")
+    result: float = _calc.modulo(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -309,10 +323,10 @@ def floor_divide(a: float, b: float) -> float:
         ValueError: If b is zero.
     """
     logger.info("floor_divide called with a=%s, b=%s", a, b)
-    logger.debug(
-        "delegating to library Calculator instance: _calc.floor_divide"
-    )
-    return _calc.floor_divide(a, b)
+    logger.debug("delegating to library: _calc.floor_divide")
+    result: float = _calc.floor_divide(a, b)
+    logger.debug("result=%s", result)
+    return result
 
 
 # --- Single-operand tools ---
@@ -339,7 +353,10 @@ def sqrt(a: float) -> float:
         ValueError: If a is negative.
     """
     logger.info("sqrt called with a=%s", a)
-    return _calc.sqrt(a)
+    logger.debug("delegating to library: _calc.sqrt")
+    result: float = _calc.sqrt(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -360,8 +377,10 @@ def absolute(a: float) -> float:
         The absolute value of a.
     """
     logger.info("absolute called with a=%s", a)
-    logger.debug("delegating to library Calculator instance: _calc.absolute")
-    return _calc.absolute(a)
+    logger.debug("delegating to library: _calc.absolute")
+    result: float = _calc.absolute(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -382,8 +401,10 @@ def floor(a: float) -> float:
         The largest integer less than or equal to a.
     """
     logger.info("floor called with a=%s", a)
-    logger.debug("delegating to library Calculator instance: _calc.floor")
-    return _calc.floor(a)
+    logger.debug("delegating to library: _calc.floor")
+    result: float = _calc.floor(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -404,8 +425,10 @@ def ceil(a: float) -> float:
         The smallest integer greater than or equal to a.
     """
     logger.info("ceil called with a=%s", a)
-    logger.debug("delegating to library Calculator instance: _calc.float")
-    return _calc.ceil(a)
+    logger.debug("delegating to library: _calc.ceil")
+    result: float = _calc.ceil(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -429,8 +452,10 @@ def log10(a: float) -> float:
         ValueError: If a is not positive.
     """
     logger.info("log10 called with a=%s", a)
-    logger.debug("delegating to library Calculator instance: _calc.log10")
-    return _calc.log10(a)
+    logger.debug("delegating to library: _calc.log10")
+    result: float = _calc.log10(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -454,8 +479,10 @@ def ln(a: float) -> float:
         ValueError: If a is not positive.
     """
     logger.info("ln called with a=%s", a)
-    logger.debug("delegating to library Calculator instance: _calc.ln")
-    return _calc.ln(a)
+    logger.debug("delegating to library: _calc.ln")
+    result: float = _calc.ln(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 @mcp.tool(
@@ -476,8 +503,10 @@ def exp(a: float) -> float:
         The value of e ** a.
     """
     logger.info("exp called with a=%s", a)
-    logger.debug("delegating to library Calculator instance: _calc.nth_exp")
-    return _calc.exp(a)
+    logger.debug("delegating to library: _calc.exp")
+    result: float = _calc.exp(a)
+    logger.debug("result=%s", result)
+    return result
 
 
 # --- Round tool ---
@@ -502,7 +531,7 @@ def round_number(a: float, decimals: int = 0) -> float:
         The rounded value.
     """
     logger.info("round_number called with a=%s, decimals=%s", a, decimals)
-    logger.debug(
-        "delegating to library Calculator instance: _calc.round_number"
-    )
-    return _calc.round_number(a, decimals)
+    logger.debug("delegating to library: _calc.round_number")
+    result: float = _calc.round_number(a, decimals)
+    logger.debug("result=%s", result)
+    return result

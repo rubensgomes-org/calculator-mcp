@@ -1,14 +1,14 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE)
-[![AI Assisted](https://img.shields.io/badge/AI--Assisted-Development-007ACC)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
+[![python](https://img.shields.io/badge/python-3.14.7-0969da)](https://www.python.org/downloads/release/python-3147/)
+[![License](https://img.shields.io/badge/License-MIT-0969da)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE)
+[![AI--Assisted](https://img.shields.io/badge/AI--Assisted-Development-8250df)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
 
 # Calculator MCP Server
 
 `calculator-mcp` is a Streamable HTTP MCP (Model Context Protocol) server
 that exposes 16 arithmetic operations as callable tools for an AI LLM (Large
 Language Model) to consume. It contains no math of its own — every tool is a
-thin synchronous wrapper that logs its arguments and delegates to an
-open-source shared math calculator `calculator-lib-rubens` PyPI library
-package.
+thin synchronous wrapper that logs its arguments and delegates to the
+open-source `calculator-lib-rubens` PyPI package.
 
 ## Features
 
@@ -28,279 +28,381 @@ This project includes code and documentation created with the assistance of AI
 tools. For details on usage, limits, and review practices, please see the
 [AI Disclaimer](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md).
 
-## Prerequisites
-
-- Python 3.14+
-- pip 26.2+
-- curl 8.7+
-
 ## Installation
 
-### Installation Using PiPY Installed Package
+### Prerequisites
+
+- UNIX OS (e.g., macOS, Linux)
+- curl 8.7+
+- pip 26.2+
+- poetry 2.4+
+- python 3.14+
+
+### PyPI Package Installation
 
 **IMPORTANT**: release versioning was recently reset to start again at
 version 0.0.1. Uninstall any previously installed version first.
 
-- Uninstall any previously installed release:
-
-    ```bash
-    pip uninstall calculator-mcp-rubens
-    # recommend to purge the cache as well
-    pip cache purge
-    ```
-
-- To install into the user's home environment run command below
-
-    ```bash
-    # install "calculator-mcp" and dependencies into user local pip environment
-    # NOTE: use --no-cache-dir to avoid issues with earlier version in cache
-    pip --no-cache-dir install -U --user calculator-mcp-rubens --verbose
-    ```
-
-- Confirm installed version with most recently released GitHub version at
-  [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
-
-    ```bash
-    # show the installed version
-    pip show calculator-mcp-rubens
-    ```
-
-### Installation Using GitHub Project Clone
-
-- Clone the project from GitHub:
-
-    ```bash
-    git clone https://github.com/rubensgomes-org/calculator-mcp.git
-    ```
-
-- Install depenencies and application into `poetry` virtual environment:
-
-    ```bash
-    # change to project git local directory
-    cd $(git rev-parse --show-toplevel) || exit
-    poetry install
-    ```
-
-## Configuration
-
-The server ships with a default `config.yaml` bundled inside the PiPY
-package. To override it, set the `CALCULATOR_MCP_CONFIG` environment
-variable to the absolute path of your custom configuration file:
+1. Uninstall any previously installed release
 
 ```bash
-export CALCULATOR_MCP_CONFIG=/path/to/your/config.yaml
+pip uninstall calculator-mcp-rubens
+# purging the cache is recommended as well
+pip cache purge
 ```
 
-## Running the MCP Server
+2. Install into the user's home environment
 
-### Running the MCP Server Using PyPI Installed Package
+```bash
+# install "calculator-mcp" and dependencies into user local pip environment
+# NOTE: use --no-cache-dir to avoid issues with an earlier cached version
+pip --no-cache-dir install -U --user calculator-mcp-rubens --verbose
+```
 
-- Launch the PiPY installed `calculator-mcp` package:
+3. Confirm the installed version matches the latest GitHub release at
+   [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
 
-    ```bash
-    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_local.yaml"
-    export CALCULATOR_MCP_CONFIG="/path/to/your/config.yaml"
-    # using installed package from PyPI:
-    calculator-mcp
-    ```
+```bash
+# show the installed version
+pip show calculator-mcp-rubens
+```
 
-- Health check
+### Git Clone Installation
 
-    ```bash
-    # curl -v http://localhost:<port>/health, e.g.:
-    curl -v http://localhost:8080/health
-    # Expect: OK
-    ```
+1. `git` clone and install local project package using `poetry`
 
-### Running the MCP Server Using GitHub Cloned Project
-
-- Launch the `calculator-mcp` from the local Git repo folder. **NOTE** the
-  project must be previousley installed in `poetry` venv (e.g., poetry install):
-
-    ```bash
-    # change to project git local directory
-    cd $(git rev-parse --show-toplevel) || exit
-    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_local.yaml"
-    export CALCULATOR_MCP_CONFIG="/path/to/your/config.yaml"
-    poetry run calculator-mcp    
-    ```
-
-- Health check
-
-    ```bash
-    # curl -v http://localhost:<port>/health, e.g.:
-    curl -v http://localhost:8080/health
-    # Expect: OK
-    ```
-
-1. Integration test using local MCP server:
-
-    ```bash
-    # change to project git local directory
-    cd $(git rev-parse --show-toplevel) || exit
-    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_local.yaml"
-    export CALCULATOR_MCP_CONFIG="/path/to/your/config_local.yaml"
-    poetry run python tests/integration/client.py
-    ```
-
-2. Integration test using remote MCP server.
-
-- **NOTE** Requires OAuth authentication which currently only Rubens is able to
-  authorize using his personal GitHub account.
-
-    ```bash
-    # change to project git local directory
-    cd $(git rev-parse --show-toplevel) || exit
-    # e.g. export CALCULATOR_MCP_CONFIG="${HOME}/github/rubens/dev/python/calculator-mcp/config/config_remote.yaml"
-    export CALCULATOR_MCP_CONFIG="/path/to/your/config_remote.yaml"
-    # clean up previously created OAuth tokens
-    # e.g. rm -fr "~/.calculator-mcp-token-remote" 
-    rm -fr <token-dir-from-config>
-    poetry run python tests/integration/client.py
-    ```
+```bash
+# use local `dev` folder to install the project
+mkdir -p ~/dev || exit; cd ~/dev
+git clone https://github.com/rubensgomes-org/calculator-mcp.git
+# change to project git local directory
+cd calculator-mcp
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+poetry install
+```
 
 ## Usage
 
-### Legacy Era (Pre-July 2026)
+### Configuration
 
-The Legacy Era MCP server is based on a stateful session state that requires
+The server ships with a
+default [config.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/src/calculator_mcp/config.yaml)
+bundled inside the PyPI package. To override it, set the `CALCULATOR_MCP_CONFIG`
+environment variable to the absolute path of your custom configuration file:
+
+```bash
+# assumming config_local.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
+```
+
+### Running Using PyPI Package
+
+**NOTE:** requires prior installation using
+`pip install -U --user calculator-mcp-rubens`.
+
+1. Make a copy of
+   [config_local.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/config/config_local.yaml)
+   to a local home directory (e.g.,
+   `${HOME}/cfg/calculator-mcp/config_local.yaml`).
+
+2. Launch the PyPI-installed `calculator-mcp` package:
+
+```bash
+# config_local.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
+# using installed package from PyPI:
+calculator-mcp
+```
+
+3. Health check
+
+```bash
+# ensure config_local.yaml port is 8080
+curl -v http://localhost:8080/health
+# Expect: OK
+```
+
+### Running Using Git Cloned Project
+
+**NOTE:** requires prior cloning of the project using `git`.
+
+1. Make a copy of
+   [config_local.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/config/config_local.yaml)
+   to a local home directory (e.g.,
+   `${HOME}/cfg/calculator-mcp/config_local.yaml`).
+
+2. Launch `calculator-mcp` from the local Git repo folder
+
+```bash
+# On my machine the project is installed here:
+pushd ~/github/rubens/dev/python/calculator-mcp/
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+# config_local.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
+poetry run calculator-mcp
+```
+
+3. Health check
+
+```bash
+# ensure config_local.yaml port is 8080
+curl -v http://localhost:8080/health
+# Expect: OK
+```
+
+4. To stop, go to the running terminal and press `Ctrl+C`
+
+### Integration Test Using Git Cloned Project
+
+**NOTE:** requires prior cloning of the project using `git`.
+
+1. Launch `calculator-mcp` locally from the local Git repo folder
+
+```bash
+# On my machine the project is installed here:
+pushd ~/github/rubens/dev/python/calculator-mcp/
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+# config_local.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
+poetry run calculator-mcp
+```
+
+2. Integration test using local MCP server
+
+```bash
+# On my machine the project is installed here:
+pushd ~/github/rubens/dev/python/calculator-mcp/
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+# config_local.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
+poetry run python tests/integration/client.py
+```
+
+3. Integration test using remote MCP server
+
+**NOTE:** Requires OAuth authentication which currently only Rubens is able to
+authorize using his personal GitHub account.
+
+```bash
+# On my machine the project is installed here:
+pushd ~/github/rubens/dev/python/calculator-mcp/
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+# config_remote.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_remote.yaml"
+poetry run python tests/integration/client.py
+```
+
+### Modern MCP (Version: 2026-07-28)
+
+The "Modern Era MCP" server is stateless which is the default configuration in
+this project configuration file. Each `tools/call` is a single request; no
+handshake is needed.
+
+1. Launch `calculator-mcp` locally
+
+```bash
+# On my machine the project is installed here:
+pushd ~/github/rubens/dev/python/calculator-mcp/
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+# config_local.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
+poetry run calculator-mcp
+```
+
+2. Retrieve the MCP server identity `server/discover`
+
+```bash
+curl -sS -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Protocol-Version: 2026-07-28" \
+  -H "Mcp-Method: server/discover" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "server/discover",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+        "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
+        "io.modelcontextprotocol/clientCapabilities": {}
+      }
+    }
+  }' | jq .
+```
+
+3. List tools `tools/list`
+
+```bash
+curl -sS -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Protocol-Version: 2026-07-28" \
+  -H "Mcp-Method: tools/list" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+        "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
+        "io.modelcontextprotocol/clientCapabilities": {}
+      }
+    }
+  }' | jq .
+```
+
+4. Add two numbers `tools/call`
+
+```bash
+curl -sS -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Protocol-Version: 2026-07-28" \
+  -H "Mcp-Method: tools/call" \
+  -H "Mcp-Name: add" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "add",
+      "arguments": {"a": 2, "b": 2},
+      "_meta": {
+        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+        "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
+        "io.modelcontextprotocol/clientCapabilities": {}
+      }
+    }
+  }' | jq .
+```
+
+### Legacy MCP (Version: 2025-06-18)
+
+The Legacy Era MCP server is based on a stateful session that requires
 a connection setup handshake using `initialize` / `initialized` JSON-RPC
 messages.
 
-**NOTE** To run the "Legacy Era" protocol change the config.yaml server -- >
-stateless to `false`.
+**NOTE:** To run the "Legacy MCP" protocol, set `server.stateless` to
+`false` in `config.yaml`.
 
-**1. Initialize MCP session**
+1. Launch `calculator-mcp` locally in "stateful" mode
 
-The MCP endpoint requires a session, established via initialize first.
-Run these in order:
+```bash
+# On my machine the project is installed here:
+pushd ~/github/rubens/dev/python/calculator-mcp/
+# ensure we are at the project git local root folder
+cd $(git rev-parse --show-toplevel) || exit
+# config_local_stateful.yaml placed in my home folder
+export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local_stateful.yaml"
+poetry run calculator-mcp
+```
 
-- Store the JSON below in a local file `/tmp/initialize.json`:
+2. Initialize MCP session `initialize`. Grab the value of `mcp-session-id`
+   from the response headers.
 
-    ```bash
-    # remove indentation spaces when copying/pasting this command to the shell
-    cat > /tmp/initialize.json <<EOF
-    {
-      "jsonrpc": "2.0",
-      "id": 1,
-      "method": "initialize",
-      "params": {
-        "protocolVersion": "2025-06-18",
-        "capabilities": {},
-        "clientInfo": {
-          "name": "curl-test",
-          "version": "1.0"
-        }
-      }
+```bash
+curl -sS -i -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2025-06-18",
+      "capabilities": {},
+      "clientInfo": {"name": "curl", "version": "1.0"}
     }
-    EOF
-    ```
-
-- Initialize the session and grab the `Mcp-Session-Id` from the response
-  headers:
-
-    ```bash
-    # Look for the "mcp-session-id: <SID>" header in the output
-    curl -i http://localhost:8080/mcp \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -d @/tmp/initialize.json
-    ```
-
-- Send the required `notifications/initialized` notification (use the SID
-  obtained above):
-
-    ```bash
-    SID="<paste-mcp-session-id-here>"
-    # Expect "202 Accepted" response
-    curl -v http://localhost:8080/mcp \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -H "Mcp-Session-Id: $SID" \
-      -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
-    ```
-
-**2. List tools** — `tools/list`
-
-Once you have initialized your MCP session, list all the tools:
-
-```bash
-curl -s http://localhost:8080/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "Mcp-Session-Id: $SID" \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+  }'
 ```
 
-This returns all 16 tools: add, subtract, multiply, divide, power, nth_root,
-modulo, floor_divide, sqrt, absolute, floor, ceil, log10, ln, exp,
-round_number.
-
-**3. Call a tool** (e.g. `add`) — `tools/call`
+3. Complete Session Handshake 
 
 ```bash
-curl -s http://localhost:8080/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "Mcp-Session-Id: $SID" \
-  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":
-       {"name":"add","arguments":{"a":2,"b":3}}}'
-```
+pause() {
+  printf "\nPress Return to continue..."
+  read -r _
+  printf "\n"
+}
 
-**Note**: reuse the same `Mcp-Session-Id` (obtained during initialization)
-for every subsequent request — the server ties the session to that ID.
-
-### Modern Era (2026-07-28 Spec)
-
-The Modern Era MCP server is stateless. Single-shot tools/call, no handshake
-needed.
-
-**NOTE** To run the "Modern Era" protocol change the config.yaml server -- >
-stateless to `true`.
-
-- Server discovery:
-
-    ```bash
-    curl -sS -X POST http://localhost:8080/mcp \
+#
+# 1) Initialize: grab mcp-session-id
+#
+export SID="$(
+  curl -sS -i -X POST http://localhost:8080/mcp \
       -H "Content-Type: application/json" \
       -H "Accept: application/json, text/event-stream" \
-      -H "Mcp-Protocol-Version: 2026-07-28" \
-      -H "Mcp-Method: server/discover" \
       -d '{
         "jsonrpc": "2.0",
         "id": 1,
-        "method": "server/discover",
+        "method": "initialize",
         "params": {
-          "_meta": {
-            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
-            "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
-            "io.modelcontextprotocol/clientCapabilities": {}
-          }
+          "protocolVersion": "2025-06-18",
+          "capabilities": {},
+          "clientInfo": {"name": "curl", "version": "1.0"}
         }
-      }'
-    ```
+      }' | awk -F': ' 'tolower($1)=="mcp-session-id" {print $2}' | tr -d '\r'
+  )"
 
-- List tools:
+printf "\nSID=%s\n" "${SID}"
+read -r _
 
-    ```bash
-    curl -sS -X POST http://localhost:8080/mcp \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -H "Mcp-Protocol-Version: 2026-07-28" \
-      -H "Mcp-Method: tools/list" \
-      -d '{
-        "jsonrpc": "2.0",
-        "id": 2,
-        "method": "tools/list",
-        "params": {
-          "_meta": {
-            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
-            "io.modelcontextprotocol/clientInfo": {"name": "curl", "version": "1.0"},
-            "io.modelcontextprotocol/clientCapabilities": {}
-          }
-        }
-      }'
-    ```
+#
+# 2) Confirm session initialization
+#
+
+# Expect "202 Accepted" response
+curl -q -s -o /dev/null -w "%{http_code}\n" http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: ${SID}" \
+  -d '{
+    "jsonrpc":"2.0",
+    "method":"notifications/initialized"
+  }'
+pause
+
+#
+# 3) List tools -- NOT JSON response !!!
+#
+curl -s http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SID" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id":2,
+    "method":"tools/list"
+  }'
+pause
+
+#
+# 4) List tools -- NEEDS to parse response to get tools data
+#
+printf "Parsing response to extract tools data...\n"
+
+#curl -s http://localhost:8080/mcp \
+#  -H "Content-Type: application/json" \
+#  -H "Accept: application/json, text/event-stream" \
+#  -H "Mcp-Session-Id: $SID" \
+#  -d '{
+#    "jsonrpc":"2.0",
+#    "id":2,
+#    "method":"tools/list"
+#  }' | sed -n 's/^data://p' | jq .
+  
+#
+# 5) Call a tool to add numbers `tools/call`
+#
+```
 
 ## License
 
