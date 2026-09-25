@@ -27,14 +27,14 @@ is exchanged between the client and server after initialization.
     - JSON RPC version
     - MCP protocol version
     - capabilities
-    - serverInfo: including sever name, version, website URL and description
-    - **system** instructions in natural langauge to be given to LLM
+    - serverInfo: including server name, version, website URL and description
+    - **system** instructions in natural language to be given to the LLM
 
 3. MCP client confirms `mcp-session-id` by POSTing `notifications/initialized`
-   message with the `mcp-session-id` value at the HTTP header
+   message with the `mcp-session-id` value in the HTTP header
 
-After handshake is completed the MCP client and MCP server can exchange
-messages makeing `tools/call`
+After the handshake is completed, the MCP client and MCP server can exchange
+messages such as `tools/call`.
 
 ### MCP Server Primitives
 
@@ -61,7 +61,7 @@ Two standard transports exist:
   upgrading to SSE for server→client streaming, with sessions tracked by an
   `Mcp-Session-Id` header). Remote HTTP servers authenticate with OAuth 2.1.
 
-#### Streamable HTTPD
+#### Streamable HTTP
 
 The HTTP connections between the MCP client and server are streamable
 bidirectional connections. The HTTP content-type used is `text/event-stream`.
@@ -74,7 +74,7 @@ A number like 12345 takes 5 (five) bytes to be encoded in UTF-8 and sent over
 a text connection, while in a binary connection, 12345 takes only 2 bytes to
 be represented in a binary format.
 
-A foreign character, like "é" takes 2 bytes to be encoded in UTF-8, but if
+A foreign character, like "é", takes 2 bytes to be encoded in UTF-8, but if
 using ISO-8859-1 it takes 1 byte. So, the number of bytes used on text
 streams depends entirely on the encoding standard chosen by the sender and
 receiver for text characters.

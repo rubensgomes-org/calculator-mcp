@@ -30,7 +30,7 @@ services:
     restart: unless-stopped
 
     ports:
-      - "9999:8080"
+      - "8080:8080"
 
     # FastMCP configures uvicorn with timeout_graceful_shutdown=2, so the
     # container normally exits a couple of seconds after SIGTERM.

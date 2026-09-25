@@ -1,45 +1,56 @@
 # Release Process
 
-**Currently, only Rubens Gomes is authorized to push a release**
+The release is run from the `release.yml` GitHub Actions workflow. Prior to
+running the `release` workflow, several GitHub Actions variables and
+secrets must be provisioned in this project's GitHub Actions settings.
+
+**Currently, only Rubens Gomes is authorized to push a release.**
 
 ## Prerequisites
 
-1. Ensure the following packages and tools are installed:
+- GitHub account
+- gh 2.97+
 
-    - coreutils package
-    - dnsutils package
-    - curl 8.7.1 or later
-    - gawk 5.4.1 or later
-    - gh version 2.97.0 or later (GitHub CLI tool)
-    - git version 2.55.0 or later
-    - grep version 3.11, 2.6.0-FreeBSD, or later
+## GitHub Actions Settings
 
-## Environment Variables
+**NOTE:** the environment variables below must be defined in the
+user's environment first.
 
-The release process is done on a UNIX machine using a "Claude Code" custom
-skill `.claude/skills/pypi-plan-rel/SKILL.md`. Therefore, it is expected that a
-`Claude Code` CLI session is running with access to underlying `bash` shell and
-the following environment variables:
+```text
+GitHub environment
+------------------
+  GH_HOST
+  GITHUB_USER
+  GIT_AUTHOR_EMAIL
+  GIT_COMMITTER_EMAIL
+  GIT_AUTHOR_NAME
 
-- GIT_AUTHOR_NAME
-- GIT_AUTHOR_EMAIL
-- GIT_COMMITTER_EMAIL
-- GITHUB_USER
-- GITHUB_TOKEN
-- GH_TOKEN (should be same as GITHUB_TOKEN)
-- PYPI_API_TOKEN
+Actions variables to delete and recreate (8):
+  AZURE_CLIENT_ID
+  AZURE_SUBSCRIPTION_ID
+  AZURE_TENANT_ID
+  TF_VAR_BACKEND_RESOURCE_GROUP_NAME
+  TF_VAR_CONTAINER_NAME
+  TF_VAR_LOCATION
+  TF_VAR_STORAGE_ACCOUNT_ID
+  TF_VAR_TARGET_PORT
 
-## Starting a Release
+Actions secrets to delete and recreate (3):
+  PYPI_API_TOKEN
+  AZURE_CLIENT_SECRET
+  SONAR_TOKEN
+```
 
-- The release plan is generated/executed within `Claude Code`. You must start
-  `Claude Code`, and run skill command `/pypi-plan-rel` from within Claude Code:
+- Set up the GitHub Action Secrets and Variables
 
     ```bash
     cd $(git rev-parse --show-toplevel) || exit
-    claude --debug --ide  --verbose
-    # Claude Code edit mode command:
-    /pypi-plan-rel rubensgomes-org/calculator-mcp
+    ./scripts/initvars.sh -dv
     ```
+
+## Starting a Release
+
+- From the project `GitHub Actions` page run the `release` workflow.
 
 ---
 Author: [Rubens Gomes](https://rubensgomes.com/)

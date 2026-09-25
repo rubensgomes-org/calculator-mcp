@@ -92,7 +92,7 @@ bundled inside the PyPI package. To override it, set the `CALCULATOR_MCP_CONFIG`
 environment variable to the absolute path of your custom configuration file:
 
 ```bash
-# assumming config_local.yaml placed in my home folder
+# assuming config_local.yaml placed in my home folder
 export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local.yaml"
 ```
 
@@ -199,8 +199,8 @@ poetry run python tests/integration/client.py
 
 ### Modern MCP (Version: 2026-07-28)
 
-The "Modern Era MCP" server is stateless which is the default configuration in
-this project configuration file. Each `tools/call` is a single request; no
+The "Modern Era MCP" server is stateless, which is the default in this
+project's configuration file. Each `tools/call` is a single request; no
 handshake is needed.
 
 1. Launch `calculator-mcp` locally
@@ -218,7 +218,7 @@ poetry run calculator-mcp
 2. Retrieve the MCP server identity `server/discover`
 
 ```bash
-curl -sS -X POST http://localhost:8080/mcp \
+curl -sS http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Protocol-Version: 2026-07-28" \
@@ -240,7 +240,7 @@ curl -sS -X POST http://localhost:8080/mcp \
 3. List tools `tools/list`
 
 ```bash
-curl -sS -X POST http://localhost:8080/mcp \
+curl -sS http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Protocol-Version: 2026-07-28" \
@@ -262,7 +262,7 @@ curl -sS -X POST http://localhost:8080/mcp \
 4. Add two numbers `tools/call`
 
 ```bash
-curl -sS -X POST http://localhost:8080/mcp \
+curl -sS http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Protocol-Version: 2026-07-28" \
@@ -305,16 +305,21 @@ export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config_local_stateful.y
 poetry run calculator-mcp
 ```
 
-2. Initialize MCP session `initialize`. Grab the value of `mcp-session-id`
-   from the response headers.
+#### Establish Session
+
+**NOTE**: a session must be established for the MCP server to respond to tool
+calls.
+
+1. Initialize session `initialize`
 
 ```bash
-curl -sS -i -X POST http://localhost:8080/mcp \
+# Grab the value of `mcp-session-id` from the response headers.
+curl -sS -i http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -d '{
     "jsonrpc": "2.0",
-    "id": 1,
+    "id": "rgomes-0",
     "method": "initialize",
     "params": {
       "protocolVersion": "2025-06-18",
@@ -324,25 +329,31 @@ curl -sS -i -X POST http://localhost:8080/mcp \
   }'
 ```
 
-3. Complete Session Handshake 
+2. Invalid session `notifications/initialized` (404 session not found)
 
 ```bash
-pause() {
-  printf "\nPress Return to continue..."
-  read -r _
-  printf "\n"
-}
+SID='1234567890'
+curl -v http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: ${SID}" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-1",
+    "method":"notifications/initialized"
+  }'
+```
 
-#
-# 1) Initialize: grab mcp-session-id
-#
+3. `initialize` and `notifications/initialized`
+
+```bash
 export SID="$(
-  curl -sS -i -X POST http://localhost:8080/mcp \
+  curl -sS -i http://localhost:8080/mcp \
       -H "Content-Type: application/json" \
       -H "Accept: application/json, text/event-stream" \
       -d '{
         "jsonrpc": "2.0",
-        "id": 1,
+        "id": "rgomes-2",
         "method": "initialize",
         "params": {
           "protocolVersion": "2025-06-18",
@@ -351,57 +362,105 @@ export SID="$(
         }
       }' | awk -F': ' 'tolower($1)=="mcp-session-id" {print $2}' | tr -d '\r'
   )"
+curl -v http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: ${SID}" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-3",
+    "method":"notifications/initialized"
+  }'
+```
 
-printf "\nSID=%s\n" "${SID}"
-read -r _
+4. Tools Call `tools/call` (initially requires 3 calls)
 
-#
-# 2) Confirm session initialization
-#
-
-# Expect "202 Accepted" response
+```bash
+export SID="$(
+  curl -sS -i http://localhost:8080/mcp \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json, text/event-stream" \
+      -d '{
+        "jsonrpc": "2.0",
+        "id": "rgomes-1",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2025-06-18",
+          "capabilities": {},
+          "clientInfo": {"name": "curl", "version": "1.0"}
+        }
+      }' | awk -F': ' 'tolower($1)=="mcp-session-id" {print $2}' | tr -d '\r'
+  )"
 curl -q -s -o /dev/null -w "%{http_code}\n" http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Session-Id: ${SID}" \
   -d '{
     "jsonrpc":"2.0",
+    "id": "rgomes-2",
     "method":"notifications/initialized"
   }'
-pause
+curl -v http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: ${SID}" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-3",
+    "method":"tools/call",
+    "params":{
+      "name":"add",
+      "arguments":{"a":2,"b":3}
+    }
+  }'
+```
 
-#
-# 3) List tools -- NOT JSON response !!!
-#
-curl -s http://localhost:8080/mcp \
+5. Tools List `tools/list` (initially requires 3 calls)
+
+```bash
+export SID="$(
+  curl -sS -i http://localhost:8080/mcp \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json, text/event-stream" \
+      -d '{
+        "jsonrpc": "2.0",
+        "id": "rgomes-1",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2025-06-18",
+          "capabilities": {},
+          "clientInfo": {"name": "curl", "version": "1.0"}
+        }
+      }' | awk -F': ' 'tolower($1)=="mcp-session-id" {print $2}' | tr -d '\r'
+  )"
+curl -q -s -o /dev/null -w "%{http_code}\n" http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: ${SID}" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-2",
+    "method":"notifications/initialized"
+  }'
+curl -v http://localhost:8080/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Session-Id: $SID" \
   -d '{
     "jsonrpc":"2.0",
-    "id":2,
+    "id": "rgomes-3",
     "method":"tools/list"
   }'
-pause
-
-#
-# 4) List tools -- NEEDS to parse response to get tools data
-#
-printf "Parsing response to extract tools data...\n"
-
+# parse output to extract tools data
 #curl -s http://localhost:8080/mcp \
 #  -H "Content-Type: application/json" \
 #  -H "Accept: application/json, text/event-stream" \
 #  -H "Mcp-Session-Id: $SID" \
 #  -d '{
 #    "jsonrpc":"2.0",
-#    "id":2,
+#    "id": "rgomes-4",
 #    "method":"tools/list"
 #  }' | sed -n 's/^data://p' | jq .
-  
-#
-# 5) Call a tool to add numbers `tools/call`
-#
 ```
 
 ## License

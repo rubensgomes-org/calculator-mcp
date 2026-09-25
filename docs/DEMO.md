@@ -1,7 +1,7 @@
 # Demo
 
 This file provides commands to be used during the demo of this project
-running in Azure Container App.
+running in Azure Container Apps.
 
 ## AZ Commands
 
@@ -57,11 +57,11 @@ az containerapp show \
   --resource-group "rg-rgomesapp-lab" \
   --query "properties.template.containers[0].image" \
   --output tsv
-  # if it is mcr.microsoft.com/k8se/quickstart:latest, then the calculator-mcp 
+  # if it is mcr.microsoft.com/k8se/quickstart:latest, then the calculator-mcp
   # image has not been deployed yet.
 ```
 
-5. Show the conatiner FQDN:
+5. Show the container FQDN:
 
 ```bash
 az containerapp show \
@@ -81,7 +81,7 @@ az containerapp show \
 ```bash
 az containerapp debug \
   -n "ca-mathmcp-lab" \
-  -g "rg-rgomesapp-lab" 
+  -g "rg-rgomesapp-lab"
 ```
 
 ## From the `nettools` container
@@ -127,7 +127,7 @@ curl -sS "http://ca-mathmcp-lab/mcp" \
     }
   }' | jq .
 
-# Modern MCP protocol - Stateless (debug/vrebose/trace)
+# Modern MCP protocol - Stateless (debug/verbose/trace)
 curl -v --trace-ascii trace.log "http://ca-mathmcp-lab/mcp" \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
@@ -144,9 +144,9 @@ curl -v --trace-ascii trace.log "http://ca-mathmcp-lab/mcp" \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'  | jq .
+  }' | jq .
 
-# Old MCP ptotocol - Stateful
+# Legacy MCP protocol - Stateful
 curl -s http://ca-mathmcp-lab/mcp \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \

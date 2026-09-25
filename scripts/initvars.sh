@@ -90,7 +90,7 @@ source "${HOME}/lib/sh-lib/sh_lib.sh" || exit
 ## MANAGED GITHUB ACTIONS VARIABLES #################################
 ##
 ## Keys are Actions variable names exactly as they appear in the
-## repository settings and in docs/SETUP.md. Values are resolved
+## repository settings and in docs/MISC.md. Values are resolved
 ## from the shell environment, falling back to the ARM_* equivalent.
 ##
 ## Bash does not preserve associative-array order, so
@@ -150,7 +150,7 @@ declare -Ar REQUIRED_VARIABLE_SOURCES=(
 ## MANAGED GITHUB ACTIONS SECRETS ####################################
 ##
 ## Keys are Actions secret names exactly as they appear in the
-## repository settings and in docs/SETUP.md. Values are resolved
+## repository settings and in docs/MISC.md. Values are resolved
 ## from the shell environment. Secret values are never printed or
 ## logged -- see print_planned_secrets() and create_action_secrets().
 ##

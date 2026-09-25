@@ -59,8 +59,36 @@ def _clear_caches():
 
 
 @pytest.fixture()
+def app_config() -> config.AppConfig:
+    """Return a minimal ``AppConfig`` with test values."""
+    return config.AppConfig.model_validate(
+        {
+            "server": {
+                "host": "127.0.0.1",
+                "transport": "http",
+                "port": 9000,
+                "timeout": 10,
+                "stateless": False,
+                "homepage": "https://example.com",
+            },
+            "client": {
+                "url": "http://localhost:9000/mcp",
+                "is_oauth": True,
+                "token_dir": "/tmp/tokens",
+                "callback_port": 10000,
+            },
+            "logging": {
+                "version": 1,
+                "disable_existing_loggers": False,
+                "root": {"level": "WARNING"},
+            },
+        }
+    )
+
+
+@pytest.fixture()
 def cfg(app_config):
-    """Return a config.yaml mapping built from the shared fixture."""
+    """Return a config.yaml mapping built from ``app_config``."""
     return app_config.model_dump()
 
 

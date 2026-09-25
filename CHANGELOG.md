@@ -121,7 +121,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
   client section documents the Horizon-hosted OAuth endpoint.
 - `README.md`: removed the inlined `config.yaml` and replaced the curl
   examples with Modern Era `server/discover` and `tools/list` requests.
-- `docs/DEMO.md`, `docs/SETUP.md`, `docs/MCP.md`: added demo commands and
+- `docs/DEMO.md`, `docs/MISC.md`, `docs/MCP.md`: added demo commands and
   Prefect Horizon deployment details.
 - Bumped `uv` dev dependency to `>=0.12.18`.
 - Bumped `fastmcp` dependency to `>=4.0.7`.
@@ -232,7 +232,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 - Application now listens on port `8080` instead of `9000`, so its
   bind port matches the Azure Container Apps ingress target port
   (`config.yaml`, `Dockerfile`, `docker-compose.yml`, `README.md`,
-  `docs/DOCKER.md`, `docs/SETUP.md`, `docs/MCP.md`, and the
+  `docs/DOCKER.md`, `docs/MISC.md`, `docs/MCP.md`, and the
   `pypi-plan-rel` skill).
 
 ### Fixed
@@ -295,7 +295,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
   Container Registry. Requires `AZURE_CLIENT_ID`, `AZURE_SUBSCRIPTION_ID`,
   `AZURE_TENANT_ID` Actions variables and an `AZURE_CLIENT_SECRET` Actions
   secret.
-- `scripts/initvars.sh` and `docs/SETUP.md` now manage the above Azure
+- `scripts/initvars.sh` and `docs/MISC.md` now manage the above Azure
   Actions variables/secret.
 
 ## [0.0.6] - 2026-09-17

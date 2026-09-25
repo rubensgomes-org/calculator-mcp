@@ -44,6 +44,7 @@ from unittest.mock import patch
 import pytest
 
 from calculator_mcp.main import main
+from tests.test_config import app_config  # pylint: disable=unused-import
 
 
 def _with_server(app_config, **updates):

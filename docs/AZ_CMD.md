@@ -22,7 +22,7 @@ This file contains handy az-cli commands used in this project.
       -g "rg-rgomesapp-dev"
     ```
 
-### ACR commands
+### ACR Commands
 
 - List all the repositories in a registry:
 
@@ -68,7 +68,7 @@ This file contains handy az-cli commands used in this project.
     crrgomesdev01.azurecr.io/dev/calculator-mcp:0.0.9
     ```
 
-## Display ACA Settings
+### ACA Commands
 
 - Display the container app currently configured ingress target port:
 
@@ -79,13 +79,12 @@ This file contains handy az-cli commands used in this project.
       --query targetPort
     ```
 
-- Cointainer Appp full settings (image, env vars, resources, scale, ingress,
+- Container App full settings (image, env vars, resources, scale, ingress,
   registries...)
 
     ```bash
-    # ACA name rg-rgomesmathmcp-dev
     az containerapp show \
-      -g "rg-rgomesapp-dev"\
+      -g "rg-rgomesapp-dev" \
       -n "ca-mathmcp-dev" \
       --output json
     ```
@@ -121,7 +120,7 @@ This file contains handy az-cli commands used in this project.
     az containerapp identity show \
       -g "rg-rgomesapp-dev" \
       -n "ca-mathmcp-dev"
-    ``` 
+    ```
 
 - Secrets defined on the app (names only, values are not returned)
 
@@ -136,7 +135,7 @@ This file contains handy az-cli commands used in this project.
     ```bash
     az containerapp revision list \
       -g "rg-rgomesapp-dev" \
-      -n "ca-mathmcp-dev"  \
+      -n "ca-mathmcp-dev" \
       --output json
     ```
 
@@ -168,7 +167,7 @@ This file contains handy az-cli commands used in this project.
       --output table
     ```
 
-### Start / Stop Container APP
+### Start / Stop Container App
 
 1. Start by ensuring you have one replica
 
@@ -219,7 +218,7 @@ This file contains handy az-cli commands used in this project.
       --resource-group "rg-rgomesapp-dev" \
       --query properties.configuration.ingress.fqdn \
       --output tsv
-        # https://ca-mathmcp-dev.internal.wittygrass-3e0d023f.centralus.azurecontainerapps.io/health
+    # ca-mathmcp-dev.internal.wittygrass-3e0d023f.centralus.azurecontainerapps.io
     ```
 
 2. Live log stream
