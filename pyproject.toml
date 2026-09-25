@@ -97,6 +97,7 @@ packages = [{ include = "calculator_mcp", from = "src" }]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+addopts = "--cov-report=term-missing --cov-report=xml"
 
 [tool.sonar]
 # SONAR_TOKEN must be defined as an environment variable
@@ -106,6 +107,8 @@ projectName = "calculator-mcp"
 qualitygate.wait = true
 sources = "src/"
 sourceEncoding = "UTF-8"
+python.version = "3.14"
+python.coverage.reportPaths = "coverage.xml"
 
 # ---------- >>> poethepoet tasks <<< -----------------------------------------
 
