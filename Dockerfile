@@ -91,8 +91,8 @@ RUN /opt/venv/bin/pip install --no-cache-dir --no-deps --no-index dist/*.whl
 RUN /opt/venv/bin/python -c \
       "from importlib.metadata import version; print('dist version:', version('calculator-mcp-rubens'))" \
  && /opt/venv/bin/python -c \
-      "from calculator_mcp.config import get_host, get_port, get_transport; \
-print('bind:', get_transport(), get_host(), get_port())"
+      "from calculator_mcp.config import get_config; \
+s = get_config().server; print('bind:', s.transport, s.host, s.port)"
 
 # -----------------------------------------------------------------------------
 # Stage 2 — runtime
