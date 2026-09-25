@@ -141,20 +141,16 @@ each call.
 
 ### This Project's Transport Configuration
 
-`config.yaml` selects the transport and `main.py` acts on it:
+Only the `http` transport is supported; `main.py` starts it with the
+`config.yaml` settings:
 
 ```python
-if transport == "http":
-    mcp.run(transport="http", host=get_host(), port=get_port())
-else:
-    mcp.run(transport="stdio")
+server = get_config().server
+mcp.run(transport=server.transport, host=server.host, port=server.port)
 ```
 
-The shipped default is `http` on `0.0.0.0:8080` — bound to all interfaces
-deliberately so the server is reachable from outside the container. The
-`stdio` path is what a host would use to launch it as a subprocess. Note the
-logging config sends handlers to `ext://sys.stderr`; under `stdio` that's
-mandatory, since stdout carries the JSON-RPC frames.
+The shipped default is `0.0.0.0:8080` — bound to all interfaces
+deliberately so the server is reachable from outside the container.
 
 `/health` is registered via `@mcp.custom_route` — a plain Starlette route on
 the same ASGI app, outside the MCP protocol. Container orchestration needs a

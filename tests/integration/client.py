@@ -53,13 +53,7 @@ from key_value.aio.stores.filetree import (
 )
 from key_value.aio.wrappers.encryption import FernetEncryptionWrapper
 
-from calculator_mcp.config import (
-    get_callback_port,
-    get_token_dir,
-    get_transport,
-    get_url,
-    is_oauth,
-)
+from calculator_mcp.config import configure_logging, get_config
 
 logger = logging.getLogger(__name__)
 
@@ -85,39 +79,33 @@ def create_client() -> Client:
     """Create and return an MCP Client based on config.yaml settings.
 
     Returns:
-        A ``fastmcp.Client`` configured for either HTTP or stdio transport,
-        depending on the ``client.transport`` value in config.yaml.
+        A ``fastmcp.Client`` connected over HTTP to ``client.url``.
     """
-    transport = get_transport()
+    config = get_config()
+    url = config.client.url
+    logger.info("Creating HTTP MCP client: %s", url)
 
-    if transport == "http":
-        url = get_url()
-        logger.info("Creating HTTP MCP client: %s", url)
+    if config.client.is_oauth:
+        logger.info("OAuth enabled, using OAuthClient")
+        token_dir = str(Path(config.client.token_dir).expanduser())
+        logger.debug(
+            "Creating encrypted file storage for OAuth tokens: %s",
+            token_dir,
+        )
+        encrypted_storage = FernetEncryptionWrapper(
+            key_value=create_token_store(token_dir),
+            fernet=Fernet(os.environ["OAUTH_STORAGE_ENCRYPTION_KEY"]),
+        )
+        oauth = OAuth(
+            token_storage=encrypted_storage,
+            callback_port=config.client.callback_port,
+            additional_client_metadata={
+                "token_endpoint_auth_method": "client_secret_post",
+            },
+        )
+        return Client(url, auth=oauth)
 
-        if is_oauth():
-            logger.info("OAuth enabled, using OAuthClient")
-            token_dir = get_token_dir()
-            logger.debug(
-                "Creating encrypted file storage for OAuth tokens: %s",
-                token_dir,
-            )
-            encrypted_storage = FernetEncryptionWrapper(
-                key_value=create_token_store(token_dir),
-                fernet=Fernet(os.environ["OAUTH_STORAGE_ENCRYPTION_KEY"]),
-            )
-            oauth = OAuth(
-                token_storage=encrypted_storage,
-                callback_port=get_callback_port(),
-                additional_client_metadata={
-                    "token_endpoint_auth_method": "client_secret_post",
-                },
-            )
-            return Client(url, auth=oauth)
-
-        return Client(url)
-
-    logger.info("Creating stdio MCP client")
-    return Client("calculator-mcp")
+    return Client(url)
 
 
 _SAMPLE_ARGS: dict[str, dict[str, float | int]] = {
@@ -156,6 +144,7 @@ async def run_client() -> None:
 
 def main() -> None:
     """Entry point for the MCP client."""
+    configure_logging()
     asyncio.run(run_client())
 
 

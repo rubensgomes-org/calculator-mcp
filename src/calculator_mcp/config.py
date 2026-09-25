@@ -38,13 +38,46 @@
 
 """Configuration helpers — loads config.yaml and configures logging."""
 
+import functools
 import logging
 import logging.config
 import os
 from importlib.resources import files
 from pathlib import Path
+from typing import Any, Literal
 
 import yaml
+from pydantic import BaseModel
+
+logger = logging.getLogger(__name__)
+
+
+class ServerConfig(BaseModel):
+    """The ``server`` section of config.yaml."""
+
+    host: str
+    transport: Literal["http"]
+    port: int
+    timeout: int
+    stateless: bool = False
+    homepage: str
+
+
+class ClientConfig(BaseModel):
+    """The ``client`` section of config.yaml."""
+
+    url: str
+    is_oauth: bool = False
+    token_dir: str
+    callback_port: int
+
+
+class AppConfig(BaseModel):
+    """The full config.yaml; ``logging`` is a ``dictConfig`` mapping."""
+
+    server: ServerConfig
+    client: ClientConfig
+    logging: dict[str, Any]
 
 
 def _resolve_config_path() -> Path:
@@ -63,145 +96,24 @@ def _resolve_config_path() -> Path:
     return Path(str(files("calculator_mcp").joinpath("config.yaml")))
 
 
-_CONFIG_PATH = _resolve_config_path()
+def load_config(path: Path) -> AppConfig:
+    """Parse and validate the config file at ``path``.
 
-
-def _load_config() -> dict:
-    """Load and return the full config.yaml as a dict.
-
-    Returns:
-        The parsed YAML configuration.
+    Raises:
+        pydantic.ValidationError: If the file does not match the models.
     """
-    with open(_CONFIG_PATH, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    with open(path, encoding="utf-8") as f:
+        return AppConfig.model_validate(yaml.safe_load(f))
 
 
+@functools.cache
+def get_config() -> AppConfig:
+    """Return the application config, loaded once on first call."""
+    return load_config(_resolve_config_path())
+
+
+@functools.cache
 def configure_logging() -> None:
-    """Apply the logging configuration from config.yaml."""
-    config = _load_config()
-    logging.config.dictConfig(config["logging"])
-
-
-configure_logging()
-
-logger = logging.getLogger(__name__)
-
-
-def get_timeout() -> int:
-    """Return the HTTP client timeout (seconds) from config.yaml.
-
-    Returns:
-        The timeout in seconds.
-    """
-    config = _load_config()
-    timeout: int = config["server"]["timeout"]
-    logger.info("HTTP client timeout: %s seconds", timeout)
-    return timeout
-
-
-def get_homepage() -> str:
-    """Return the project homepage URL from config.yaml.
-
-    Returns:
-        The homepage URL string.
-    """
-    config = _load_config()
-    homepage: str = config["server"]["homepage"]
-    logger.info("Project homepage: %s", homepage)
-    return homepage
-
-
-def get_transport() -> str:
-    """Return the MCP transport type ('stdio' or 'http') from config.yaml.
-
-    Returns:
-        The transport type string.
-    """
-    config = _load_config()
-    transport: str = config["server"]["transport"]
-    logger.info("MCP transport: %s", transport)
-    return transport
-
-
-def get_host() -> str:
-    """Return the HTTP/MCP server host address from config.yaml.
-
-    Returns:
-        The host address string.
-    """
-    config = _load_config()
-    host: str = config["server"]["host"]
-    logger.info("MCP host: %s", host)
-    return host
-
-
-def get_port() -> int:
-    """Return the HTTP/MCP server port from config.yaml.
-
-    Returns:
-        The port number.
-    """
-    config = _load_config()
-    port: int = config["server"]["port"]
-    logger.info("MCP port: %s", port)
-    return port
-
-
-def get_stateless() -> bool:
-    """Return whether stateless HTTP mode is enabled from config.yaml.
-
-    Returns:
-        True if the server stateless setting is true, False otherwise.
-    """
-    config = _load_config()
-    stateless: bool = config["server"].get("stateless", False)
-    logger.info("MCP stateless HTTP: %s", stateless)
-    return stateless
-
-
-def is_oauth() -> bool:
-    """Return whether OAuth is enabled from config.yaml.
-
-    Returns:
-        True if the client is_oauth setting is true, False otherwise.
-    """
-    config = _load_config()
-    oauth: bool = config["client"].get("is_oauth", False)
-    logger.info("OAuth enabled: %s", oauth)
-    return oauth
-
-
-def get_url() -> str:
-    """Return the client URL for HTTP transport from config.yaml.
-
-    Returns:
-        The client URL string.
-    """
-    config = _load_config()
-    url: str = config["client"]["url"]
-    logger.info("MCP client URL: %s", url)
-    return url
-
-
-def get_token_dir() -> str:
-    """Return the OAuth token directory from config.yaml.
-
-    Returns:
-        The token directory path string.
-    """
-    config = _load_config()
-    token_dir: str = str(Path(config["client"]["token_dir"]).expanduser())
-    logger.info("OAuth token directory: %s", token_dir)
-    return token_dir
-
-
-def get_callback_port() -> int:
-    """Return the OAuth callback server port from config.yaml.
-
-    Returns:
-        The callback port number.
-    """
-    config = _load_config()
-    port: int = config["client"]["callback_port"]
-    logger.info("OAuth callback port: %s", port)
-    return port
+    """Apply the logging configuration from config.yaml, once."""
+    logging.config.dictConfig(get_config().logging)
+    logger.debug("Loaded config from %s", _resolve_config_path())

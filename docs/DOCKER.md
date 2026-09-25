@@ -144,13 +144,10 @@ docker run -d --name calculator-mcp -p 9999:8080 \
 
 Caveats:
 
-- `CALCULATOR_MCP_CONFIG` is resolved **once at import time** in
-  `src/calculator_mcp/config.py`, so it must be set before the process starts.
-- A replacement file must contain the full `logging:` block. `configure_logging()`
-  calls `dictConfig(config["logging"])` and raises `KeyError` without it.
-- The file must stay readable for the lifetime of the process — the
-  `get_host()` / `get_port()` / `get_timeout()` accessors re-read it from disk
-  on every call.
+- `config.yaml` is read and validated **once**, on first use, so
+  `CALCULATOR_MCP_CONFIG` must be set before the process starts.
+- A replacement file must contain every setting, including the full
+  `logging:` block; otherwise startup fails with a pydantic `ValidationError`.
 - Keep `host: "0.0.0.0"`. Binding `127.0.0.1` inside a container makes the
   server unreachable from the host.
 

@@ -38,184 +38,121 @@
 
 """Unit tests for calculator_mcp.config module."""
 
-import os
-from pathlib import Path
+import logging
 from unittest.mock import patch
+
+import pytest
+import yaml
+from pydantic import ValidationError
 
 from calculator_mcp import config
 
-_SAMPLE_CONFIG = {
-    "server": {
-        "transport": "http",
-        "host": "127.0.0.1",
-        "port": 9000,
-        "timeout": 10,
-        "stateless": False,
-    },
-    "client": {
-        "is_oauth": True,
-        "url": "http://localhost:9000/mcp",
-        "token_dir": "/tmp/tokens",
-        "callback_port": 10000,
-    },
-    "logging": {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {},
-        "root": {"level": "WARNING"},
-    },
-}
+
+@pytest.fixture(autouse=True)
+def _clear_caches():
+    """Isolate each test from the cached config and logging setup."""
+    config.get_config.cache_clear()
+    config.configure_logging.cache_clear()
+    yield
+    config.get_config.cache_clear()
+    config.configure_logging.cache_clear()
 
 
-def _patch_load(cfg=None):
-    """Return a patch for ``config._load_config``."""
-    return patch.object(
-        config, "_load_config", return_value=cfg or _SAMPLE_CONFIG
-    )
+@pytest.fixture()
+def cfg(app_config):
+    """Return a config.yaml mapping built from the shared fixture."""
+    return app_config.model_dump()
+
+
+def _write(tmp_path, mapping):
+    """Write ``mapping`` as YAML and return the file path."""
+    path = tmp_path / "config.yaml"
+    path.write_text(yaml.dump(mapping))
+    return path
 
 
 # --- _resolve_config_path ---
 
 
-def test_resolve_config_path_uses_env_var():
-    with patch.dict(
-        "os.environ", {"CALCULATOR_MCP_CONFIG": "/custom/path.yaml"}
-    ):
-        # pylint: disable=protected-access
-        result = config._resolve_config_path()
-    assert result == Path("/custom/path.yaml")
+def test_resolve_config_path_uses_env_var(tmp_path, monkeypatch):
+    custom = tmp_path / "custom.yaml"
+    monkeypatch.setenv("CALCULATOR_MCP_CONFIG", str(custom))
+    # pylint: disable=protected-access
+    assert config._resolve_config_path() == custom
 
 
-def test_resolve_config_path_falls_back_to_package():
-    env = os.environ.copy()
-    env.pop("CALCULATOR_MCP_CONFIG", None)
-    with patch.dict("os.environ", env, clear=True):
-        # pylint: disable=protected-access
-        result = config._resolve_config_path()
+def test_resolve_config_path_falls_back_to_package(monkeypatch):
+    monkeypatch.delenv("CALCULATOR_MCP_CONFIG", raising=False)
+    # pylint: disable=protected-access
+    result = config._resolve_config_path()
     assert result.name == "config.yaml"
+    assert "calculator_mcp" in str(result)
 
 
-# --- get_timeout ---
+# --- load_config ---
 
 
-def test_get_timeout():
-    with _patch_load():
-        assert config.get_timeout() == 10
+def test_load_config(tmp_path, cfg, app_config):
+    assert config.load_config(_write(tmp_path, cfg)) == app_config
 
 
-# --- get_transport ---
+def test_load_config_defaults(tmp_path, cfg):
+    del cfg["server"]["stateless"]
+    del cfg["client"]["is_oauth"]
+    loaded = config.load_config(_write(tmp_path, cfg))
+    assert loaded.server.stateless is False
+    assert loaded.client.is_oauth is False
 
 
-def test_get_transport():
-    with _patch_load():
-        assert config.get_transport() == "http"
+def test_load_config_rejects_invalid_transport(tmp_path, cfg):
+    cfg["server"]["transport"] = "stdio"
+    with pytest.raises(ValidationError):
+        config.load_config(_write(tmp_path, cfg))
 
 
-def test_get_transport_stdio():
-    cfg = {
-        **_SAMPLE_CONFIG,
-        "server": {**_SAMPLE_CONFIG["server"], "transport": "stdio"},
-    }
-    with _patch_load(cfg):
-        assert config.get_transport() == "stdio"
+def test_load_config_requires_logging(tmp_path, cfg):
+    del cfg["logging"]
+    with pytest.raises(ValidationError):
+        config.load_config(_write(tmp_path, cfg))
 
 
-# --- get_host ---
+def test_bundled_config_is_valid(monkeypatch):
+    monkeypatch.delenv("CALCULATOR_MCP_CONFIG", raising=False)
+    assert config.get_config().server.transport == "http"
 
 
-def test_get_host():
-    with _patch_load():
-        assert config.get_host() == "127.0.0.1"
+# --- get_config ---
 
 
-# --- get_port ---
-
-
-def test_get_port():
-    with _patch_load():
-        assert config.get_port() == 9000
-
-
-# --- get_stateless ---
-
-
-def test_get_stateless_false():
-    with _patch_load():
-        assert config.get_stateless() is False
-
-
-def test_get_stateless_true():
-    cfg = {
-        **_SAMPLE_CONFIG,
-        "server": {**_SAMPLE_CONFIG["server"], "stateless": True},
-    }
-    with _patch_load(cfg):
-        assert config.get_stateless() is True
-
-
-def test_get_stateless_missing_defaults_false():
-    server_no_stateless = {
-        k: v for k, v in _SAMPLE_CONFIG["server"].items() if k != "stateless"
-    }
-    cfg = {**_SAMPLE_CONFIG, "server": server_no_stateless}
-    with _patch_load(cfg):
-        assert config.get_stateless() is False
-
-
-# --- is_oauth ---
-
-
-def test_is_oauth_true():
-    with _patch_load():
-        assert config.is_oauth() is True
-
-
-def test_is_oauth_false():
-    cfg = {
-        **_SAMPLE_CONFIG,
-        "client": {**_SAMPLE_CONFIG["client"], "is_oauth": False},
-    }
-    with _patch_load(cfg):
-        assert config.is_oauth() is False
-
-
-def test_is_oauth_missing_defaults_false():
-    client_no_oauth = {
-        k: v for k, v in _SAMPLE_CONFIG["client"].items() if k != "is_oauth"
-    }
-    cfg = {**_SAMPLE_CONFIG, "client": client_no_oauth}
-    with _patch_load(cfg):
-        assert config.is_oauth() is False
-
-
-# --- get_url ---
-
-
-def test_get_url():
-    with _patch_load():
-        assert config.get_url() == "http://localhost:9000/mcp"
-
-
-# --- get_token_dir ---
-
-
-def test_get_token_dir():
-    with _patch_load():
-        assert config.get_token_dir() == "/tmp/tokens"
-
-
-# --- get_callback_port ---
-
-
-def test_get_callback_port():
-    with _patch_load():
-        assert config.get_callback_port() == 10000
+def test_get_config_loads_once(tmp_path, monkeypatch, cfg):
+    monkeypatch.setenv("CALCULATOR_MCP_CONFIG", str(_write(tmp_path, cfg)))
+    first = config.get_config()
+    cfg["server"]["port"] = 1234
+    _write(tmp_path, cfg)
+    assert config.get_config() is first
+    assert first.server.port == 9000
 
 
 # --- configure_logging ---
 
 
-def test_configure_logging():
-    with _patch_load(), patch("logging.config.dictConfig") as mock_dict:
+def test_configure_logging_applies_config(tmp_path, monkeypatch, cfg):
+    cfg["logging"]["root"]["level"] = "ERROR"
+    monkeypatch.setenv("CALCULATOR_MCP_CONFIG", str(_write(tmp_path, cfg)))
+    root = logging.getLogger()
+    original_level = root.level
+    try:
         config.configure_logging()
-    mock_dict.assert_called_once_with(_SAMPLE_CONFIG["logging"])
+        assert root.level == logging.ERROR
+    finally:
+        root.setLevel(original_level)
+
+
+def test_configure_logging_runs_once(app_config):
+    with (
+        patch.object(config, "get_config", return_value=app_config),
+        patch("logging.config.dictConfig") as mock_dict_config,
+    ):
+        config.configure_logging()
+        config.configure_logging()
+    mock_dict_config.assert_called_once_with(app_config.logging)

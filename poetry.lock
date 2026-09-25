@@ -2237,14 +2237,14 @@ re2 = ["google-re2 (>=1.1)"]
 
 [[package]]
 name = "pbs-installer"
-version = "2026.9.1"
+version = "2026.9.24"
 description = "Installer for Python Build Standalone"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pbs_installer-2026.9.1-py3-none-any.whl", hash = "sha256:d2c320a11e0313f559f4338fad3f698345d200d0506053c75d266730b2507dcb"},
-    {file = "pbs_installer-2026.9.1.tar.gz", hash = "sha256:b21eb21a53557d197899e1bf3d8b7f4f264feb1c546327106fdfcc967cb3a704"},
+    {file = "pbs_installer-2026.9.24-py3-none-any.whl", hash = "sha256:6786998f8b29899839b48e67fbc28deea29af346cc5108ba7b941dd2eeb4ec3c"},
+    {file = "pbs_installer-2026.9.24.tar.gz", hash = "sha256:094dcf7f4502bb320906942503c69db10f55b5885695df331b50521ed25376f0"},
 ]
 
 [package.dependencies]
@@ -4040,4 +4040,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4.0.0"
-content-hash = "c6242eba7c9885dc3c2d613764aa839916f125159db583bc1a3809b71bdaf324"
+content-hash = "f4ffbcf9d8ab10a6d8bb59b54370c5cd8c72799ed57c7e8ed7aa5648a2df6e34"

@@ -35,6 +35,15 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 - Log format adds source file and line number; timestamps show time only.
 - `mcp.*` and `httpx` loggers default to `INFO`, and `root` to `WARNING`.
+- FastMCP and uvicorn logs use the project's log format instead of their
+  own console handlers.
+- `config.yaml` is parsed once into typed pydantic models by `get_config()`,
+  replacing the `get_*()` and `is_oauth()` getters; an invalid
+  `server.transport` now fails validation at startup.
+- Only the `http` transport is supported; `stdio` was removed from
+  `main.py` and the integration client.
+- Logging is configured once at startup, by `main()` or the server lifespan,
+  instead of on import of `config.py`.
 
 ### Fixed
 

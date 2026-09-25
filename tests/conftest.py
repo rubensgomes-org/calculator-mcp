@@ -36,44 +36,36 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
 
-"""CLI entry point for the calculator-mcp server."""
+"""Shared pytest fixtures."""
 
-import argparse
-import logging
-from importlib.metadata import version
+import pytest
 
-from calculator_mcp.config import configure_logging, get_config
-from calculator_mcp.server import mcp
-
-logger = logging.getLogger(__name__)
-
-_DISTRIBUTION_NAME = "calculator-mcp-rubens"
+from calculator_mcp.config import AppConfig
 
 
-def main(argv: list[str] | None = None) -> None:
-    """Entry point for the calculator-mcp application."""
-    parser = argparse.ArgumentParser(prog="calculator-mcp")
-    parser.add_argument(
-        "--version",
-        action="version",
-        version=version(_DISTRIBUTION_NAME),
+@pytest.fixture()
+def app_config() -> AppConfig:
+    """Return a minimal ``AppConfig`` with test values."""
+    return AppConfig.model_validate(
+        {
+            "server": {
+                "host": "127.0.0.1",
+                "transport": "http",
+                "port": 9000,
+                "timeout": 10,
+                "stateless": False,
+                "homepage": "https://example.com",
+            },
+            "client": {
+                "url": "http://localhost:9000/mcp",
+                "is_oauth": True,
+                "token_dir": "/tmp/tokens",
+                "callback_port": 10000,
+            },
+            "logging": {
+                "version": 1,
+                "disable_existing_loggers": False,
+                "root": {"level": "WARNING"},
+            },
+        }
     )
-    parser.parse_args(argv)
-    configure_logging()
-
-    server = get_config().server
-    try:
-        mcp.run(
-            transport=server.transport,
-            host=server.host,
-            port=server.port,
-            stateless_http=server.stateless,
-            # Keeps uvicorn from replacing the config.yaml logging.
-            uvicorn_config={"log_config": None},
-        )
-    except KeyboardInterrupt:
-        logger.info("Received SIGINT, shutting down gracefully")
-
-
-if __name__ == "__main__":
-    main()

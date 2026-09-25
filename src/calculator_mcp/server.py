@@ -39,19 +39,22 @@
 """FastMCP server exposing calculator operations as tools."""
 
 import logging
+from collections.abc import AsyncIterator
 from importlib.metadata import PackageNotFoundError, version
 
 from calculator_lib import Calculator
 from fastmcp import FastMCP
+from fastmcp.server.lifespan import lifespan
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
-from calculator_mcp.config import get_homepage, get_timeout
+from calculator_mcp.config import configure_logging, get_config
 
-logger = logging.getLogger(__name__)
+# Not __name__: `fastmcp run server.py:mcp` (e.g. Prefect Horizon) loads this
+# file as "server_module", which would bypass the calculator_mcp logger config.
+logger = logging.getLogger("calculator_mcp.server")
 
-_HOMEPAGE = get_homepage()
-_TIMEOUT = get_timeout()
+_TIMEOUT = get_config().server.timeout
 
 # Distribution name on PyPI, which differs from the ``calculator_mcp``
 # import package name.
@@ -64,6 +67,17 @@ except PackageNotFoundError:  # pragma: no cover - source checkout only
     _VERSION = "0.0.0+unknown"
 
 _calc = Calculator()
+
+
+@lifespan
+async def _logging_lifespan(
+    server: FastMCP,
+) -> AsyncIterator[dict[str, object]]:
+    """Configure logging on startup, including hosts that skip ``main()``."""
+    configure_logging()
+    logger.info("Initialized %s %s", server.name, _VERSION)
+    yield {}
+
 
 mcp = FastMCP(
     "Calculator MCP Server",
@@ -78,9 +92,9 @@ mcp = FastMCP(
         "All inputs are floats; division, modulo, and floor_divide raise "
         "ValueError when the divisor is zero."
     ),
-    website_url=_HOMEPAGE,
+    website_url=get_config().server.homepage,
+    lifespan=_logging_lifespan,
 )
-logger.info("Initialized Calculator MCP Server")
 
 
 @mcp.custom_route("/health", methods=["GET"])

@@ -46,46 +46,49 @@ import pytest
 from calculator_mcp.main import main
 
 
-def test_main_http_transport():
+def _with_server(app_config, **updates):
+    """Return ``app_config`` with ``server`` fields replaced by ``updates``."""
+    server = app_config.server.model_copy(update=updates)
+    return app_config.model_copy(update={"server": server})
+
+
+def _run_main(app_config):
+    """Run ``main([])`` with ``app_config`` and return the mocked server."""
     with (
-        patch("calculator_mcp.main.get_transport", return_value="http"),
-        patch("calculator_mcp.main.get_host", return_value="127.0.0.1"),
-        patch("calculator_mcp.main.get_port", return_value=9000),
-        patch("calculator_mcp.main.get_stateless", return_value=False),
+        patch("calculator_mcp.main.configure_logging"),
+        patch("calculator_mcp.main.get_config", return_value=app_config),
         patch("calculator_mcp.main.mcp") as mock_mcp,
     ):
         main([])
+    return mock_mcp
+
+
+@pytest.mark.parametrize("stateless", [False, True])
+def test_main_http_transport(app_config, stateless):
+    mock_mcp = _run_main(_with_server(app_config, stateless=stateless))
     mock_mcp.run.assert_called_once_with(
-        transport="http", host="127.0.0.1", port=9000, stateless_http=False
+        transport="http",
+        host="127.0.0.1",
+        port=9000,
+        stateless_http=stateless,
+        uvicorn_config={"log_config": None},
     )
 
 
-def test_main_http_transport_stateless():
+def test_main_configures_logging(app_config):
     with (
-        patch("calculator_mcp.main.get_transport", return_value="http"),
-        patch("calculator_mcp.main.get_host", return_value="127.0.0.1"),
-        patch("calculator_mcp.main.get_port", return_value=9000),
-        patch("calculator_mcp.main.get_stateless", return_value=True),
-        patch("calculator_mcp.main.mcp") as mock_mcp,
+        patch("calculator_mcp.main.configure_logging") as mock_configure,
+        patch("calculator_mcp.main.get_config", return_value=app_config),
+        patch("calculator_mcp.main.mcp"),
     ):
         main([])
-    mock_mcp.run.assert_called_once_with(
-        transport="http", host="127.0.0.1", port=9000, stateless_http=True
-    )
+    mock_configure.assert_called_once_with()
 
 
-def test_main_stdio_transport():
+def test_main_keyboard_interrupt(app_config):
     with (
-        patch("calculator_mcp.main.get_transport", return_value="stdio"),
-        patch("calculator_mcp.main.mcp") as mock_mcp,
-    ):
-        main([])
-    mock_mcp.run.assert_called_once_with(transport="stdio")
-
-
-def test_main_keyboard_interrupt():
-    with (
-        patch("calculator_mcp.main.get_transport", return_value="stdio"),
+        patch("calculator_mcp.main.configure_logging"),
+        patch("calculator_mcp.main.get_config", return_value=app_config),
         patch("calculator_mcp.main.mcp") as mock_mcp,
     ):
         mock_mcp.run.side_effect = KeyboardInterrupt

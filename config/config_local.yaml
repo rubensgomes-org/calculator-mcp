@@ -4,7 +4,7 @@
 server:
     # IP address the server binds to at start-up
     host: "127.0.0.1"
-    # The transport protocol used -- stdio not used in this project
+    # The transport protocol used -- only http is supported
     transport: "http"
     # The port on host the MCP server binds to at start-up
     port: 8080
@@ -56,6 +56,12 @@ logging:
     loggers:
         calculator_mcp:
             level: DEBUG
+            handlers:
+                - console
+            propagate: false
+        # FastMCP framework; replaces its default rich console handler
+        fastmcp:
+            level: INFO
             handlers:
                 - console
             propagate: false
