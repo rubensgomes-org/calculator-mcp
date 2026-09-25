@@ -28,7 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- SonarCloud analysis targets Python 3.14.
+
 ### Fixed
+
+- Docker build failed because its smoke test imported the removed
+  `get_host()`, `get_port()`, and `get_transport()` getters.
+- SonarCloud reported 0% coverage; pytest now writes `coverage.xml` and
+  SonarCloud reads it.
 
 ## [0.0.20] - 2026-09-25
 
