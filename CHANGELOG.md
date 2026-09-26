@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.24] - 2026-09-26
+
+### Added
+
 - README step for stopping the locally running server.
 
 ### Changed
