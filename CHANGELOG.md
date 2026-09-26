@@ -26,9 +26,13 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- README step for stopping the locally running server.
+
 ### Changed
 
 ### Fixed
+
+- `scripts/initvars.sh` no longer references the removed `docs/SETUP.md`.
 
 ## [0.0.23] - 2026-09-25
 

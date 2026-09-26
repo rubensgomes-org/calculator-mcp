@@ -123,6 +123,8 @@ curl -v http://localhost:8080/health
 # Expect: OK
 ```
 
+4. To stop, go to the running terminal and press `Ctrl+C`
+
 ### Running Using Git Cloned Project
 
 **NOTE:** requires prior cloning of the project using `git`.
