@@ -1,0 +1,10 @@
+# flake8 settings aligned with black and isort.
+#
+# This project's source code and documentation were generated with the
+# assistance of Artificial Intelligence (AI). For more information, please
+# refer to the `AI_DISCLAIMER.md` document located in the project's root
+# directory.
+
+[flake8]
+max-line-length = 80
+extend-ignore = E203, E701

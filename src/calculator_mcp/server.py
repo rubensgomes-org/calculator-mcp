@@ -45,6 +45,7 @@ from importlib.metadata import PackageNotFoundError, version
 from calculator_lib import Calculator
 from fastmcp import FastMCP
 from fastmcp.server.lifespan import lifespan
+from fastmcp.server.middleware.logging import LoggingMiddleware
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
@@ -96,6 +97,16 @@ mcp = FastMCP(
     lifespan=_logging_lifespan,
 )
 
+# Logs each inbound MCP message (e.g. initialize, tools/list, tools/call)
+# with its JSON-RPC payload and duration, at DEBUG level.
+mcp.add_middleware(
+    LoggingMiddleware(
+        logger=logging.getLogger("calculator_mcp.requests"),
+        log_level=logging.DEBUG,
+        include_payloads=True,
+    )
+)
+
 
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(
@@ -109,8 +120,7 @@ async def health_check(
     Returns:
         A ``PlainTextResponse`` with body ``"OK"``.
     """
-    logger.info("health_check called")
-    logger.debug("returning text response: OK")
+    logger.info("health_check called: returning text response: OK")
     return PlainTextResponse("OK")
 
 

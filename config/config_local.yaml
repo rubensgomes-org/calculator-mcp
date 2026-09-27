@@ -61,59 +61,70 @@ logging:
             propagate: false
         # FastMCP framework; replaces its default rich console handler
         fastmcp:
-            level: INFO
+            level: DEBUG
+            handlers:
+                - console
+            propagate: false
+        # FastMCP server (fastmcp/server/server.py)
+        fastmcp.server.server:
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
         mcp.client.streamable_http:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # HTTP request/response summaries — set to DEBUG for detail
         httpx:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # HTTP wire-level tracing (headers, TCP) — set to DEBUG for detail
         httpcore:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
+        mcp.server:
+            level: DEBUG
+            handlers:
+                - console
+            propagate: false
         mcp.server.lowlevel.server:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
         mcp.server.streamable_http:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: session/transport lifecycle — set to DEBUG for session details
         mcp.server.streamable_http_manager:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: startup, shutdown, and errors
         uvicorn:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: HTTP request lines (method, path, status)
         uvicorn.access:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
     root:
-        level: WARNING
+        level: DEBUG
         handlers:
             - console

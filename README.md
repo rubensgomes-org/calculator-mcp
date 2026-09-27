@@ -4,23 +4,45 @@
 
 # Calculator MCP Server
 
-`calculator-mcp` is a Streamable HTTP MCP (Model Context Protocol) server
-that exposes 16 arithmetic operations as callable tools for an AI LLM (Large
-Language Model) to consume. It contains no math of its own — every tool is a
-thin synchronous wrapper that logs its arguments and delegates to the
-open-source `calculator-lib-rubens` PyPI package.
+`calculator-mcp` is an MCP (Model Context Protocol) server that exposes 16
+arithmetic operations as callable tools for use by LLMs within agentic
+applications. It contains no mathematical logic of its own. Instead, each tool
+is a thin synchronous wrapper that logs its arguments and delegates execution to
+the open-source `calculator-lib-rubens` package published on PyPI.
 
 ## Features
 
 16 calculator tools available via MCP based on JSON-RPC 2.0 messages:
 
-**Two-operand operations**: `add`, `subtract`, `multiply`, `divide`, `power`,
-`nth_root`, `modulo`, `floor_divide`
+- **Two-operand operations**: `add`, `subtract`, `multiply`, `divide`, `power`,
+  `nth_root`, `modulo`, `floor_divide`
+- **Single-operand operations**: `sqrt`, `absolute`, `floor`, `ceil`, `log10`,
+  `ln`, `exp`
+- **Rounding**: `round_number` (with configurable decimal places)
 
-**Single-operand operations**: `sqrt`, `absolute`, `floor`, `ceil`, `log10`,
-`ln`, `exp`
+The following are the supported JSON-RPC methods:
 
-**Rounding**: `round_number` (with configurable decimal places)
+- **Lifecycle Methods:** `initialize`, `notifications/initialized`
+- **Tools Methods:** `tools/list`, `tools/call`
+
+The following MCP protocols are supported:
+
+- **Legacy MCP (Version: 2025-06-18)** when stateless is true in `config.yaml`
+- **Modern MCP (Version: 2026-07-28)** when stateless is false in `config.yaml`
+
+## Non-Supported Features
+
+- **Server-sent events (SSE)** are not supported for the MCP communication.
+- **Streaming communication channels**, such as HTTP Streamable, are not
+  supported. In other words, the MCP server is expected to generate the
+  entire output before sending it.
+
+Non-supported JSON-RPC methods:
+
+- **Resources Methods:** `resources/list`, `resources/read`
+- **Prompts Methods:** `prompts/list`, `prompts/get`
+- **Logging & Progress Utilities**
+- **Server-to-Client** calls are not supported
 
 ## AI Disclaimer
 

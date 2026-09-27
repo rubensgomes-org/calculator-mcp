@@ -65,6 +65,12 @@ logging:
             handlers:
                 - console
             propagate: false
+        # FastMCP server (fastmcp/server/server.py)
+        fastmcp.server.server:
+            level: DEBUG
+            handlers:
+                - console
+            propagate: false
         # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
         mcp.client.streamable_http:
             level: INFO
