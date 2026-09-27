@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.25] - 2026-09-27
+
+### Added
+
 - FastMCP `LoggingMiddleware` logs each inbound MCP message and payload at
   DEBUG level to the `calculator_mcp.requests` logger.
 - `fastmcp.server.server` logger at DEBUG level in `config_local.yaml` and
