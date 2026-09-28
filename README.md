@@ -85,7 +85,7 @@ pip show calculator-mcp-rubens
 - Uninstall as follows
 
 ```bash
-pip uninstall calculator-mcp
+pip uninstall calculator-mcp-rubens
 pip cache purge
 ```
 
