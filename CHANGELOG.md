@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.26] - 2026-09-28
+
+### Added
+
 - `docs/OAUTH_DIAGRAM.md` sequence diagram of the OAuth authentication flow.
 
 ### Changed
