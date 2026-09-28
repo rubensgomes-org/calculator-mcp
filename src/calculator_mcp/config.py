@@ -63,20 +63,10 @@ class ServerConfig(BaseModel):
     homepage: str
 
 
-class ClientConfig(BaseModel):
-    """The ``client`` section of config.yaml."""
-
-    url: str
-    is_oauth: bool = False
-    token_dir: str
-    callback_port: int
-
-
 class AppConfig(BaseModel):
     """The full config.yaml; ``logging`` is a ``dictConfig`` mapping."""
 
     server: ServerConfig
-    client: ClientConfig
     logging: dict[str, Any]
 
 

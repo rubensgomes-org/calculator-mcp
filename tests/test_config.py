@@ -71,12 +71,6 @@ def app_config() -> config.AppConfig:
                 "stateless": False,
                 "homepage": "https://example.com",
             },
-            "client": {
-                "url": "http://localhost:9000/mcp",
-                "is_oauth": True,
-                "token_dir": "/tmp/tokens",
-                "callback_port": 10000,
-            },
             "logging": {
                 "version": 1,
                 "disable_existing_loggers": False,
@@ -126,10 +120,8 @@ def test_load_config(tmp_path, cfg, app_config):
 
 def test_load_config_defaults(tmp_path, cfg):
     del cfg["server"]["stateless"]
-    del cfg["client"]["is_oauth"]
     loaded = config.load_config(_write(tmp_path, cfg))
     assert loaded.server.stateless is False
-    assert loaded.client.is_oauth is False
 
 
 def test_load_config_rejects_invalid_transport(tmp_path, cfg):

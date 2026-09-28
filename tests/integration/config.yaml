@@ -1,21 +1,14 @@
 # =============================================================================
-# MCP Server Configuration
+# Client Configuration - used ONLY by this project client integration test
 # =============================================================================
-server:
-    # IP address the server binds to at start-up
-    # Use 0.0.0.0 when server is planeed to start from a container.
-    host: "0.0.0.0"
-    # The transport protocol used -- only http is supported
-    transport: "http"
-    # The port on host the MCP server binds to at start-up
-    port: 8080
-    # HTTP client timeout (seconds) to wait for a response from MCP server
-    timeout: 10
-    # Stateless HTTP mode (Modern Era, 2026-07-28 spec): true
-    # Sateful HTTP mode (Legacy Era, 2025-06-18 spec): false
-    stateless: true
-    # the home page of the "Calculator MCP" project
-    homepage: "https://github.com/rubensgomes-org/calculator-mcp"
+client:
+    # MUST match the server host and port for local integration
+    url: "http://127.0.0.1:8080/mcp"
+    is_oauth: false
+    # token_dir not needed when OAuth is not used.
+    token_dir: ""
+    # callback_port not needed when OAuth is not used.
+    callback_port: 0
 
 # =============================================================================
 # Logging Configuration
@@ -50,59 +43,70 @@ logging:
             propagate: false
         # FastMCP framework; replaces its default rich console handler
         fastmcp:
-            level: INFO
+            level: DEBUG
+            handlers:
+                - console
+            propagate: false
+        # FastMCP server (fastmcp/server/server.py)
+        fastmcp.server.server:
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
         mcp.client.streamable_http:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # HTTP request/response summaries — set to DEBUG for detail
         httpx:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # HTTP wire-level tracing (headers, TCP) — set to DEBUG for detail
         httpcore:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
+        mcp.server:
+            level: DEBUG
+            handlers:
+                - console
+            propagate: false
         mcp.server.lowlevel.server:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
         mcp.server.streamable_http:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: session/transport lifecycle — set to DEBUG for session details
         mcp.server.streamable_http_manager:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: startup, shutdown, and errors
         uvicorn:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
         # Server: HTTP request lines (method, path, status)
         uvicorn.access:
-            level: INFO
+            level: DEBUG
             handlers:
                 - console
             propagate: false
     root:
-        level: WARNING
+        level: DEBUG
         handlers:
             - console

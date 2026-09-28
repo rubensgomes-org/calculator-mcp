@@ -38,11 +38,15 @@
 
 """MCP client that connects to the calculator server."""
 
+import argparse
 import asyncio
 import logging
+import logging.config
 import os
 from pathlib import Path
+from typing import Any
 
+import yaml
 from cryptography.fernet import Fernet
 from fastmcp import Client
 from fastmcp.client.auth import OAuth
@@ -52,10 +56,37 @@ from key_value.aio.stores.filetree import (
     FileTreeV1KeySanitizationStrategy,
 )
 from key_value.aio.wrappers.encryption import FernetEncryptionWrapper
-
-from calculator_mcp.config import configure_logging, get_config
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
+
+CONFIG_PATH = Path(__file__).parent / "config.yaml"
+
+
+class ClientConfig(BaseModel):
+    """The ``client`` section of config.yaml."""
+
+    url: str
+    is_oauth: bool = False
+    token_dir: str
+    callback_port: int
+
+
+class IntegrationConfig(BaseModel):
+    """The full config.yaml; ``logging`` is a ``dictConfig`` mapping."""
+
+    client: ClientConfig
+    logging: dict[str, Any]
+
+
+def load_config(path: Path = CONFIG_PATH) -> IntegrationConfig:
+    """Parse and validate the config file at ``path``.
+
+    Raises:
+        pydantic.ValidationError: If the file does not match the models.
+    """
+    with open(path, encoding="utf-8") as f:
+        return IntegrationConfig.model_validate(yaml.safe_load(f))
 
 
 def create_token_store(token_dir: str) -> FileTreeStore:
@@ -75,19 +106,18 @@ def create_token_store(token_dir: str) -> FileTreeStore:
     )
 
 
-def create_client() -> Client:
+def create_client(config: ClientConfig) -> Client:
     """Create and return an MCP Client based on config.yaml settings.
 
     Returns:
-        A ``fastmcp.Client`` connected over HTTP to ``client.url``.
+        A ``fastmcp.Client`` connected over HTTP to ``config.url``.
     """
-    config = get_config()
-    url = config.client.url
+    url = config.url
     logger.info("Creating HTTP MCP client: %s", url)
 
-    if config.client.is_oauth:
+    if config.is_oauth:
         logger.info("OAuth enabled, using OAuthClient")
-        token_dir = str(Path(config.client.token_dir).expanduser())
+        token_dir = str(Path(config.token_dir).expanduser())
         logger.debug(
             "Creating encrypted file storage for OAuth tokens: %s",
             token_dir,
@@ -98,7 +128,7 @@ def create_client() -> Client:
         )
         oauth = OAuth(
             token_storage=encrypted_storage,
-            callback_port=config.client.callback_port,
+            callback_port=config.callback_port,
             additional_client_metadata={
                 "token_endpoint_auth_method": "client_secret_post",
             },
@@ -128,9 +158,9 @@ _SAMPLE_ARGS: dict[str, dict[str, float | int]] = {
 }
 
 
-async def run_client() -> None:
+async def run_client(config: ClientConfig) -> None:
     """Connect to the MCP server, list and call each tool."""
-    client = create_client()
+    client = create_client(config)
 
     async with client:
         tools = await client.list_tools()
@@ -142,10 +172,26 @@ async def run_client() -> None:
             print(f"    call_tool({tool.name}, {args}) => {result}\n")
 
 
+def parse_config_path() -> Path:
+    """Return the config file path given on the command line."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "config",
+        nargs="?",
+        type=Path,
+        default=CONFIG_PATH,
+        help=f"config file path (default: {CONFIG_PATH.name})",
+    )
+    return parser.parse_args().config
+
+
 def main() -> None:
     """Entry point for the MCP client."""
-    configure_logging()
-    asyncio.run(run_client())
+    config_path = parse_config_path()
+    config = load_config(config_path)
+    logging.config.dictConfig(config.logging)
+    logger.debug("Loaded config from %s", config_path)
+    asyncio.run(run_client(config.client))
 
 
 if __name__ == "__main__":

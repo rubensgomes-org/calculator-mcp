@@ -26,7 +26,19 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `docs/INTEGRATION_TEST.md` with integration test instructions moved from
+  the README.
+- Integration test client accepts an optional config file path argument.
+
 ### Changed
+
+- **Breaking:** the `client` section moved out of the server `config.yaml`
+  into `tests/integration/config.yaml`.
+- Renamed `config/config_local.yaml` to `config/config.yaml` and
+  `config/config_local_stateful.yaml` to `config/config_stateful.yaml`.
+- Moved `config/config_remote.yaml` to `tests/integration/`.
+- README installation and configuration sections simplified.
+- Build requires `poetry-core` 2.5 or later.
 
 ### Fixed
 
@@ -46,14 +58,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 - FastMCP `LoggingMiddleware` logs each inbound MCP message and payload at
   DEBUG level to the `calculator_mcp.requests` logger.
-- `fastmcp.server.server` logger at DEBUG level in `config_local.yaml` and
-  `config_local_stateful.yaml`.
+- `fastmcp.server.server` logger at DEBUG level in `config.yaml` and
+  `config_stateful.yaml`.
 - README lists supported JSON-RPC methods, MCP protocol versions, and
   non-supported features.
 
 ### Changed
 
-- `config_local.yaml` sets the root, FastMCP, MCP, HTTP, and uvicorn
+- `config.yaml` sets the root, FastMCP, MCP, HTTP, and uvicorn
   loggers to DEBUG level.
 - `health_check` writes a single INFO log line.
 
@@ -151,7 +163,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
-- `config/config_local.yaml` and `config/config_remote.yaml`: sample
+- `config/config.yaml` and `config/config_remote.yaml`: sample
   configurations for the local and Horizon-hosted integration tests.
 
 ### Changed
