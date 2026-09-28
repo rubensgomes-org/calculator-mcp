@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.27] - 2026-09-28
+
+### Added
+
 - `docs/INTEGRATION_TEST.md` with integration test instructions moved from
   the README.
 - Integration test client accepts an optional config file path argument.
