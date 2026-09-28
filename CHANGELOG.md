@@ -37,6 +37,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 - `docs/INTEGRATION_TEST.md` with integration test instructions moved from
   the README.
 - Integration test client accepts an optional config file path argument.
+- README uninstall instructions.
 
 ### Changed
 

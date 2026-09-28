@@ -76,25 +76,32 @@ pip --no-cache-dir install -U --user calculator-mcp-rubens
    [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
 
 ```bash
+calculator-mcp --version
 pip show calculator-mcp-rubens
+```
+
+## Uninstall
+
+- Uninstall as follows
+
+```bash
+pip uninstall calculator-mcp
+pip cache purge
 ```
 
 ## Configuration
 
-The server ships with a
-default [config.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/src/calculator_mcp/config.yaml)
-bundled inside the PyPI package. To override it, make a copy and paste in 
-your "${HOME}" folder, and set the `CALCULATOR_MCP_CONFIG` environment 
-variable to the path of your custom configuration file:
+- Copy the file
+  [config.yaml](https://github.com/rubensgomes-org/calculator-mcp/blob/main/config/config.yaml)
+  to `${HOME}/cfg/calculator-mcp/config.yaml`.
 
 ```bash
-# assuming config.yaml placed in my home folder
 export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config.yaml"
 ```
 
 ## Usage
 
-1. Ensure `CALCULATOR_MCP_CONFIG` is properly setup, and run:
+1. Simply run
 
 ```bash
 calculator-mcp
