@@ -30,6 +30,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Fixed
 
+## [0.0.29] - 2026-09-29
+
+### Added
+
+### Changed
+
+### Fixed
+
 - Image version label set from the `APP_VERSION` build argument, which
   `build-deploy` passes; images were labeled `0.0.0-dev`.
 
