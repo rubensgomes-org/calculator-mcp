@@ -10,7 +10,7 @@
 #   runtime : the same base image, running as a non-root user, carrying only
 #             /opt/venv from the builder.
 #
-# Build:  docker build --build-arg VERSION="$(poetry version -s)" \
+# Build:  docker build --build-arg APP_VERSION="$(poetry version -s)" \
 #             -t "calculator-mcp:$(poetry version -s)" -t calculator-mcp:latest .
 # Run:    docker run --rm -p 9999:8080 "calculator-mcp:$(poetry version -s)"
 # Verify: curl http://127.0.0.1:9999/health   ->   OK
@@ -28,7 +28,7 @@ FROM ${PYTHON_IMAGE} AS builder
 
 # Matches the Poetry release that generated poetry.lock, so the lock is
 # consumed as-is rather than re-resolved.
-ARG POETRY_VERSION=2.4.3
+ARG POETRY_VERSION=2.5.1
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -101,12 +101,12 @@ FROM ${PYTHON_IMAGE} AS runtime
 
 # Deliberately NOT a real version number. This only feeds the OCI label below,
 # and a plausible-looking default would silently drift from pyproject.toml on
-# every release. Pass --build-arg VERSION="$(poetry version -s)" to set it.
-ARG VERSION=0.0.0-dev
+# every release. Pass --build-arg APP_VERSION="$(poetry version -s)" to set it.
+ARG APP_VERSION=0.0.0-dev
 
 LABEL org.opencontainers.image.title="calculator-mcp" \
       org.opencontainers.image.description="MCP server exposing 16 calculator tools over Streamable HTTP" \
-      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.source="https://github.com/rubensgomes-org/calculator-mcp" \
       org.opencontainers.image.url="https://github.com/rubensgomes-org/calculator-mcp" \
       org.opencontainers.image.licenses="MIT" \

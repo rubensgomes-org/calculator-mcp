@@ -65,7 +65,7 @@ The image runs the FastMCP server over the Streamable HTTP transport.
 
     ```bash
     # Build
-    docker build --build-arg VERSION="$(poetry version -s)" \
+    docker build --build-arg APP_VERSION="$(poetry version -s)" \
         -t "calculator-mcp:$(poetry version -s)" -t calculator-mcp:latest .
     ```
 
@@ -123,7 +123,7 @@ The image runs the FastMCP server over the Streamable HTTP transport.
 
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 \
-    --build-arg VERSION="$(poetry version -s)" \
+    --build-arg APP_VERSION="$(poetry version -s)" \
     -t "calculator-mcp:$(poetry version -s)" .
 ```
 

@@ -17,9 +17,9 @@ services:
       dockerfile: Dockerfile
       args:
         # Set from the shell so the label tracks pyproject.toml:
-        #   VERSION="$(poetry version -s)" docker compose up --build -d
-        VERSION: "${VERSION:-0.0.0-dev}"
-    image: "calculator-mcp:${VERSION:-latest}"
+        #   APP_VERSION="$(poetry version -s)" docker compose up --build -d
+        APP_VERSION: "${APP_VERSION:-0.0.0-dev}"
+    image: "calculator-mcp:${APP_VERSION:-latest}"
     container_name: calculator-mcp
 
     # Runs tini as PID 1: reaps zombies and forwards SIGTERM. Not strictly

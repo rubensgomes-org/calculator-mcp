@@ -67,7 +67,7 @@ jobs:
       registry-name: ${{ needs.registry.outputs.registry-name }}
       artifact-id: calculator-mcp
       python-version: '3.14'
-      poetry-version: '2.4.3'
+      poetry-version: '2.5.1'
       azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
       azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
       azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}

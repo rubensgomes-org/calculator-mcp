@@ -50,7 +50,7 @@ jobs:
     with:
       environment_name: ${{ inputs.environment_name }}
       acr_name: ${{ needs.resolve-acr.outputs.acr_name }}
-      apps: '["mathmcp"]'
-      health_probe_paths: '{"mathmcp":"/health"}'
+      apps: '["mathmcp","mathagent"]'
+      health_probe_paths: '{"mathmcp":"/health","mathagent":"/health"}'
     secrets:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
