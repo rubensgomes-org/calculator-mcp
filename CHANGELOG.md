@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.30] - 2026-09-29
+
+### Added
+
 - README Poetry and Azure badges and a Links section to project docs.
 
 ### Changed
