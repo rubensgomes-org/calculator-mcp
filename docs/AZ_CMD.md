@@ -1,10 +1,8 @@
-# AZ_CMD
+# Azure CLI Commands
 
 This file contains handy az-cli commands used in this project.
 
-## Azure CLI Commands
-
-### CAE Commands
+## CAE Commands
 
 - Responds "Succeeded" if the below CAE is provisioned:
 
@@ -22,7 +20,7 @@ This file contains handy az-cli commands used in this project.
       -g "rg-rgomesapp-dev"
     ```
 
-### ACR Commands
+## ACR Commands
 
 - List all the repositories in a registry:
 
@@ -68,7 +66,7 @@ This file contains handy az-cli commands used in this project.
     crrgomesdev01.azurecr.io/dev/calculator-mcp:0.0.9
     ```
 
-### ACA Commands
+## ACA Commands
 
 - Display the container app currently configured ingress target port:
 
@@ -167,7 +165,7 @@ This file contains handy az-cli commands used in this project.
       --output table
     ```
 
-### Start / Stop Container App
+## Start / Stop Container App
 
 1. Start by ensuring you have one replica
 
@@ -187,7 +185,7 @@ This file contains handy az-cli commands used in this project.
       --min-replicas 0
     ```
 
-### Connect to Container App Console + Debug Console
+## Connect to Container App Console + Debug Console
 
 1. Shell into the real container app shell:
 
@@ -208,7 +206,7 @@ This file contains handy az-cli commands used in this project.
       --resource-group "rg-rgomesapp-dev"
     ```
 
-### Other Miscellaneous Container App Commands
+## Other Miscellaneous Container App Commands
 
 1. Find the HTTP endpoint URL:
 

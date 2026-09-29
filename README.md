@@ -1,8 +1,10 @@
 # Calculator MCP Server
 
-[![python](https://img.shields.io/badge/python-3.14.7-0969da)](https://www.python.org/downloads/release/python-3147/)
+[![Python](https://img.shields.io/badge/Python-3.14%2B-0969da?logo=python)](https://www.python.org/downloads/release/python-3147/)
+[![Poetry](https://img.shields.io/badge/Poetry-2.5%2B-0969da?logo=poetry)](https://python-poetry.org/)
+[![Microsoft](https://img.shields.io/badge/Microsoft-Azure-0969da)](https://azure.microsoft.com/en-us)
+[![AI Assisted](https://img.shields.io/badge/AI%20Assisted-Development-d29922)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
 [![License](https://img.shields.io/badge/License-MIT-0969da)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE)
-[![AI--Assisted](https://img.shields.io/badge/AI--Assisted-Development-8250df)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
 
 `calculator-mcp` is an MCP (Model Context Protocol) server that exposes 16
 arithmetic operations as callable tools for use by LLMs within agentic
@@ -116,11 +118,24 @@ curl -v http://localhost:8080/health
 
 3. To stop, go to the running terminal and press `Ctrl+C`
 
-
 ## License
 
 The project is licensed under
 [MIT License](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE).
+
+## Links
+
+- [GitHub Project](https://github.com/rubensgomes-org/calculator-mcp)
+- [Azure CLI Commands](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/AZ_CMD.md)
+- [Azure Container App Provisioning](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/AZURE_ACA.md)
+- [Development Setup](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/DEVELOPMENT_SETUP.md)
+- [Docker](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/DOCKER.md)
+- [Integration Test](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/INTEGRATION_TEST.md)
+- [MCP](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/MCP.md)
+- [Miscellaneous](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/MISC.md)
+- [OAuth Diagram](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/OAUTH_DIAGRAM.md)
+- [PyCharm](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/PYCHARM.md)
+- [Release Process](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/RELEASE.md)
 
 ---
 Author: [Rubens Gomes](https://rubensgomes.com/)

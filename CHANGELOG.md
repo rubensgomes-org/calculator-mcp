@@ -26,7 +26,12 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- README Poetry and Azure badges and a Links section to project docs.
+
 ### Changed
+
+- README Python badge now shows `3.14+`.
+- `docs/AZ_CMD.md` retitled "Azure CLI Commands" with flattened headings.
 
 ### Fixed
 
