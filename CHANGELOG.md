@@ -30,6 +30,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Fixed
 
+## [0.0.32] - 2026-09-30
+
+### Added
+
+### Changed
+
+### Fixed
+
 - Workflow inputs are passed to `run` steps via environment variables to
   prevent script injection.
 - Sonar analyzes `.github` and reports to `rubensgomes-org_calculator-mcp`
