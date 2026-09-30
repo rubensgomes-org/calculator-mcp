@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.31] - 2026-09-30
+
+### Added
+
+### Changed
+
 - Tools no longer log each call; `LoggingMiddleware` covers it.
   `/health` logs at DEBUG.
 
