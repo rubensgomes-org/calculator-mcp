@@ -39,7 +39,8 @@
 """FastMCP server exposing calculator operations as tools."""
 
 import logging
-from collections.abc import AsyncIterator
+import math
+from collections.abc import AsyncIterator, Callable
 from importlib.metadata import PackageNotFoundError, version
 
 from calculator_lib import Calculator
@@ -84,14 +85,12 @@ mcp = FastMCP(
     "Calculator MCP Server",
     version=_VERSION,
     instructions=(
-        "This server provides 16 calculator operations as tools. "
-        "Use add, subtract, multiply, divide, power, nth_root, modulo, "
-        "and floor_divide for two-operand arithmetic. "
-        "Use sqrt, absolute, floor, ceil, log10, ln, and exp for "
-        "single-operand operations. "
-        "Use round_number to round a value to a given number of decimals. "
-        "All inputs are floats; division, modulo, and floor_divide raise "
-        "ValueError when the divisor is zero."
+        "This server provides calculator operations as tools, covering "
+        "arithmetic, powers and roots, logarithms, and rounding. "
+        "All inputs are floats. Invalid inputs, or results that are not "
+        "finite real numbers, raise ValueError. Results too large to "
+        "represent raise OverflowError, and zero raised to a negative "
+        "power raises ZeroDivisionError."
     ),
     website_url=get_config().server.homepage,
     lifespan=_logging_lifespan,
@@ -108,6 +107,22 @@ mcp.add_middleware(
 )
 
 
+def _compute(operation: Callable[..., float], *args: float) -> float:
+    """Run ``operation`` and return its result as a finite float.
+
+    Raises:
+        ValueError: If the result is complex, infinite, or NaN, none of
+            which JSON can represent as a number.
+    """
+    result = operation(*args)
+    if isinstance(result, complex):
+        raise ValueError(f"Result is not a real number: {result}")
+    real_result = float(result)
+    if not math.isfinite(real_result):
+        raise ValueError(f"Result is not finite: {real_result}")
+    return real_result
+
+
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(
     request: Request,  # pylint: disable=unused-argument
@@ -120,7 +135,7 @@ async def health_check(
     Returns:
         A ``PlainTextResponse`` with body ``"OK"``.
     """
-    logger.info("health_check called: returning text response: OK")
+    logger.debug("health_check called: returning text response: OK")
     return PlainTextResponse("OK")
 
 
@@ -145,11 +160,7 @@ def add(a: float, b: float) -> float:
     Returns:
         The sum a + b.
     """
-    logger.info("add called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.add")
-    result: float = _calc.add(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.add, a, b)
 
 
 @mcp.tool(
@@ -170,11 +181,7 @@ def subtract(a: float, b: float) -> float:
     Returns:
         The difference a - b.
     """
-    logger.info("subtract called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.subtract")
-    result: float = _calc.subtract(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.subtract, a, b)
 
 
 @mcp.tool(
@@ -195,11 +202,7 @@ def multiply(a: float, b: float) -> float:
     Returns:
         The product a * b.
     """
-    logger.info("multiply called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.multiply")
-    result: float = _calc.multiply(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.multiply, a, b)
 
 
 @mcp.tool(
@@ -223,11 +226,7 @@ def divide(a: float, b: float) -> float:
     Raises:
         ValueError: If b is zero.
     """
-    logger.info("divide called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.divide")
-    result: float = _calc.divide(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.divide, a, b)
 
 
 @mcp.tool(
@@ -247,12 +246,13 @@ def power(a: float, b: float) -> float:
 
     Returns:
         The result of a ** b.
+
+    Raises:
+        ValueError: If the result is not a finite real number.
+        OverflowError: If the result is too large to represent.
+        ZeroDivisionError: If a is zero and b is negative.
     """
-    logger.info("power called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.power")
-    result: float = _calc.power(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.power, a, b)
 
 
 @mcp.tool(
@@ -276,11 +276,7 @@ def nth_root(a: float, b: float) -> float:
     Raises:
         ValueError: If the input is invalid (e.g. even root of negative).
     """
-    logger.info("nth_root called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.nth_root")
-    result: float = _calc.nth_root(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.nth_root, a, b)
 
 
 @mcp.tool(
@@ -304,11 +300,7 @@ def modulo(a: float, b: float) -> float:
     Raises:
         ValueError: If b is zero.
     """
-    logger.info("modulo called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.modulo")
-    result: float = _calc.modulo(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.modulo, a, b)
 
 
 @mcp.tool(
@@ -332,11 +324,7 @@ def floor_divide(a: float, b: float) -> float:
     Raises:
         ValueError: If b is zero.
     """
-    logger.info("floor_divide called with a=%s, b=%s", a, b)
-    logger.debug("delegating to library: _calc.floor_divide")
-    result: float = _calc.floor_divide(a, b)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.floor_divide, a, b)
 
 
 # --- Single-operand tools ---
@@ -362,11 +350,7 @@ def sqrt(a: float) -> float:
     Raises:
         ValueError: If a is negative.
     """
-    logger.info("sqrt called with a=%s", a)
-    logger.debug("delegating to library: _calc.sqrt")
-    result: float = _calc.sqrt(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.sqrt, a)
 
 
 @mcp.tool(
@@ -386,11 +370,7 @@ def absolute(a: float) -> float:
     Returns:
         The absolute value of a.
     """
-    logger.info("absolute called with a=%s", a)
-    logger.debug("delegating to library: _calc.absolute")
-    result: float = _calc.absolute(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.absolute, a)
 
 
 @mcp.tool(
@@ -410,11 +390,7 @@ def floor(a: float) -> float:
     Returns:
         The largest integer less than or equal to a.
     """
-    logger.info("floor called with a=%s", a)
-    logger.debug("delegating to library: _calc.floor")
-    result: float = _calc.floor(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.floor, a)
 
 
 @mcp.tool(
@@ -434,11 +410,7 @@ def ceil(a: float) -> float:
     Returns:
         The smallest integer greater than or equal to a.
     """
-    logger.info("ceil called with a=%s", a)
-    logger.debug("delegating to library: _calc.ceil")
-    result: float = _calc.ceil(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.ceil, a)
 
 
 @mcp.tool(
@@ -461,11 +433,7 @@ def log10(a: float) -> float:
     Raises:
         ValueError: If a is not positive.
     """
-    logger.info("log10 called with a=%s", a)
-    logger.debug("delegating to library: _calc.log10")
-    result: float = _calc.log10(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.log10, a)
 
 
 @mcp.tool(
@@ -488,11 +456,7 @@ def ln(a: float) -> float:
     Raises:
         ValueError: If a is not positive.
     """
-    logger.info("ln called with a=%s", a)
-    logger.debug("delegating to library: _calc.ln")
-    result: float = _calc.ln(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.ln, a)
 
 
 @mcp.tool(
@@ -511,12 +475,11 @@ def exp(a: float) -> float:
 
     Returns:
         The value of e ** a.
+
+    Raises:
+        OverflowError: If the result is too large to represent.
     """
-    logger.info("exp called with a=%s", a)
-    logger.debug("delegating to library: _calc.exp")
-    result: float = _calc.exp(a)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.exp, a)
 
 
 # --- Round tool ---
@@ -540,8 +503,4 @@ def round_number(a: float, decimals: int = 0) -> float:
     Returns:
         The rounded value.
     """
-    logger.info("round_number called with a=%s, decimals=%s", a, decimals)
-    logger.debug("delegating to library: _calc.round_number")
-    result: float = _calc.round_number(a, decimals)
-    logger.debug("result=%s", result)
-    return result
+    return _compute(_calc.round_number, a, decimals)

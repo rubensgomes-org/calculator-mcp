@@ -90,6 +90,8 @@ class TestSubtract:
 
 
 class TestMultiply:
+    """Tests for the multiply tool."""
+
     def test_positive_numbers(self):
         assert multiply(3, 7) == 21.0
 
@@ -98,6 +100,10 @@ class TestMultiply:
 
     def test_negative_numbers(self):
         assert multiply(-3, -4) == 12.0
+
+    def test_infinite_result(self):
+        with pytest.raises(ValueError):
+            multiply(1e308, 10)
 
 
 class TestDivide:
@@ -113,6 +119,8 @@ class TestDivide:
 
 
 class TestPower:
+    """Tests for the power tool."""
+
     def test_square(self):
         assert power(2, 3) == 8.0
 
@@ -121,6 +129,18 @@ class TestPower:
 
     def test_negative_exponent(self):
         assert power(2, -1) == 0.5
+
+    def test_complex_result(self):
+        with pytest.raises(ValueError):
+            power(-8, 0.5)
+
+    def test_overflow(self):
+        with pytest.raises(OverflowError):
+            power(10.0, 400.0)
+
+    def test_zero_to_negative_power(self):
+        with pytest.raises(ZeroDivisionError):
+            power(0, -1)
 
 
 class TestNthRoot:
@@ -233,6 +253,10 @@ class TestExp:
 
     def test_one(self):
         assert exp(1) == pytest.approx(math.e)
+
+    def test_overflow(self):
+        with pytest.raises(OverflowError):
+            exp(1000)
 
 
 # --- Round tool ---

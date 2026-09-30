@@ -28,7 +28,13 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- Tools no longer log each call; `LoggingMiddleware` covers it.
+  `/health` logs at DEBUG.
+
 ### Fixed
+
+- Complex, infinite, and NaN tool results now return a tool error instead
+  of breaking MCP client output validation.
 
 ## [0.0.30] - 2026-09-29
 

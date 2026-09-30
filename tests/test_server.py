@@ -162,6 +162,21 @@ async def test_divide_by_zero():
             await client.call_tool("divide", {"a": 1, "b": 0})
 
 
+@pytest.mark.parametrize(
+    ("name", "arguments"),
+    [
+        ("power", {"a": -8, "b": 0.5}),
+        ("multiply", {"a": 1e308, "b": 10}),
+        ("exp", {"a": 1000}),
+    ],
+)
+async def test_unrepresentable_result(name, arguments):
+    """Test that complex or non-finite results return a tool error."""
+    async with Client(mcp) as client:
+        with pytest.raises(ToolError):
+            await client.call_tool(name, arguments)
+
+
 # --- Health check ---
 
 

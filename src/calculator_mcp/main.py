@@ -47,6 +47,7 @@ from calculator_mcp.server import mcp
 
 logger = logging.getLogger(__name__)
 
+# name available and used to push this package to PyPI
 _DISTRIBUTION_NAME = "calculator-mcp-rubens"
 
 
