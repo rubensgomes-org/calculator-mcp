@@ -38,8 +38,10 @@ jobs:
       acr_name: ${{ steps.resolve.outputs.acr_name }}
     steps:
       - id: resolve
+        env:
+          ENVIRONMENT_NAME: ${{ inputs.environment_name }}
         run: |
-          case "${{ inputs.environment_name }}" in
+          case "$ENVIRONMENT_NAME" in
             dev) echo "acr_name=crrgomesdev01" >> "$GITHUB_OUTPUT" ;;
             lab) echo "acr_name=crrgomeslab02" >> "$GITHUB_OUTPUT" ;;
           esac

@@ -48,12 +48,14 @@ jobs:
     steps:
       - name: Resolve the registry name
         id: registry
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
         run: |
           echo "=============================================================="
           echo " STEP: Resolve the registry name"
           echo "=============================================================="
           set -euo pipefail
-          case "${{ inputs.environment }}" in
+          case "$ENVIRONMENT" in
             dev) echo "registry-name=crrgomesdev01" >> "$GITHUB_OUTPUT" ;;
             lab) echo "registry-name=crrgomeslab02" >> "$GITHUB_OUTPUT" ;;
           esac
@@ -113,13 +115,15 @@ jobs:
 
       - name: Resolve the published image reference
         id: image
+        env:
+          TAG: ${{ inputs.tag }}
         run: |
           echo "=============================================================="
           echo " STEP: Resolve the published image reference"
           echo "=============================================================="
           set -euo pipefail
           repository="${ENVIRONMENT}/${ARTIFACT_ID}"
-          tag="${{ inputs.tag }}"
+          tag="$TAG"
           if [ -z "$tag" ]; then
             tag="$(az acr repository show-tags \
               --name "$REGISTRY_NAME" \
