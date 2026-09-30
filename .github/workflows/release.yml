@@ -215,16 +215,6 @@ jobs:
       - name: Set up Python and Poetry
         uses: rubensgomes-org/azure-workflows/.github/actions/setup-python-poetry@v0
 
-      - name: Install tools and dependencies
-        shell: bash
-        run: |
-          echo "=============================================================="
-          echo " STEP: Install tools and dependencies"
-          echo "=============================================================="
-          set -euo pipefail
-
-          poetry --no-cache -v install
-
       - name: Build the package
         shell: bash
         run: |
