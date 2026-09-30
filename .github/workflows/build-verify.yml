@@ -1,5 +1,5 @@
 # =============================================================================
-# build-verify
+# Build and Verify
 #
 # Installs dependencies, then runs static type checking, static code
 # analysis, and unit test coverage, then blocks on the SonarCloud quality
@@ -11,7 +11,7 @@
 # refer to the `AI_DISCLAIMER.md` document located in the project's root
 # directory.
 # =============================================================================
-name: build-verify
+name: Build and Verify
 
 on:
     push:
@@ -32,6 +32,7 @@ concurrency:
 
 jobs:
     build-verify:
+        name: Run static analysis, tests, and SonarCloud scan
         uses: rubensgomes-org/azure-workflows/.github/workflows/poetry-build-verify.yml@v0
         with:
             run-sonar: ${{ github.event_name != 'workflow_dispatch' || inputs.run-sonar }}

@@ -93,7 +93,7 @@ branch.
 
 ### PYPI_API_TOKEN
 
-The `release` workflow reads an Action secret named `PYPI_API_TOKEN` to
+The `Release to PyPI` workflow reads an Action secret named `PYPI_API_TOKEN` to
 publish the package to PyPI.
 
 - Create an Action repository secret in this repository and name it
@@ -105,7 +105,7 @@ publish the package to PyPI.
 
 ### AZURE_CLIENT_SECRET
 
-The `repo-delete` workflow reads an Action secret named
+The `Delete ACR Repository` workflow reads an Action secret named
 `AZURE_CLIENT_SECRET`, used to sign in to Azure Cloud.
 
 - Create an Action repository secret in this repository and name it
@@ -117,7 +117,7 @@ The `repo-delete` workflow reads an Action secret named
 
 ### SONAR_TOKEN
 
-The `build-verify` workflow reads an Action secret named `SONAR_TOKEN`, used
+The `Build and Verify` workflow reads an Action secret named `SONAR_TOKEN`, used
 during the SonarCloud analysis.
 
 - Create an Action repository secret in this repository and name it
@@ -131,7 +131,7 @@ during the SonarCloud analysis.
 
 ### AZURE_CLIENT_ID
 
-The `repo-delete` workflow reads an Action variable named
+The `Delete ACR Repository` workflow reads an Action variable named
 `AZURE_CLIENT_ID`, used to sign in to Azure Cloud.
 
 - Create an Action repository variable in this repository and name it
@@ -143,7 +143,7 @@ The `repo-delete` workflow reads an Action variable named
 
 ### AZURE_SUBSCRIPTION_ID
 
-The `repo-delete` workflow reads an Action variable named
+The `Delete ACR Repository` workflow reads an Action variable named
 `AZURE_SUBSCRIPTION_ID`, used to sign in to Azure Cloud.
 
 - Create an Action repository variable in this repository and name it
@@ -155,7 +155,7 @@ The `repo-delete` workflow reads an Action variable named
 
 ### AZURE_TENANT_ID
 
-The `repo-delete` workflow reads an Action variable named
+The `Delete ACR Repository` workflow reads an Action variable named
 `AZURE_TENANT_ID`, used to sign in to Azure Cloud.
 
 - Create an Action repository variable in this repository and name it

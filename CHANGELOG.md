@@ -15,7 +15,7 @@ is cut.
 The order is:
 
 1. Write what changed under `[Unreleased]`, commit, and push to `main`.
-2. Run the `release` workflow.
+2. Run the `Release to PyPI` workflow.
 
 It renames `[Unreleased]` to the version being released, adds a fresh empty
 `[Unreleased]` above it, and pushes that change to `main` itself. It rejects
