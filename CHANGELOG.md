@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.35] - 2026-10-01
+
+### Added
+
+### Changed
+
 - `server.homepage` removed from config; the homepage URL is now read from
   `[project.urls]` in `pyproject.toml`.
 - `mcp` declared as a direct dependency; unused `key-value` removed.
