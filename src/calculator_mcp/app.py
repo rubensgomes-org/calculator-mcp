@@ -61,6 +61,7 @@ logger = logging.getLogger("calculator_mcp.app")
 # Distribution name on PyPI, which differs from the ``calculator_mcp``
 # import package name.
 _DISTRIBUTION = "calculator-mcp-rubens"
+_HOMEPAGE = "https://github.com/rubensgomes-org/calculator-mcp"
 
 try:
     _VERSION = version(_DISTRIBUTION)
@@ -68,8 +69,9 @@ except PackageNotFoundError:  # pragma: no cover - source checkout only
     logger.warning("Distribution %s not installed", _DISTRIBUTION)
     _VERSION = "0.0.0+unknown"
 
+# Validate config.yaml at import so hosts that skip main() fail fast.
 try:
-    _HOMEPAGE = get_config().server.homepage
+    get_config()
 except ConfigError as error:  # pragma: no cover - tested in a subprocess
     # Logging is not configured yet, so report on stderr and exit.
     raise SystemExit(f"calculator-mcp: {error}") from error

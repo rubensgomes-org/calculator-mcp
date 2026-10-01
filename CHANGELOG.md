@@ -28,6 +28,8 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `server.homepage` removed from config; the homepage URL is now a constant.
+
 ### Fixed
 
 ## [0.0.34] - 2026-10-01

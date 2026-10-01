@@ -9,8 +9,6 @@ server:
     transport: "http"
     # The port on host the MCP server binds to at start-up
     port: 8080
-    # the home page of the "Calculator MCP" project
-    homepage: "https://github.com/rubensgomes-org/calculator-mcp"
 
 # =============================================================================
 # Logging Configuration

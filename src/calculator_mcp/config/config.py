@@ -67,7 +67,6 @@ class ServerConfig(BaseModel):
     host: str
     transport: Literal["http", "stdio"]
     port: int = Field(ge=1, le=_MAX_PORT)
-    homepage: str
 
 
 class AppConfig(BaseModel):

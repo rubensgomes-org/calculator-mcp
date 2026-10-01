@@ -67,7 +67,6 @@ def app_config() -> config.AppConfig:
                 "host": "127.0.0.1",
                 "transport": "http",
                 "port": 9000,
-                "homepage": "https://example.com",
             },
             "logging": {
                 "version": 1,

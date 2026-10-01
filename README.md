@@ -12,13 +12,16 @@
 arithmetic operations as callable tools for use by LLMs within agentic
 applications. It contains no mathematical logic of its own. Instead, each tool
 is a thin synchronous wrapper that logs its arguments and delegates execution to
-the open-source `calculator-lib-rubens` package published on PyPI.
+the
+open-source [calculator-lib](https://github.com/rubensgomes-org/calculator-lib)
+package published on PyPI 
+as [calculator-mcp-rubens](https://pypi.org/project/calculator-mcp-rubens/).
 
 ---
 
 ## Features
 
-16 calculator functions exposed through an MCP server for consumption by AI 
+16 calculator functions exposed through an MCP server for consumption by AI
 agentic programs:
 
 - **Two-operand operations**: `add`, `subtract`, `multiply`, `divide`, `power`,
@@ -47,8 +50,8 @@ request:
 Non-supported JSON-RPC methods:
 
 - **Logging & Progress Utilities** (e.g. `notifications/progress`)
-- **Server-to-Client** calls are not supported (e.g. 
-`sampling/createMessage`, `elicitation/create`, `roots/list`)
+- **Server-to-Client** calls are not supported (e.g.
+  `sampling/createMessage`, `elicitation/create`, `roots/list`)
 
 ## AI Disclaimer
 
