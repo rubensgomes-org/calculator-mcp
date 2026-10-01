@@ -268,14 +268,14 @@ develop = ["aiomisc-pytest", "coveralls", "pytest", "pytest-cov", "pytest-rerunf
 
 [[package]]
 name = "calculator-lib-rubens"
-version = "0.2.0"
+version = "0.2.2"
 description = "A python calculator library."
 optional = false
-python-versions = "<4.0.0,>=3.14.0"
+python-versions = "<4.0.0,>=3.14"
 groups = ["main"]
 files = [
-    {file = "calculator_lib_rubens-0.2.0-py3-none-any.whl", hash = "sha256:5d4af030d1ca7d55ddfa1292cbc4ae97b347be27e61c24eb18710acd9d0bfd4b"},
-    {file = "calculator_lib_rubens-0.2.0.tar.gz", hash = "sha256:831314091a3bd9abe2a3c20146004fd5b46558cde32f5e1c215130c0b239f29f"},
+    {file = "calculator_lib_rubens-0.2.2-py3-none-any.whl", hash = "sha256:768f59aa521dfff0b45431e6228ec95e98a4f2310698e434bedf3aa05c73b327"},
+    {file = "calculator_lib_rubens-0.2.2.tar.gz", hash = "sha256:472a7812459470cc19fdc31a2e3688c8004f99503285d2621ca1a2a40caaa381"},
 ]
 
 [[package]]
@@ -1042,14 +1042,14 @@ server = ["authlib (>=1.6.11)", "cyclopts (>=4.0.0)", "exceptiongroup (>=1.2.2)"
 
 [[package]]
 name = "filelock"
-version = "4.0.8"
+version = "4.0.9"
 description = "A platform independent file lock."
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "filelock-4.0.8-py3-none-any.whl", hash = "sha256:325ff22f358c18443b1fcdfa0a7aa3faec4b500c2807c554719da4567b533d31"},
-    {file = "filelock-4.0.8.tar.gz", hash = "sha256:733d9b6b153fc63672f86104324186818b6bbe9dd7db84e9bb9887b6a04a2775"},
+    {file = "filelock-4.0.9-py3-none-any.whl", hash = "sha256:9287fd61b99a806e5202be29a83034c0808a1b9830e820537c2f5773981f7eeb"},
+    {file = "filelock-4.0.9.tar.gz", hash = "sha256:635e7d67fa92654eed444e75e9ca18426d34e77ad9c469bf4373f75a932f7b22"},
 ]
 
 [[package]]
@@ -3490,4 +3490,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4.0.0"
-content-hash = "2de2fe6971fc6ed35552b19f5164b277dec74afe1a8abec59f66251e02e23481"
+content-hash = "f9da3b4b17b027fadd1c3e7339a0f7971695ca86795a0937684c8fb5174c82b6"
