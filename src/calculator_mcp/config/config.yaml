@@ -9,10 +9,9 @@ server:
     transport: "http"
     # The port on host the MCP server binds to at start-up
     port: 8080
-    # HTTP client timeout (seconds) to wait for a response from MCP server
-    timeout: 10
-    # Stateless HTTP mode (Modern Era, 2026-07-28 spec): true
-    # Sateful HTTP mode (Legacy Era, 2025-06-18 spec): false
+    # Both MCP protocols are served either way. For legacy (2025-06-18)
+    # clients, false issues an Mcp-Session-Id on initialize and true does
+    # not. Modern (2026-07-28) clients never use sessions.
     stateless: true
     # the home page of the "Calculator MCP" project
     homepage: "https://github.com/rubensgomes-org/calculator-mcp"

@@ -80,7 +80,7 @@ RUN poetry build --format wheel
 RUN python -c "import glob, zipfile; \
 w = glob.glob('dist/*.whl')[0]; \
 names = zipfile.ZipFile(w).namelist(); \
-assert 'calculator_mcp/config.yaml' in names, names; \
+assert 'calculator_mcp/config/config.yaml' in names, names; \
 print('OK: config.yaml present in', w)"
 
 # Dependencies are already pinned above, so --no-deps --no-index guarantees

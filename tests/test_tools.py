@@ -36,13 +36,13 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
 
-"""Unit tests for the tool functions in calculator_mcp.server."""
+"""Unit tests for the tool functions in calculator_mcp.tools."""
 
 import math
 
 import pytest
 
-from calculator_mcp.server import (
+from calculator_mcp.tools import (
     absolute,
     add,
     ceil,

@@ -26,9 +26,33 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `resources.py`: `calculator://constants` resource and
+  `calculator://operations/{name}` resource template.
+- `prompts.py`: `solve_word_problem` prompt.
+- Integration client lists and reads resources and gets prompts.
+- `docs/INTEGRATION_TEST.md`: verbose `curl` samples for each request.
+
 ### Changed
 
+- `config.py` and `config.yaml` moved to the `calculator_mcp.config`
+  package; `from calculator_mcp.config import get_config` is unchanged.
+- Tools moved from `server.py` to a `tools.py` FastMCP server that
+  `server.py` mounts; tool names are unchanged.
+- Startup log names both MCP protocols and whether legacy sessions are
+  enabled.
+
+### Removed
+
+- `server.timeout` from `config.yaml`: FastMCP cannot enforce a timeout on
+  sync tools. The setting is ignored if still present.
+
 ### Fixed
+
+- README and `config.yaml` comments: both MCP protocols are served
+  regardless of `stateless`, which only controls legacy sessions; the
+  server does support Streamable HTTP.
+- `docs/INTEGRATION_TEST.md`: `notifications/initialized` samples no
+  longer send an `id`, which made the server reply "Method not found".
 
 ## [0.0.32] - 2026-09-30
 

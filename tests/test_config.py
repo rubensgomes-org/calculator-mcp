@@ -45,7 +45,7 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from calculator_mcp import config
+from calculator_mcp.config import config
 
 
 @pytest.fixture(autouse=True)
@@ -67,7 +67,6 @@ def app_config() -> config.AppConfig:
                 "host": "127.0.0.1",
                 "transport": "http",
                 "port": 9000,
-                "timeout": 10,
                 "stateless": False,
                 "homepage": "https://example.com",
             },

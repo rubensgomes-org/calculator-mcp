@@ -56,6 +56,7 @@ from key_value.aio.stores.filetree import (
     FileTreeV1KeySanitizationStrategy,
 )
 from key_value.aio.wrappers.encryption import FernetEncryptionWrapper
+from mcp.types import TextContent, TextResourceContents
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -158,18 +159,66 @@ _SAMPLE_ARGS: dict[str, dict[str, float | int]] = {
 }
 
 
+_SAMPLE_OPERATION_URI = "calculator://operations/add"
+
+_SAMPLE_PROMPT_ARGS = {"problem": "A pizza costs 12.50 split 4 ways."}
+
+
+def _text(content: object) -> str:
+    """Return the text of a text content item, else its ``repr``."""
+    if isinstance(content, (TextContent, TextResourceContents)):
+        return content.text
+    return repr(content)
+
+
+async def exercise_tools(client: Client) -> None:
+    """List and call each tool."""
+    tools = await client.list_tools()
+    print(f"Connected — {len(tools)} tools available:\n")
+    for tool in tools:
+        print(f"  - {tool.name}: {tool.description}")
+        args = _SAMPLE_ARGS.get(tool.name, {})
+        result = await client.call_tool(tool.name, args)
+        print(f"    call_tool({tool.name}, {args}) => {result}\n")
+
+
+async def exercise_resources(client: Client) -> None:
+    """List and read each resource, then read a sample template URI."""
+    resources = await client.list_resources()
+    print(f"{len(resources)} resources available:\n")
+    for resource in resources:
+        contents = await client.read_resource(resource.uri)
+        print(f"  - {resource.uri} => {_text(contents[0])}\n")
+
+    templates = await client.list_resource_templates()
+    print(f"{len(templates)} resource templates available:\n")
+    for template in templates:
+        print(f"  - {template.uri_template}")
+    contents = await client.read_resource(_SAMPLE_OPERATION_URI)
+    print(f"    read_resource({_SAMPLE_OPERATION_URI}) =>")
+    print(f"{_text(contents[0])}\n")
+
+
+async def exercise_prompts(client: Client) -> None:
+    """List and get each prompt."""
+    prompts = await client.list_prompts()
+    print(f"{len(prompts)} prompts available:\n")
+    for prompt in prompts:
+        result = await client.get_prompt(prompt.name, _SAMPLE_PROMPT_ARGS)
+        print(f"  - {prompt.name}: {prompt.description}")
+        print(f"    get_prompt({prompt.name}) =>")
+        print(f"{_text(result.messages[0].content)}\n")
+
+
 async def run_client(config: ClientConfig) -> None:
-    """Connect to the MCP server, list and call each tool."""
+    """Connect to the MCP server and exercise its tools, resources, and
+    prompts."""
     client = create_client(config)
 
     async with client:
-        tools = await client.list_tools()
-        print(f"Connected — {len(tools)} tools available:\n")
-        for tool in tools:
-            print(f"  - {tool.name}: {tool.description}")
-            args = _SAMPLE_ARGS.get(tool.name, {})
-            result = await client.call_tool(tool.name, args)
-            print(f"    call_tool({tool.name}, {args}) => {result}\n")
+        await exercise_tools(client)
+        await exercise_resources(client)
+        await exercise_prompts(client)
 
 
 def parse_config_path() -> Path:

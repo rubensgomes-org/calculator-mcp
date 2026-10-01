@@ -102,7 +102,7 @@ automatically:
   JSON Schema `inputSchema`, including which parameters are required —
   that's what lets FastMCP reject bad arguments before your code runs.
 - The Google-style docstring becomes the tool description the model reads
-  when deciding what to call. This is why `src/calculator_mcp/server.py`
+  when deciding what to call. This is why `src/calculator_mcp/tools.py`
   treats docstrings as a contract rather than internal commentary.
 - A raised `ValueError` (divide by zero, sqrt of a negative) is converted
   into a JSON-RPC tool error — `tests/test_server.py` asserts this by
@@ -136,8 +136,7 @@ annotations = {
 These are hints to the host, not enforcement: nothing is mutated, calling
 twice is safe, and the tool touches no external world. Hosts use them to
 decide whether a call needs a confirmation prompt — which is why a
-calculator can run unattended. `timeout=_TIMEOUT` (10s from config) bounds
-each call.
+calculator can run unattended.
 
 ### This Project's Transport Configuration
 

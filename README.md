@@ -31,23 +31,22 @@ The following are the supported MCP JSON-RPC 2.0 methods:
 
 - **Lifecycle Methods:** `initialize`, `notifications/initialized`
 - **Tools Methods:** `tools/list`, `tools/call`
+- **Resources Methods:** `resources/list`, `resources/templates/list`,
+  `resources/read`
+- **Prompts Methods:** `prompts/list`, `prompts/get`
 
-The following MCP protocols are supported:
+The following MCP protocols are supported, selected by the client per
+request:
 
-- **Legacy MCP (Version: 2025-06-18)** when stateless is true in `config.yaml`
-- **Modern MCP (Version: 2026-07-28)** when stateless is false in `config.yaml`
+- **Legacy MCP (Version: 2025-06-18)**: `initialize` handshake; a
+  `Mcp-Session-Id` is issued only when `stateless` is false in
+  `config.yaml`
+- **Modern MCP (Version: 2026-07-28)**: no handshake or session
 
 ## Non-Supported Features
 
-- **Server-sent events (SSE)** are not supported for the MCP communication.
-- **Streaming communication channels**, such as HTTP Streamable, are not
-  supported. In other words, the MCP server is expected to generate the
-  entire output before sending it.
-
 Non-supported JSON-RPC methods:
 
-- **Resources Methods:** `resources/list`, `resources/read`
-- **Prompts Methods:** `prompts/list`, `prompts/get`
 - **Logging & Progress Utilities**
 - **Server-to-Client** calls are not supported
 

@@ -58,7 +58,6 @@ class ServerConfig(BaseModel):
     host: str
     transport: Literal["http"]
     port: int
-    timeout: int
     stateless: bool = False
     homepage: str
 
@@ -83,7 +82,7 @@ def _resolve_config_path() -> Path:
     env_path = os.environ.get("CALCULATOR_MCP_CONFIG")
     if env_path:
         return Path(env_path)
-    return Path(str(files("calculator_mcp").joinpath("config.yaml")))
+    return Path(str(files("calculator_mcp.config").joinpath("config.yaml")))
 
 
 def load_config(path: Path) -> AppConfig:
