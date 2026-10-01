@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.36] - 2026-10-01
+
+### Added
+
+### Changed
+
 - `release.yml` now builds and publishes via the reusable
   `poetry-publish-pypi.yml` workflow from `azure-workflows`
 
