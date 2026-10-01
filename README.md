@@ -47,8 +47,9 @@ request:
 
 Non-supported JSON-RPC methods:
 
-- **Logging & Progress Utilities**
-- **Server-to-Client** calls are not supported
+- **Logging & Progress Utilities** (e.g. `notifications/progress`)
+- **Server-to-Client** calls are not supported (e.g. 
+`sampling/createMessage`, `elicitation/create`, `roots/list`)
 
 ## AI Disclaimer
 
