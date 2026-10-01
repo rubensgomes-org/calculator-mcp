@@ -44,7 +44,7 @@ from fastmcp import FastMCP
 from mcp.shared.exceptions import MCPError
 from mcp.types import INVALID_PARAMS
 
-from calculator_mcp.tools import tools
+from calculator_mcp.mcp.tools import tools
 
 _OPERATIONS_URI = "calculator://operations/{name}"
 

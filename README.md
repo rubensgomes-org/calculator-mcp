@@ -38,9 +38,8 @@ The following are the supported MCP JSON-RPC 2.0 methods:
 The following MCP protocols are supported, selected by the client per
 request:
 
-- **Legacy MCP (Version: 2025-06-18)**: `initialize` handshake; a
-  `Mcp-Session-Id` is issued only when `stateless` is false in
-  `config.yaml`
+- **Legacy MCP (Version: 2025-06-18)**: `initialize` handshake and
+  `Mcp-Session-Id` session
 - **Modern MCP (Version: 2026-07-28)**: no handshake or session
 
 ## Non-Supported Features
@@ -100,7 +99,7 @@ pip cache purge
   to `${HOME}/cfg/calculator-mcp/config.yaml`.
 
 ```bash
-export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config.yaml"
+export CALCULATORMCP_CONFIG="${HOME}/cfg/calculator-mcp/config.yaml"
 ```
 
 ## Usage

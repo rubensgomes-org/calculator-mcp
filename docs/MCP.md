@@ -102,8 +102,9 @@ automatically:
   JSON Schema `inputSchema`, including which parameters are required —
   that's what lets FastMCP reject bad arguments before your code runs.
 - The Google-style docstring becomes the tool description the model reads
-  when deciding what to call. This is why `src/calculator_mcp/tools.py`
-  treats docstrings as a contract rather than internal commentary.
+  when deciding what to call. This is why
+  `src/calculator_mcp/mcp/tools.py` treats docstrings as a contract rather
+  than internal commentary.
 - A raised `ValueError` (divide by zero, sqrt of a negative) is converted
   into a JSON-RPC tool error — `tests/test_server.py` asserts this by
   expecting `ToolError` from `divide(1, 0)`.
@@ -140,13 +141,15 @@ calculator can run unattended.
 
 ### This Project's Transport Configuration
 
-Only the `http` transport is supported; `main.py` starts it with the
-`config.yaml` settings:
+`server.transport` in `config.yaml` selects `http` (default) or `stdio`.
+For `http`, `main()` in `app.py` passes the `config.yaml` settings:
 
 ```python
-server = get_config().server
 mcp.run(transport=server.transport, host=server.host, port=server.port)
 ```
+
+For `stdio`, it calls `mcp.run(transport="stdio")` and ignores `host` and
+`port`.
 
 The shipped default is `0.0.0.0:8080` — bound to all interfaces
 deliberately so the server is reachable from outside the container.

@@ -67,7 +67,6 @@ def app_config() -> config.AppConfig:
                 "host": "127.0.0.1",
                 "transport": "http",
                 "port": 9000,
-                "stateless": False,
                 "homepage": "https://example.com",
             },
             "logging": {
@@ -97,13 +96,13 @@ def _write(tmp_path, mapping):
 
 def test_resolve_config_path_uses_env_var(tmp_path, monkeypatch):
     custom = tmp_path / "custom.yaml"
-    monkeypatch.setenv("CALCULATOR_MCP_CONFIG", str(custom))
+    monkeypatch.setenv("CALCULATORMCP_CONFIG", str(custom))
     # pylint: disable=protected-access
     assert config._resolve_config_path() == custom
 
 
 def test_resolve_config_path_falls_back_to_package(monkeypatch):
-    monkeypatch.delenv("CALCULATOR_MCP_CONFIG", raising=False)
+    monkeypatch.delenv("CALCULATORMCP_CONFIG", raising=False)
     # pylint: disable=protected-access
     result = config._resolve_config_path()
     assert result.name == "config.yaml"
@@ -117,26 +116,56 @@ def test_load_config(tmp_path, cfg, app_config):
     assert config.load_config(_write(tmp_path, cfg)) == app_config
 
 
-def test_load_config_defaults(tmp_path, cfg):
-    del cfg["server"]["stateless"]
+def test_load_config_ignores_removed_stateless(tmp_path, cfg, app_config):
+    cfg["server"]["stateless"] = True
+    assert config.load_config(_write(tmp_path, cfg)) == app_config
+
+
+def test_load_config_accepts_stdio_transport(tmp_path, cfg):
+    cfg["server"]["transport"] = "stdio"
     loaded = config.load_config(_write(tmp_path, cfg))
-    assert loaded.server.stateless is False
+    assert loaded.server.transport == "stdio"
 
 
 def test_load_config_rejects_invalid_transport(tmp_path, cfg):
-    cfg["server"]["transport"] = "stdio"
-    with pytest.raises(ValidationError):
+    cfg["server"]["transport"] = "sse"
+    with pytest.raises(config.ConfigError):
         config.load_config(_write(tmp_path, cfg))
 
 
 def test_load_config_requires_logging(tmp_path, cfg):
     del cfg["logging"]
-    with pytest.raises(ValidationError):
+    with pytest.raises(config.ConfigError):
         config.load_config(_write(tmp_path, cfg))
 
 
+@pytest.mark.parametrize("port", [0, 65536])
+def test_load_config_rejects_out_of_range_port(tmp_path, cfg, port):
+    cfg["server"]["port"] = port
+    with pytest.raises(config.ConfigError):
+        config.load_config(_write(tmp_path, cfg))
+
+
+def test_load_config_rejects_missing_file(tmp_path):
+    missing = tmp_path / "missing.yaml"
+    with pytest.raises(config.ConfigError, match="missing.yaml"):
+        config.load_config(missing)
+
+
+def test_load_config_rejects_invalid_yaml(tmp_path):
+    path = tmp_path / "config.yaml"
+    path.write_text("server: [")
+    with pytest.raises(config.ConfigError, match="config.yaml"):
+        config.load_config(path)
+
+
+def test_config_is_immutable(app_config):
+    with pytest.raises(ValidationError):
+        app_config.server.port = 1
+
+
 def test_bundled_config_is_valid(monkeypatch):
-    monkeypatch.delenv("CALCULATOR_MCP_CONFIG", raising=False)
+    monkeypatch.delenv("CALCULATORMCP_CONFIG", raising=False)
     assert config.get_config().server.transport == "http"
 
 
@@ -144,7 +173,7 @@ def test_bundled_config_is_valid(monkeypatch):
 
 
 def test_get_config_loads_once(tmp_path, monkeypatch, cfg):
-    monkeypatch.setenv("CALCULATOR_MCP_CONFIG", str(_write(tmp_path, cfg)))
+    monkeypatch.setenv("CALCULATORMCP_CONFIG", str(_write(tmp_path, cfg)))
     first = config.get_config()
     cfg["server"]["port"] = 1234
     _write(tmp_path, cfg)
@@ -157,7 +186,7 @@ def test_get_config_loads_once(tmp_path, monkeypatch, cfg):
 
 def test_configure_logging_applies_config(tmp_path, monkeypatch, cfg):
     cfg["logging"]["root"]["level"] = "ERROR"
-    monkeypatch.setenv("CALCULATOR_MCP_CONFIG", str(_write(tmp_path, cfg)))
+    monkeypatch.setenv("CALCULATORMCP_CONFIG", str(_write(tmp_path, cfg)))
     root = logging.getLogger()
     original_level = root.level
     try:

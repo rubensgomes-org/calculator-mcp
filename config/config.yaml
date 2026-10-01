@@ -4,14 +4,10 @@
 server:
     # IP address the server binds to at start-up
     host: "127.0.0.1"
-    # The transport protocol used -- only http is supported
+    # The transport protocol used -- "http" or "stdio"
     transport: "http"
     # The port on host the MCP server binds to at start-up
     port: 8080
-    # Both MCP protocols are served either way. For legacy (2025-06-18)
-    # clients, false issues an Mcp-Session-Id on initialize and true does
-    # not. Modern (2026-07-28) clients never use sessions.
-    stateless: false
     # the home page of the "Calculator MCP" project
     homepage: "https://github.com/rubensgomes-org/calculator-mcp"
 

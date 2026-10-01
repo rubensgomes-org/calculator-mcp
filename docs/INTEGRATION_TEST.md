@@ -6,7 +6,7 @@
 # On my machine the project is installed here:
 pushd ~/github/rubens/dev/python/calculator-mcp/
 cd $(git rev-parse --show-toplevel) || exit
-export CALCULATOR_MCP_CONFIG="${HOME}/cfg/calculator-mcp/config.yaml"
+export CALCULATORMCP_CONFIG="${HOME}/cfg/calculator-mcp/config.yaml"
 poetry run calculator-mcp
 ```
 

@@ -36,34 +36,31 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
 
-"""FastMCP server exposing calculator operations as tools."""
+"""FastMCP server exposing calculator operations, and its CLI entry point."""
 
+import argparse
 import logging
 from collections.abc import AsyncIterator
 from importlib.metadata import PackageNotFoundError, version
 
 from fastmcp import FastMCP
 from fastmcp.server.lifespan import lifespan
-from fastmcp.server.middleware.logging import LoggingMiddleware
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
-from calculator_mcp.config import configure_logging, get_config
-from calculator_mcp.prompts import prompts
-from calculator_mcp.resources import resources
-from calculator_mcp.tools import tools
+from calculator_mcp.config import ConfigError, configure_logging, get_config
+from calculator_mcp.config.config import ServerConfig
+from calculator_mcp.mcp.prompts import prompts
+from calculator_mcp.mcp.resources import resources
+from calculator_mcp.mcp.tools import tools
 
-# Not __name__: `fastmcp run server.py:mcp` (e.g. Prefect Horizon) loads this
+# Not __name__: `fastmcp run app.py:mcp` (e.g. Prefect Horizon) loads this
 # file as "server_module", which would bypass the calculator_mcp logger config.
-logger = logging.getLogger("calculator_mcp.server")
+logger = logging.getLogger("calculator_mcp.app")
 
 # Distribution name on PyPI, which differs from the ``calculator_mcp``
 # import package name.
 _DISTRIBUTION = "calculator-mcp-rubens"
-
-# Legacy (session-capable) and modern (sessionless) MCP protocol versions
-_MODERN_PROTOCOL = "2026-07-28"
-_LEGACY_PROTOCOL = "2025-06-18"
 
 try:
     _VERSION = version(_DISTRIBUTION)
@@ -71,7 +68,17 @@ except PackageNotFoundError:  # pragma: no cover - source checkout only
     logger.warning("Distribution %s not installed", _DISTRIBUTION)
     _VERSION = "0.0.0+unknown"
 
+try:
+    _HOMEPAGE = get_config().server.homepage
+except ConfigError as error:  # pragma: no cover - tested in a subprocess
+    # Logging is not configured yet, so report on stderr and exit.
+    raise SystemExit(f"calculator-mcp: {error}") from error
 
+
+# The following code supports `fastmcp run app.py:mcp` and Prefect Horizon.
+# Those hosts load app.py and start `mcp` themselves, so they never call
+# main(). This lifespan is the only place logging gets configured for them,
+# and without it they would run with FastMCP's default logging.
 @lifespan
 async def _logging_lifespan(
     server: FastMCP,
@@ -79,12 +86,6 @@ async def _logging_lifespan(
     """Configure logging on startup, including hosts that skip ``main()``."""
     configure_logging()
     logger.info("Initializing %s %s", server.name, _VERSION)
-    logger.info(
-        "Serving MCP protocols %s and %s; legacy sessions %s",
-        _LEGACY_PROTOCOL,
-        _MODERN_PROTOCOL,
-        "disabled (stateless)" if get_config().server.stateless else "enabled",
-    )
     yield {}
 
 
@@ -99,18 +100,8 @@ mcp = FastMCP(
         "represent raise OverflowError, and zero raised to a negative "
         "power raises ZeroDivisionError."
     ),
-    website_url=get_config().server.homepage,
+    website_url=_HOMEPAGE,
     lifespan=_logging_lifespan,
-)
-
-# Logs each inbound MCP message (e.g. initialize, tools/list, tools/call)
-# with its JSON-RPC payload and duration, at DEBUG level.
-mcp.add_middleware(
-    LoggingMiddleware(
-        logger=logging.getLogger("calculator_mcp.requests"),
-        log_level=logging.DEBUG,
-        include_payloads=True,
-    )
 )
 
 # No namespace, so names and URIs are unchanged.
@@ -133,3 +124,39 @@ async def health_check(
     """
     logger.debug("health_check called: returning text response: OK")
     return PlainTextResponse("OK")
+
+
+# -------------------------------------------------
+# main() and related functions
+# -------------------------------------------------
+def _run_server(server: ServerConfig) -> None:
+    """Run the MCP server over the configured transport."""
+    if server.transport == "stdio":
+        logger.info("Starting stdio MCP server")
+        mcp.run(transport="stdio")
+        return
+    logger.info("Starting http MCP server")
+    mcp.run(
+        transport=server.transport,
+        host=server.host,
+        port=server.port,
+        # Keeps uvicorn from replacing the config.yaml logging.
+        uvicorn_config={"log_config": None},
+    )
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Entry point for the calculator-mcp application."""
+    parser = argparse.ArgumentParser(prog="calculator-mcp")
+    parser.add_argument("--version", action="version", version=_VERSION)
+    parser.parse_args(argv)
+    configure_logging()
+
+    try:
+        _run_server(get_config().server)
+    except KeyboardInterrupt:
+        logger.info("Received SIGINT, shutting down gracefully")
+
+
+if __name__ == "__main__":
+    main()

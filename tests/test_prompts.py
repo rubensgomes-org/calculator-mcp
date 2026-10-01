@@ -40,7 +40,7 @@
 
 from fastmcp import Client
 
-from calculator_mcp.server import mcp
+from calculator_mcp.app import mcp
 
 
 async def test_list_prompts():

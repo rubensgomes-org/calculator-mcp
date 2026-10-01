@@ -26,9 +26,33 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `stdio` transport, selected with `server.transport: "stdio"`; `host`
+  and `port` are then ignored.
+
 ### Changed
 
+- Config is immutable once loaded; `server.port` must be 1-65535.
+- `main.py` merged into `app.py`; the `calculator-mcp` script now runs
+  `calculator_mcp.app:main`.
+- `server.py` renamed to `app.py`; `fastmcp run` targets
+  `calculator_mcp/app.py:mcp`.
+- `CALCULATOR_MCP_CONFIG` environment variable renamed to
+  `CALCULATORMCP_CONFIG`.
+- `prompts.py`, `resources.py`, and `tools.py` moved to the
+  `calculator_mcp.mcp` package.
+
+### Removed
+
+- `LoggingMiddleware` and its `calculator_mcp.requests` logger: inbound
+  MCP messages are no longer logged.
+- `server.stateless` from `config.yaml`: legacy clients always get a
+  session. The setting is ignored if still present.
+- `config/config_stateful.yaml`.
+
 ### Fixed
+
+- A missing or invalid config file exits with a one-line error naming
+  the file instead of a traceback.
 
 ## [0.0.33] - 2026-10-01
 

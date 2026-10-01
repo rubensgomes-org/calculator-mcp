@@ -43,7 +43,7 @@ import pytest
 from fastmcp import Client
 from fastmcp.exceptions import ToolError
 
-from calculator_mcp.server import mcp
+from calculator_mcp.app import mcp
 
 # --- Two-operand tools ---
 

@@ -36,45 +36,4 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
 
-"""CLI entry point for the calculator-mcp server."""
-
-import argparse
-import logging
-from importlib.metadata import version
-
-from calculator_mcp.config import configure_logging, get_config
-from calculator_mcp.server import mcp
-
-logger = logging.getLogger(__name__)
-
-# name available and used to push this package to PyPI
-_DISTRIBUTION_NAME = "calculator-mcp-rubens"
-
-
-def main(argv: list[str] | None = None) -> None:
-    """Entry point for the calculator-mcp application."""
-    parser = argparse.ArgumentParser(prog="calculator-mcp")
-    parser.add_argument(
-        "--version",
-        action="version",
-        version=version(_DISTRIBUTION_NAME),
-    )
-    parser.parse_args(argv)
-    configure_logging()
-
-    server = get_config().server
-    try:
-        mcp.run(
-            transport=server.transport,
-            host=server.host,
-            port=server.port,
-            stateless_http=server.stateless,
-            # Keeps uvicorn from replacing the config.yaml logging.
-            uvicorn_config={"log_config": None},
-        )
-    except KeyboardInterrupt:
-        logger.info("Received SIGINT, shutting down gracefully")
-
-
-if __name__ == "__main__":
-    main()
+"""MCP tools, resources, and prompts mounted by the server."""

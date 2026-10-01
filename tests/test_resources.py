@@ -46,7 +46,7 @@ from fastmcp import Client
 from mcp.shared.exceptions import MCPError
 from mcp.types import INVALID_PARAMS
 
-from calculator_mcp.server import mcp
+from calculator_mcp.app import mcp
 
 
 async def test_list_resources():
