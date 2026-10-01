@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.34] - 2026-10-01
+
+### Added
+
 - `stdio` transport, selected with `server.transport: "stdio"`; `host`
   and `port` are then ignored.
 
