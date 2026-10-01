@@ -23,15 +23,14 @@ classifiers = [
     # Python versions supported.
     "Programming Language :: Python :: 3.14"
 ]
+# runtime dependencies
 dependencies = [
     "calculator-lib-rubens (>=0.2.0,<1.0.0)",
     "colorlog (>=6.12.0,<7.0.0)",
-    "cryptography (==50.0.2)",
     "fastmcp (>=4.0.10,<5.0.0)",
-    "key-value (>=0.1.2,<1.0.0)",
+    "mcp (>=2.2.0,<3.0.0)",
     "pydantic (>=2.13.5,<3.0.0)",
     "pyyaml (>=6.0.3,<7.0.0)",
-    "py-key-value-aio (>=0.4.6,<1.0.0)",
     "starlette (>=1.7.0,<2.0.0)",
 ]
 
@@ -56,6 +55,8 @@ dev = [
 ]
 test = [
     "coverage (>=7.16.0,<8.0.0)",
+    "cryptography (==50.0.2)",
+    "py-key-value-aio (>=0.4.6,<1.0.0)",
     "pytest (>=9.1.1,<10.0.0)",
     "pytest-asyncio (>=1.4.0,<2.0.0)",
     "pytest-cov (>=7.1.0,<8.0.0)",
@@ -77,13 +78,13 @@ Repository = "https://github.com/rubensgomes-org/calculator-mcp"
 line-length = 80
 target-version = ["py314"]
 
-[tool.coverage.run]
-source = ["calculator_mcp"]
-branch = true
-
 [tool.coverage.report]
 show_missing = true
 fail_under = 90
+
+[tool.coverage.run]
+source = ["calculator_mcp"]
+branch = true
 
 [tool.isort]
 line_length = 80
@@ -103,7 +104,7 @@ addopts = "--cov --cov-report=term-missing --cov-report=xml"
 [tool.sonar]
 # SONAR_TOKEN must be defined as an environment variable
 organization = "rubensgomes-org"
-projectKey = "rubensgomes-org"
+projectKey = "rubensgomes-org_calculator-mcp"
 projectName = "calculator-mcp"
 qualitygate.wait = true
 sources = "src/"

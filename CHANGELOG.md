@@ -28,7 +28,12 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
-- `server.homepage` removed from config; the homepage URL is now a constant.
+- `server.homepage` removed from config; the homepage URL is now read from
+  `[project.urls]` in `pyproject.toml`.
+- `mcp` declared as a direct dependency; unused `key-value` removed.
+- `cryptography` and `py-key-value-aio` moved to the `test` group.
+- `config.yaml` is no longer validated at import; an invalid config is
+  reported when `main()` starts, or by the lifespan for `fastmcp run`.
 
 ### Fixed
 

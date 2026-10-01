@@ -41,7 +41,7 @@
 import argparse
 import logging
 from collections.abc import AsyncIterator
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError, metadata
 
 from fastmcp import FastMCP
 from fastmcp.server.lifespan import lifespan
@@ -61,20 +61,24 @@ logger = logging.getLogger("calculator_mcp.app")
 # Distribution name on PyPI, which differs from the ``calculator_mcp``
 # import package name.
 _DISTRIBUTION = "calculator-mcp-rubens"
-_HOMEPAGE = "https://github.com/rubensgomes-org/calculator-mcp"
+_UNKNOWN_VERSION = "0.0.0+unknown"
 
-try:
-    _VERSION = version(_DISTRIBUTION)
-except PackageNotFoundError:  # pragma: no cover - source checkout only
-    logger.warning("Distribution %s not installed", _DISTRIBUTION)
-    _VERSION = "0.0.0+unknown"
 
-# Validate config.yaml at import so hosts that skip main() fail fast.
-try:
-    get_config()
-except ConfigError as error:  # pragma: no cover - tested in a subprocess
-    # Logging is not configured yet, so report on stderr and exit.
-    raise SystemExit(f"calculator-mcp: {error}") from error
+def _package_info() -> tuple[str, str | None]:
+    """Return the installed version and ``[project.urls]`` homepage."""
+    try:
+        package_metadata = metadata(_DISTRIBUTION)
+    except PackageNotFoundError:  # pragma: no cover - source checkout only
+        logger.warning("Distribution %s not installed", _DISTRIBUTION)
+        return _UNKNOWN_VERSION, None
+    for entry in package_metadata.get_all("Project-URL") or []:
+        label, _, url = entry.partition(", ")
+        if label == "Homepage":
+            return package_metadata["Version"], url
+    return package_metadata["Version"], None
+
+
+_VERSION, _HOMEPAGE = _package_info()
 
 
 # The following code supports `fastmcp run app.py:mcp` and Prefect Horizon.
@@ -152,7 +156,11 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="calculator-mcp")
     parser.add_argument("--version", action="version", version=_VERSION)
     parser.parse_args(argv)
-    configure_logging()
+    try:
+        configure_logging()
+    except ConfigError as error:
+        # Logging is not configured, so report on stderr and exit.
+        raise SystemExit(f"calculator-mcp: {error}") from error
 
     try:
         _run_server(get_config().server)

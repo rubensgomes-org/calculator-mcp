@@ -113,7 +113,7 @@ def test_main_exits_on_invalid_config(tmp_path):
     missing = tmp_path / "missing.yaml"
     env = {**os.environ, "CALCULATORMCP_CONFIG": str(missing)}
     result = subprocess.run(
-        [sys.executable, "-m", "calculator_mcp.app", "--version"],
+        [sys.executable, "-m", "calculator_mcp.app"],
         capture_output=True,
         text=True,
         env=env,
