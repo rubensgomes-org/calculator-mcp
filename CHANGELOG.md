@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.33] - 2026-10-01
+
+### Added
+
 - `resources.py`: `calculator://constants` resource and
   `calculator://operations/{name}` resource template.
 - `prompts.py`: `solve_word_problem` prompt.
