@@ -26,7 +26,13 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- Log message on application shutdown.
+- `docs/PYCHARM.md`: PyCharm version, clone/install, interpreter, terminal
+  emulation, and debug sections, with screenshots.
+
 ### Changed
+
+- `docs/PYCHARM.md`: run configuration steps updated for the project.
 
 ### Fixed
 

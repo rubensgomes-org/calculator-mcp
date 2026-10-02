@@ -93,6 +93,7 @@ async def _logging_lifespan(
     configure_logging()
     logger.info("Initializing %s %s", server.name, _VERSION)
     yield {}
+    logger.warning("Shutting down the application...")
 
 
 mcp = FastMCP(
