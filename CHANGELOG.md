@@ -26,9 +26,13 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `README.md` link to `docs/DEMO.md`.
+
 ### Changed
 
 ### Fixed
+
+- Grammar in `AI_DISCLAIMER.md` and `README.md`.
 
 ## [0.0.38] - 2026-10-02
 

@@ -116,7 +116,7 @@ curl -v http://localhost:8080/health
 
 ## License
 
-The project is licensed under
+The project is licensed under the
 [MIT License](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE).
 
 ## Links
@@ -124,6 +124,7 @@ The project is licensed under
 - [GitHub Project](https://github.com/rubensgomes-org/calculator-mcp)
 - [Azure CLI Commands](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/AZ_CMD.md)
 - [Azure Container App Provisioning](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/AZURE_ACA.md)
+- [Demo](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/DEMO.md)
 - [Development Setup](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/DEVELOPMENT_SETUP.md)
 - [Docker](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/DOCKER.md)
 - [Integration Test](https://github.com/rubensgomes-org/calculator-mcp/blob/main/docs/INTEGRATION_TEST.md)
