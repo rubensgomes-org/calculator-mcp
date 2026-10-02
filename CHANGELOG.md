@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.38] - 2026-10-02
+
+### Added
+
+### Changed
+
 - `calculator-lib-rubens` dependency updated to 0.2.4
 - README: refreshed badges, simplified installation and uninstall steps
 
