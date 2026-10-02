@@ -26,9 +26,18 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `docs/INTEGRATION_TEST.md`: legacy `tools/call` examples for missing and
+  unknown session IDs.
+
 ### Changed
 
+- `calculator-lib-rubens` dependency updated to 0.2.5
+- `openapi-pydantic` dependency updated to 0.6.0
+- `docs/INTEGRATION_TEST.md`: headings now name the method and MCP era.
+
 ### Fixed
+
+- `docs/INTEGRATION_TEST.md`: stray quote in the `prompts/get` heading.
 
 ## [0.0.39] - 2026-10-02
 

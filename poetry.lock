@@ -268,14 +268,14 @@ develop = ["aiomisc-pytest", "coveralls", "pytest", "pytest-cov", "pytest-rerunf
 
 [[package]]
 name = "calculator-lib-rubens"
-version = "0.2.4"
+version = "0.2.5"
 description = "A python calculator library."
 optional = false
 python-versions = "<4.0.0,>=3.14"
 groups = ["main"]
 files = [
-    {file = "calculator_lib_rubens-0.2.4-py3-none-any.whl", hash = "sha256:8037355a5cd472dfabd95688f2595b4f683cfeb16f37407d4f090a1ec4bcdcb3"},
-    {file = "calculator_lib_rubens-0.2.4.tar.gz", hash = "sha256:c1d73c2163241c173ae07c3fca0340b3adcacc11e240d463c83b6826b21e52c7"},
+    {file = "calculator_lib_rubens-0.2.5-py3-none-any.whl", hash = "sha256:9f1e2398df66680295ad6c0e19e2daac54630df9fe4045b5e7a1d8baeba9bc19"},
+    {file = "calculator_lib_rubens-0.2.5.tar.gz", hash = "sha256:c44e5bfb211632d1ffa825c23a6352bf8a0419c54e9ddd160b3daccf90c8e994"},
 ]
 
 [[package]]
@@ -1911,14 +1911,14 @@ files = [
 
 [[package]]
 name = "openapi-pydantic"
-version = "0.5.1"
-description = "Pydantic OpenAPI schema implementation"
+version = "0.6.0"
+description = "Modern, type-safe OpenAPI schemas in Python using Pydantic 1.8+ and 2.x"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "openapi_pydantic-0.5.1-py3-none-any.whl", hash = "sha256:a3a09ef4586f5bd760a8df7f43028b60cafb6d9f61de2acba9574766255ab146"},
-    {file = "openapi_pydantic-0.5.1.tar.gz", hash = "sha256:ff6835af6bde7a459fb93eb93bb92b8749b754fc6e51b2f1590a19dc3005ee0d"},
+    {file = "openapi_pydantic-0.6.0-py3-none-any.whl", hash = "sha256:8bd6d548a250da37db96f461bcd52b3468e8834ad7d6db14b00a6b2ebbd163a3"},
+    {file = "openapi_pydantic-0.6.0.tar.gz", hash = "sha256:11f3ac6ad41521fc156381ec587246b0c0ecea523bd9565ed74d3e7fac9d91cd"},
 ]
 
 [package.dependencies]

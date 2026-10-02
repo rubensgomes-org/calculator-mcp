@@ -34,7 +34,7 @@ poetry run python tests/integration/client.py \
 
 ## Stateless - Modern Era MCP (Mcp-Protocol-Version: 2026-07-28)
 
-### Server Identity `server/discover`
+### `server/discover` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -56,7 +56,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Prompts List `prompts/list`
+### `prompts/list` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -78,7 +78,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Prompts Get `prompts/get"`
+### `prompts/get` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -105,7 +105,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Resources List `resources/list` (Stateless - Modern Era MCP)
+### `resources/list` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -127,8 +127,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Resources Templates List
-`resources/templates/list` (Stateless - Modern Era MCP)
+### `resources/templates/list` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -150,7 +149,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Resources Read `resources/read` (Stateless - Modern Era MCP)
+### `resources/read` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -174,7 +173,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Resources Read from template `resources/read` (Stateless - Modern Era MCP)
+### `resources/read` - template (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -198,7 +197,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Tools List `tools/list` (Stateless - Modern Era MCP)
+### `tools/list` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -220,7 +219,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Tools Call `tools/call` (Stateless - Modern Era MCP)
+### `tools/call` (Stateless - Modern Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -251,7 +250,7 @@ The Legacy Era MCP server is based on a stateful session that requires
 a connection setup handshake using `initialize` / `initialized` JSON-RPC
 messages.
 
-### Initialize Session `initialize`
+### `initialize` (Stateful - Legacy Era MCP)
 
 ```bash
 curl -v http://localhost:8080/mcp \
@@ -269,8 +268,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Notifications Initialized `notifications/initialized`
-
+### `notifications/initialized` (Stateful - Legacy Era MCP)
 
 ```bash
 SID='<enter-sid>'
@@ -312,7 +310,7 @@ curl -v http://localhost:8080/mcp \
       }'
     ```
 
-### Resources List `resources/list`
+### `resources/list` (Stateful - Legacy Era MCP)
 
 ```bash
 export SID="$(
@@ -346,7 +344,60 @@ curl -v http://localhost:8080/mcp \
   -d '{"jsonrpc": "2.0", "id": 2, "method": "resources/list"}'
 ```
 
-### Tools Call `tools/call`
+### `tools/call` (Stateful - Legacy Era MCP)
+
+- Missing session ID (400 Bad Request)
+
+```bash
+curl -v http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-3",
+    "method":"tools/call",
+    "params":{
+      "name":"add",
+      "arguments":{"a":2,"b":3}
+    }
+  }'
+```
+
+- Missing session ID (400 Bad Request)
+
+```bash
+curl -v http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: " \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-3",
+    "method":"tools/call",
+    "params":{
+      "name":"add",
+      "arguments":{"a":2,"b":3}
+    }
+  }'
+```
+
+- Session not found (404 Not Found)
+
+```bash
+curl -v http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: 1234567890" \
+  -d '{
+    "jsonrpc":"2.0",
+    "id": "rgomes-3",
+    "method":"tools/call",
+    "params":{
+      "name":"add",
+      "arguments":{"a":2,"b":3}
+    }
+  }'
+```
 
 ```bash
 export SID="$(
@@ -387,7 +438,7 @@ curl -v http://localhost:8080/mcp \
   }'
 ```
 
-### Tools List `tools/list`
+### `tools/list` (Stateful - Legacy Era MCP)
 
 ```bash
 export SID="$(
