@@ -1,21 +1,21 @@
 # Calculator MCP Server
 
-[![Python](https://img.shields.io/badge/Python-3.14%2B-0969da?logo=python)](https://www.python.org/downloads/release/python-3147/)
+[![python](https://img.shields.io/badge/python-3.14%2B-0969da?logo=python)](https://www.python.org/downloads/release/python-3147/)
+[![poetry](https://img.shields.io/badge/poetry-2.5%2B-0969da?logo=poetry)](https://python-poetry.org/)
 [![FastMCP](https://img.shields.io/badge/FastMCP-4-8250df)](https://gofastmcp.com/getting-started/welcome)
-[![Poetry](https://img.shields.io/badge/Poetry-2.5%2B-0969da?logo=poetry)](https://python-poetry.org/)
 [![GitHub](https://img.shields.io/badge/GitHub-Actions-0969da?logo=github+actions)](https://github.com/features/actions)
 [![Microsoft](https://img.shields.io/badge/Microsoft-Azure-0969da)](https://azure.microsoft.com/en-us)
-[![AI Assisted](https://img.shields.io/badge/AI%20Assisted-Development-d29922)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
-[![License](https://img.shields.io/badge/License-MIT-0969da)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE)
+[![AI](https://img.shields.io/badge/AI-Assisted-d29922?logo=claude+code)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/AI_DISCLAIMER.md)
+[![license](https://img.shields.io/badge/license-MIT-1a7f37)](https://github.com/rubensgomes-org/calculator-mcp/blob/main/LICENSE)
 
 `calculator-mcp` is an MCP (Model Context Protocol) server that exposes 16
 arithmetic operations as callable tools for use by LLMs within agentic
 applications. It contains no mathematical logic of its own. Instead, each tool
 is a thin synchronous wrapper that logs its arguments and delegates execution to
-the
-open-source [calculator-lib](https://github.com/rubensgomes-org/calculator-lib)
-package published on PyPI 
-as [calculator-mcp-rubens](https://pypi.org/project/calculator-mcp-rubens/).
+the open-source
+[calculator-lib](https://github.com/rubensgomes-org/calculator-lib) package
+published on PyPI as
+[calculator-lib-rubens](https://pypi.org/project/calculator-lib-rubens/).
 
 ---
 
@@ -45,12 +45,12 @@ request:
   `Mcp-Session-Id` session
 - **Modern MCP (Version: 2026-07-28)**: no handshake or session
 
-## Non-Supported Features
+## Unsupported Features
 
-Non-supported JSON-RPC methods:
+Unsupported JSON-RPC methods:
 
 - **Logging & Progress Utilities** (e.g. `notifications/progress`)
-- **Server-to-Client** calls are not supported (e.g.
+- **Server-to-Client** calls (e.g.
   `sampling/createMessage`, `elicitation/create`, `roots/list`)
 
 ## AI Disclaimer
@@ -61,24 +61,18 @@ tools. For details on usage, limits, and review practices, please see the
 
 ## Prerequisites
 
-- python 3.14+
+- Python 3.14+
 - pip
 
 ## Installation
 
-1. Install in `pip` default installation folder
+1. Install using `pip`
 
 ```bash
 pip install calculator-mcp-rubens
 ```
 
-2. Install in the Python user install directory
-
-```bash
-pip --no-cache-dir install -U --user calculator-mcp-rubens
-```
-
-3. Confirm the installed version matches the latest GitHub release at
+2. Confirm the installed version matches the latest GitHub release at
    [calculator-mcp/releases](https://github.com/rubensgomes-org/calculator-mcp/releases)
 
 ```bash
@@ -87,8 +81,6 @@ pip show calculator-mcp-rubens
 ```
 
 ## Uninstall
-
-- Uninstall as follows
 
 ```bash
 pip uninstall calculator-mcp-rubens
@@ -107,7 +99,7 @@ export CALCULATORMCP_CONFIG="${HOME}/cfg/calculator-mcp/config.yaml"
 
 ## Usage
 
-1. Simply run
+1. Run
 
 ```bash
 calculator-mcp
@@ -120,7 +112,7 @@ curl -v http://localhost:8080/health
 # Expect: OK
 ```
 
-3. To stop, go to the running terminal and press `Ctrl+C`
+3. To stop, press `Ctrl+C` in the running terminal
 
 ## License
 

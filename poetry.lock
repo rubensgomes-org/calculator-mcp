@@ -268,14 +268,14 @@ develop = ["aiomisc-pytest", "coveralls", "pytest", "pytest-cov", "pytest-rerunf
 
 [[package]]
 name = "calculator-lib-rubens"
-version = "0.2.3"
+version = "0.2.4"
 description = "A python calculator library."
 optional = false
 python-versions = "<4.0.0,>=3.14"
 groups = ["main"]
 files = [
-    {file = "calculator_lib_rubens-0.2.3-py3-none-any.whl", hash = "sha256:2dddaed3198f07e11ef01cde9f66b9a0e3f25329639937d3c7f780f1a01177d6"},
-    {file = "calculator_lib_rubens-0.2.3.tar.gz", hash = "sha256:ea4be707776a1b95e27317137808749fe48dfdaa3fa00d6cb88754df4bb5afaf"},
+    {file = "calculator_lib_rubens-0.2.4-py3-none-any.whl", hash = "sha256:8037355a5cd472dfabd95688f2595b4f683cfeb16f37407d4f090a1ec4bcdcb3"},
+    {file = "calculator_lib_rubens-0.2.4.tar.gz", hash = "sha256:c1d73c2163241c173ae07c3fca0340b3adcacc11e240d463c83b6826b21e52c7"},
 ]
 
 [[package]]

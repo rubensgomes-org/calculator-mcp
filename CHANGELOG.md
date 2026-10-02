@@ -28,7 +28,12 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `calculator-lib-rubens` dependency updated to 0.2.4
+- README: refreshed badges, simplified installation and uninstall steps
+
 ### Fixed
+
+- README: `calculator-lib` PyPI link pointed to `calculator-mcp-rubens`
 
 ## [0.0.37] - 2026-10-02
 
