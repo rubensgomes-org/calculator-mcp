@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.37] - 2026-10-02
+
+### Added
+
+### Changed
+
 - `build-verify` runs Sonar only when dispatched with `run-sonar` checked;
   it no longer runs on push or by default
 - `build-verify` job name marks the SonarCloud scan as optional
