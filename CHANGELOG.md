@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.39] - 2026-10-02
+
+### Added
+
 - `README.md` link to `docs/DEMO.md`.
 
 ### Changed
