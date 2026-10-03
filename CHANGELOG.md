@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.42] - 2026-10-03
+
+### Added
+
+### Changed
+
 - Logging config: per-module `mcp.*` loggers consolidated into a single
   `mcp` logger; `uvicorn.access` logger removed; root level set to `WARNING`.
 - `docs/INTEGRATION_TEST.md`: `curl` examples pipe output to `jq`.
