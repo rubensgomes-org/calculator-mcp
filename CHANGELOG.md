@@ -28,6 +28,11 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- Logging config: per-module `mcp.*` loggers consolidated into a single
+  `mcp` logger; `uvicorn.access` logger removed; root level set to `WARNING`.
+- `docs/INTEGRATION_TEST.md`: `curl` examples pipe output to `jq`.
+- `uv.lock` removed and ignored; `poetry.lock` is authoritative.
+
 ### Fixed
 
 ## [0.0.41] - 2026-10-02

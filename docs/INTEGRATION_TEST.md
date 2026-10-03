@@ -53,7 +53,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `prompts/list` (Stateless - Modern Era MCP)
@@ -75,7 +75,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `prompts/get` (Stateless - Modern Era MCP)
@@ -102,7 +102,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `resources/list` (Stateless - Modern Era MCP)
@@ -124,7 +124,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `resources/templates/list` (Stateless - Modern Era MCP)
@@ -146,7 +146,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `resources/read` (Stateless - Modern Era MCP)
@@ -170,7 +170,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `resources/read` - template (Stateless - Modern Era MCP)
@@ -194,7 +194,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `tools/list` (Stateless - Modern Era MCP)
@@ -216,7 +216,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ### `tools/call` (Stateless - Modern Era MCP)
@@ -241,7 +241,7 @@ curl -v http://localhost:8080/mcp \
         "io.modelcontextprotocol/clientCapabilities": {}
       }
     }
-  }'
+  }' | jq .
 ```
 
 ## Legacy MCP (Version: 2025-06-18)
@@ -265,7 +265,7 @@ curl -v http://localhost:8080/mcp \
       "capabilities": {},
       "clientInfo": {"name": "curl", "version": "1.0"}
     }
-  }'
+  }' | jq .
 ```
 
 ### `notifications/initialized` (Stateful - Legacy Era MCP)
@@ -279,7 +279,7 @@ curl -v http://localhost:8080/mcp \
   -d '{
     "jsonrpc":"2.0",
     "method":"notifications/initialized"
-  }'
+  }' | jq .
 ```
 
 - `initialize` and `notifications/initialized`
@@ -307,7 +307,7 @@ curl -v http://localhost:8080/mcp \
       -d '{
         "jsonrpc":"2.0",
         "method":"notifications/initialized"
-      }'
+      }' | jq .
     ```
 
 ### `resources/list` (Stateful - Legacy Era MCP)
@@ -341,7 +341,7 @@ curl -v http://localhost:8080/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Mcp-Protocol-Version: 2025-06-18" \
   -H "Mcp-Session-Id: ${SID}" \
-  -d '{"jsonrpc": "2.0", "id": 2, "method": "resources/list"}'
+  -d '{"jsonrpc": "2.0", "id": 2, "method": "resources/list"}'  | jq .
 ```
 
 ### `tools/call` (Stateful - Legacy Era MCP)
@@ -360,7 +360,7 @@ curl -v http://localhost:8080/mcp \
       "name":"add",
       "arguments":{"a":2,"b":3}
     }
-  }'
+  }' | jq .
 ```
 
 - Missing session ID (400 Bad Request)
@@ -378,7 +378,7 @@ curl -v http://localhost:8080/mcp \
       "name":"add",
       "arguments":{"a":2,"b":3}
     }
-  }'
+  }' | jq .
 ```
 
 - Session not found (404 Not Found)
@@ -396,7 +396,7 @@ curl -v http://localhost:8080/mcp \
       "name":"add",
       "arguments":{"a":2,"b":3}
     }
-  }'
+  }' | jq .
 ```
 
 ```bash
@@ -435,7 +435,7 @@ curl -v http://localhost:8080/mcp \
       "name":"add",
       "arguments":{"a":2,"b":3}
     }
-  }'
+  }' | jq .
 ```
 
 ### `tools/list` (Stateful - Legacy Era MCP)
@@ -472,5 +472,5 @@ curl -v http://localhost:8080/mcp \
     "jsonrpc":"2.0",
     "id": "rgomes-3",
     "method":"tools/list"
-  }'
+  }' | jq .
 ```

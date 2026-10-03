@@ -35,77 +35,52 @@ logging:
             formatter: standard
             stream: ext://sys.stderr
     loggers:
+        #############################################################
+        # ---------- >>> calculator_mcp <<< ------------------------#
+        #############################################################
         calculator_mcp:
             level: DEBUG
             handlers:
                 - console
             propagate: false
-        # FastMCP framework; replaces its default rich console handler
+        #############################################################
+        # ---------- >>> fastmcp <<< -------------------------------#
+        #############################################################
         fastmcp:
             level: DEBUG
             handlers:
                 - console
             propagate: false
-        # FastMCP server (fastmcp/server/server.py)
-        fastmcp.server.server:
+        #############################################################
+        # ---------- >>> mcp <<< -----------------------------------#
+        #############################################################
+        mcp:
             level: DEBUG
             handlers:
                 - console
             propagate: false
-        # MCP protocol tracing — set to DEBUG to see full JSON-RPC messages
-        mcp.client.streamable_http:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # HTTP request/response summaries — set to DEBUG for detail
-        httpx:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # HTTP wire-level tracing (headers, TCP) — set to DEBUG for detail
-        httpcore:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
-        mcp.server:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        mcp.server.lowlevel.server:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
-        mcp.server.streamable_http:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
-        # Server: session/transport lifecycle — set to DEBUG for session details
-        mcp.server.streamable_http_manager:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
+#        # MCP — set to DEBUG to see full JSON-RPC messages
+#        mcp.client.streamable_http:
+#        # Server: inbound JSON-RPC messages — set to DEBUG to see parsed requests
+#        mcp.server.lowlevel.server:
+#        # Server: StreamableHTTP transport — set to DEBUG for method-level tracing
+#        mcp.server.streamable_http:
+#        # Server: session/transport lifecycle — set to DEBUG for session details
+#        mcp.server.streamable_http_manager:
+        #############################################################
+        # ---------- >>> uvicorn <<< -------------------------------#
+        #############################################################
         # Server: startup, shutdown, and errors
         uvicorn:
             level: DEBUG
+            # 5 is TRACE for uvicorn
+#            level: 5
             handlers:
                 - console
             propagate: false
-        # Server: HTTP request lines (method, path, status)
-        uvicorn.access:
-            level: DEBUG
-            handlers:
-                - console
-            propagate: false
+#        # Server: HTTP request lines (method, path, status)
+#        uvicorn.access:
     root:
-        level: DEBUG
+        level: WARNING
         handlers:
             - console
