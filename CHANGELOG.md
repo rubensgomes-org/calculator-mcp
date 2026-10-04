@@ -30,6 +30,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Fixed
 
+## [0.0.44] - 2026-10-04
+
+### Added
+
+### Changed
+
+### Fixed
+
 - `README.md`: "Open Source Project Information" link text for the GitHub
   organization and SonarQube Cloud.
 
