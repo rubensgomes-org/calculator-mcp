@@ -26,6 +26,8 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `README.md`: "Open Source Project Information" section.
+
 ### Changed
 
 ### Fixed
