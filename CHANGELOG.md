@@ -28,6 +28,9 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `fastmcp` dependency updated to 4.0.11
+- `mcp` dependency updated to 2.3.0
+
 ### Fixed
 
 ## [0.0.44] - 2026-10-04
