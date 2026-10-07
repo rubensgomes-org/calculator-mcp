@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.46] - 2026-10-07
+
+### Added
+
 - `python -m calculator_mcp` runs the server.
 
 ### Changed
