@@ -26,7 +26,16 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `python -m calculator_mcp` runs the server.
+
 ### Changed
+
+- CLI entry point moved from `calculator_mcp.app:main` to
+  `calculator_mcp.cli:main`.
+- `--help` shows the package summary.
+- `calculator-lib-rubens` dependency updated to 0.2.5.
+- Dev and test dependencies updated.
+- `README.md`: SonarQube Cloud note uses an `[!IMPORTANT]` callout.
 
 ### Fixed
 
