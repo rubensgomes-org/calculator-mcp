@@ -38,6 +38,12 @@ concurrency:
   group: build-deploy
   cancel-in-progress: false
 
+env:
+  # Naming convention from docs/AZURE_ACA.md / docs/AZ_CMD.md.
+  # NOTE: ALL container apps SHOULD use rg-rgomesapp-<env>.
+  RESOURCE_GROUP: rg-rgomesapp-${{ inputs.environment_name }}
+  CONTAINER_APP: ca-mathmcp-${{ inputs.environment_name }}
+
 jobs:
   resolve-acr:
     name: Resolve the ACR registry name
@@ -61,10 +67,45 @@ jobs:
           echo "acr_name=${acr_name}" >> "$GITHUB_OUTPUT"
           echo "Resolved acr_name: ${acr_name}"
 
+  check-aca:
+    name: Check whether the ACA container app exists
+    runs-on: ubuntu-latest
+    outputs:
+      aca_exists: ${{ steps.check.outputs.aca_exists }}
+    steps:
+      - name: Sign in to Azure
+        uses: rubensgomes-org/azure-workflows/.github/actions/azure-login@v0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      # Lists by name rather than `az containerapp show` so a missing resource
+      # group is not an error, while Azure CLI failures still fail the job.
+      - name: Check whether the container app exists
+        id: check
+        run: |
+          echo "=============================================================="
+          echo " STEP: Check whether the container app exists"
+          echo "=============================================================="
+          set -euo pipefail
+          count="$(az resource list \
+            --name "$CONTAINER_APP" \
+            --resource-type Microsoft.App/containerApps \
+            --query "length(@)" -o tsv)"
+          aca_exists=false
+          if [ "$count" -gt 0 ]; then
+            aca_exists=true
+          fi
+          echo "aca_exists=${aca_exists}" >> "$GITHUB_OUTPUT"
+          echo "Container app '${CONTAINER_APP}' exists: ${aca_exists}"
+
   create-aca:
     # this job creates ACA and all dependencies (ACR, KV, network...)
     name: Create ACA container app
-    needs: resolve-acr
+    needs: [resolve-acr, check-aca]
+    if: ${{ needs.check-aca.outputs.aca_exists != 'true' }}
     uses: rubensgomes-org/azure-iac/.github/workflows/aca-create.yml@v0
     with:
       environment_name: ${{ inputs.environment_name }}
@@ -78,6 +119,8 @@ jobs:
     name: Build and push image to ACR registry
     # wait for create-aca because we may need an ACR to be created as well
     needs: [resolve-acr, create-aca]
+    # Runs when create-aca is skipped because the container app exists.
+    if: ${{ !failure() && !cancelled() }}
     uses: rubensgomes-org/azure-workflows/.github/workflows/acr-build-push-python.yml@v0
     with:
       environment_name: ${{ inputs.environment_name }}
@@ -95,15 +138,13 @@ jobs:
   deploy-image:
     name: Deploy image to ACA container app
     needs: [resolve-acr, build-push-image]
+    # A skipped create-aca would otherwise skip this job too.
+    if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     env:
       ARTIFACT_ID: calculator-mcp
       ENVIRONMENT: ${{ inputs.environment_name }}
       REGISTRY_NAME: ${{ needs.resolve-acr.outputs.acr_name }}
-      # Naming convention from docs/AZURE_ACA.md / docs/AZ_CMD.md.
-      # NOTE: ALL container apps SHOULD use rg-rgomesapp-<env>.
-      RESOURCE_GROUP: rg-rgomesapp-${{ inputs.environment_name }}
-      CONTAINER_APP: ca-mathmcp-${{ inputs.environment_name }}
     steps:
       - name: Sign in to Azure
         uses: rubensgomes-org/azure-workflows/.github/actions/azure-login@v0

@@ -27,7 +27,8 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 ### Added
 
 - `build-deploy.yml` provisions the container app and its dependencies via
-  `azure-iac`'s `aca-create.yml` before building and deploying.
+  `azure-iac`'s `aca-create.yml` before building and deploying, skipping
+  this step when the container app already exists.
 
 ### Changed
 
