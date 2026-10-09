@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.48] - 2026-10-09
+
+### Added
+
+### Changed
+
 - `aca-destroy.yml`, renamed to `Delete Repo and Destroy ACA`, now also
   deletes the app's ACR repository after destroying the container app.
 
