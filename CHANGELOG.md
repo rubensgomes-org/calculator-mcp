@@ -34,6 +34,7 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 - Workflow input `environment` renamed to `environment_name` in
   `build-deploy.yml` and `repo-delete.yml`.
+- `build-verify.yml` workflow renamed to `Python Build and Verify`.
 
 ### Removed
 

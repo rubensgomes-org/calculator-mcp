@@ -117,8 +117,8 @@ The `Delete ACR Repository` workflow reads an Action secret named
 
 ### SONAR_TOKEN
 
-The `Build and Verify` workflow reads an Action secret named `SONAR_TOKEN`, used
-during the SonarCloud analysis.
+The `Python Build and Verify` workflow reads an Action secret named
+`SONAR_TOKEN`, used during the SonarCloud analysis.
 
 - Create an Action repository secret in this repository and name it
   SONAR_TOKEN storing the SonarCloud authentication token:
