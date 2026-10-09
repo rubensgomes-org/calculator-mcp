@@ -26,9 +26,18 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `build-deploy.yml` provisions the container app and its dependencies via
+  `azure-iac`'s `aca-create.yml` before building and deploying.
+
 ### Changed
 
+- Workflow input `environment` renamed to `environment_name` in
+  `build-deploy.yml` and `repo-delete.yml`.
+
 ### Fixed
+
+- `build-deploy.yml` fails on an unknown environment instead of continuing
+  with an empty registry name.
 
 ## [0.0.46] - 2026-10-07
 

@@ -14,7 +14,7 @@ name: Delete ACR Repository
 on:
   workflow_dispatch:
     inputs:
-      environment:
+      environment_name:
         description: 'Image namespace. With artifactId this forms the repository <environment>/<artifactId>.'
         required: true
         type: choice
@@ -46,7 +46,7 @@ jobs:
       - name: Resolve the registry name
         id: registry
         env:
-          ENVIRONMENT: ${{ inputs.environment }}
+          ENVIRONMENT: ${{ inputs.environment_name }}
         run: |
           echo "=============================================================="
           echo " STEP: Resolve the registry name"
@@ -63,7 +63,7 @@ jobs:
     if: ${{ inputs.confirm }}
     uses: rubensgomes-org/azure-workflows/.github/workflows/acr-repo-delete.yml@v0
     with:
-      environment: ${{ inputs.environment }}
+      environment_name: ${{ inputs.environment_name }}
       registry-name: ${{ needs.registry.outputs.registry-name }}
       artifact-id: calculator-mcp
       azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
