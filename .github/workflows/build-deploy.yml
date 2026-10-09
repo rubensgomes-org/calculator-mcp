@@ -51,13 +51,15 @@ jobs:
         run: |
           set -euo pipefail
           case "$ENVIRONMENT_NAME" in
-            dev) echo "acr_name=crrgomesdev01" >> "$GITHUB_OUTPUT" ;;
-            lab) echo "acr_name=crrgomeslab02" >> "$GITHUB_OUTPUT" ;;
+            dev) acr_name=crrgomesdev01 ;;
+            lab) acr_name=crrgomeslab02 ;;
             *)
               echo "Unknown environment: '${ENVIRONMENT_NAME}'." >&2
               exit 1
               ;;
           esac
+          echo "acr_name=${acr_name}" >> "$GITHUB_OUTPUT"
+          echo "Resolved acr_name: ${acr_name}"
 
   create-aca:
     # this job creates ACA and all dependencies (ACR, KV, network...)
@@ -99,7 +101,7 @@ jobs:
       ENVIRONMENT: ${{ inputs.environment_name }}
       REGISTRY_NAME: ${{ needs.resolve-acr.outputs.acr_name }}
       # Naming convention from docs/AZURE_ACA.md / docs/AZ_CMD.md.
-      # NOTE: ALL container apps SHOULD be deployed to rg-rgomesapp-<env> resource group
+      # NOTE: ALL container apps SHOULD use rg-rgomesapp-<env>.
       RESOURCE_GROUP: rg-rgomesapp-${{ inputs.environment_name }}
       CONTAINER_APP: ca-mathmcp-${{ inputs.environment_name }}
     steps:
