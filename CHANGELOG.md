@@ -35,6 +35,11 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 - Workflow input `environment` renamed to `environment_name` in
   `build-deploy.yml` and `repo-delete.yml`.
 
+### Removed
+
+- `.github/workflows/aca-create.yml`; `build-deploy.yml` now provisions the
+  container app.
+
 ### Fixed
 
 - `build-deploy.yml` fails on an unknown environment instead of continuing
