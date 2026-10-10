@@ -30,6 +30,10 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Fixed
 
+- Horizon build failing in `fastmcp inspect` with "attempted relative
+  import with no known parent package"; `server.py` now uses absolute
+  imports.
+
 ## [0.0.49] - 2026-10-10
 
 ### Added

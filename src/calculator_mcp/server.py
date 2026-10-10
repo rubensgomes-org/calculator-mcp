@@ -11,12 +11,11 @@ from fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
+from calculator_mcp import DISTRIBUTION_NAME, HOMEPAGE_URL, INSTRUCTIONS
 from calculator_mcp.config import configure_logging, get_config
 from calculator_mcp.mcp.prompts import prompts
 from calculator_mcp.mcp.resources import resources
 from calculator_mcp.mcp.tools import tools
-
-from . import DISTRIBUTION_NAME, HOMEPAGE_URL, INSTRUCTIONS
 
 _VERSION = version(DISTRIBUTION_NAME)
 
