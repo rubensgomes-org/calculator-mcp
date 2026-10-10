@@ -28,6 +28,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+### Fixed
+
+## [0.0.49] - 2026-10-10
+
+### Added
+
+### Changed
+
 - `app.py` renamed to `server.py` for Prefect Horizon deployment; the
   module is now `calculator_mcp.server` and `fastmcp run` targets
   `calculator_mcp/server.py:mcp`.
