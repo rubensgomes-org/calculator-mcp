@@ -69,7 +69,7 @@ More details at
 2. Click: `+`, and select `Python`
 3. Select: `module` from the `script/module` drop-down menu
 4. Enter the module that has the `main` function (e.g.,
-   `calculator_mcp.app`), and hit `OK`.
+   `calculator_mcp.server`), and hit `OK`.
 
 ![img_02.png](./imgs/pycharm/img_02.png)
 

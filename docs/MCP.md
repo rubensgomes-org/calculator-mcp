@@ -142,7 +142,7 @@ calculator can run unattended.
 ### This Project's Transport Configuration
 
 `server.transport` in `config.yaml` selects `http` (default) or `stdio`.
-For `http`, `main()` in `app.py` passes the `config.yaml` settings:
+For `http`, `main()` in `server.py` passes the `config.yaml` settings:
 
 ```python
 mcp.run(transport=server.transport, host=server.host, port=server.port)

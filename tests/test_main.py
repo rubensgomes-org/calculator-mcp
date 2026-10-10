@@ -23,8 +23,8 @@ def _run_main(app_config):
     """Run ``main([])`` with ``app_config`` and return the mocked server."""
     with (
         patch("calculator_mcp.cli.configure_logging"),
-        patch("calculator_mcp.app.get_config", return_value=app_config),
-        patch("calculator_mcp.app.mcp") as mock_mcp,
+        patch("calculator_mcp.server.get_config", return_value=app_config),
+        patch("calculator_mcp.server.mcp") as mock_mcp,
     ):
         main([])
     return mock_mcp
@@ -48,8 +48,8 @@ def test_main_stdio_transport(app_config):
 def test_main_configures_logging(app_config):
     with (
         patch("calculator_mcp.cli.configure_logging") as mock_configure,
-        patch("calculator_mcp.app.get_config", return_value=app_config),
-        patch("calculator_mcp.app.mcp"),
+        patch("calculator_mcp.server.get_config", return_value=app_config),
+        patch("calculator_mcp.server.mcp"),
     ):
         main([])
     mock_configure.assert_called_once_with()
@@ -58,8 +58,8 @@ def test_main_configures_logging(app_config):
 def test_main_keyboard_interrupt(app_config):
     with (
         patch("calculator_mcp.cli.configure_logging"),
-        patch("calculator_mcp.app.get_config", return_value=app_config),
-        patch("calculator_mcp.app.mcp") as mock_mcp,
+        patch("calculator_mcp.server.get_config", return_value=app_config),
+        patch("calculator_mcp.server.mcp") as mock_mcp,
     ):
         mock_mcp.run.side_effect = KeyboardInterrupt
         assert main([]) == 130

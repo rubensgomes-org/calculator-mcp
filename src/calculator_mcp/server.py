@@ -1,5 +1,9 @@
 """FastMCP server exposing calculator operations."""
 
+# ATTENTION: The Horizon Prefect server environment requires this a "server.py"
+# where an FastMCP instance is created. DO NOT rename this file!!!
+
+
 import logging
 from importlib.metadata import version
 

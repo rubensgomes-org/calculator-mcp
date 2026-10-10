@@ -35,11 +35,11 @@ def main(argv: list[str] | None = None) -> int:
     # Import the app only after parsing so --help and --version stay fast,
     # and after configuring logging so config errors are reported above.
     # pylint: disable-next=import-outside-toplevel
-    from calculator_mcp.app import run
+    from calculator_mcp.server import run
 
     logger = logging.getLogger(__name__)
     logger.info("Starting %s", DISTRIBUTION_NAME)
-    # app:run starts uvicorn web server, and returns None
+    # server:run starts uvicorn web server, and returns None
     try:
         run()
     except KeyboardInterrupt:
