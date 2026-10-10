@@ -28,6 +28,10 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `docs/DEMO.md` Azure commands parameterized by `ENV` (`dev` or `lab`),
+  with notes on internal ingress FQDNs and resetting the terminal after
+  leaving the `nettools` console.
+
 ### Fixed
 
 ## [0.0.50] - 2026-10-10
