@@ -28,6 +28,9 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- `build-deploy` workflow reads the workload from the `TF_VAR_WORKLOAD`
+  Actions variable, managed by `scripts/initvars.sh`.
+
 ### Fixed
 
 ## [0.0.51] - 2026-10-10

@@ -25,7 +25,7 @@ GitHub environment
   GIT_COMMITTER_EMAIL
   GIT_AUTHOR_NAME
 
-Actions variables to delete and recreate (8):
+Actions variables to delete and recreate (9):
   AZURE_CLIENT_ID
   AZURE_SUBSCRIPTION_ID
   AZURE_TENANT_ID
@@ -34,6 +34,7 @@ Actions variables to delete and recreate (8):
   TF_VAR_LOCATION
   TF_VAR_STORAGE_ACCOUNT_ID
   TF_VAR_TARGET_PORT
+  TF_VAR_WORKLOAD
 
 Actions secrets to delete and recreate (3):
   PYPI_API_TOKEN

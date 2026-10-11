@@ -40,8 +40,8 @@ concurrency:
 
 env:
   # Naming convention from docs/AZURE_ACA.md / docs/AZ_CMD.md.
-  # NOTE: ALL container apps SHOULD use rg-rgomesapp-<env>.
-  RESOURCE_GROUP: rg-rgomesapp-${{ inputs.environment_name }}
+  # NOTE: ALL container apps SHOULD use rg-<workload>app-<env>.
+  RESOURCE_GROUP: rg-${{ vars.TF_VAR_WORKLOAD }}app-${{ inputs.environment_name }}
   CONTAINER_APP: ca-mathmcp-${{ inputs.environment_name }}
 
 jobs:
