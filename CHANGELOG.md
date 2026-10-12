@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.54] - 2026-10-12
+
+### Added
+
 - `ca-mathagent` Azure CLI commands in `docs/DEMO.md`.
 
 ### Changed
