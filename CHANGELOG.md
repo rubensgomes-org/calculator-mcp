@@ -28,6 +28,8 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- Renamed workflow `ACA Create and Deploy` to `ACA Build and Deploy`.
+
 ### Fixed
 
 ## [0.0.54] - 2026-10-12
