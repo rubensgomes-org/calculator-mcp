@@ -19,6 +19,10 @@ az containerapp replica list \
   --name "ca-nettools-${ENV}" \
   --resource-group "rg-rgomesapp-${ENV}" \
   --output table
+az containerapp replica list \
+  --name "ca-mathagent-${ENV}" \
+  --resource-group "rg-rgomesapp-${ENV}" \
+  --output table
 ```
 
 2. List revisions:
@@ -35,6 +39,10 @@ az containerapp revision list \
   --name "ca-nettools-${ENV}" \
   --resource-group "rg-rgomesapp-${ENV}" \
   --output table
+az containerapp revision list \
+  --name "ca-mathagent-${ENV}" \
+  --resource-group "rg-rgomesapp-${ENV}" \
+  --output json
 ```
 
 3. Ensure at least 1 (one) replica running:
@@ -49,6 +57,10 @@ az containerapp update \
   --min-replicas 1
 az containerapp update \
   -n "ca-nettools-${ENV}" \
+  -g "rg-rgomesapp-${ENV}" \
+  --min-replicas 1
+az containerapp update \
+  -n "ca-mathagent-${ENV}" \
   -g "rg-rgomesapp-${ENV}" \
   --min-replicas 1
 ```
@@ -66,6 +78,11 @@ az containerapp show \
   --output tsv
 az containerapp show \
   --name "ca-nettools-${ENV}" \
+  --resource-group "rg-rgomesapp-${ENV}" \
+  --query "properties.template.containers[0].image" \
+  --output tsv
+az containerapp show \
+  --name "ca-mathagent-${ENV}" \
   --resource-group "rg-rgomesapp-${ENV}" \
   --query "properties.template.containers[0].image" \
   --output tsv
@@ -100,9 +117,14 @@ az containerapp show \
   --resource-group "rg-rgomesapp-${ENV}" \
   --query "properties.configuration.ingress.fqdn" \
   --output tsv
+az containerapp show \
+  --name "ca-mathagent-${ENV}" \
+  --resource-group "rg-rgomesapp-${ENV}" \
+  --query "properties.configuration.ingress.fqdn" \
+  --output tsv
 ```
 
-6. Connect to the `mathmcp` debug container:
+6. Connect to the  debug container:
 
 ```bash
 ENV=dev # rubens azure account
@@ -110,6 +132,9 @@ ENV=dev # rubens azure account
 
 az containerapp debug \
   -n "ca-mathmcp-${ENV}" \
+  -g "rg-rgomesapp-${ENV}"
+az containerapp debug \
+  -n "ca-mathagent-${ENV}" \
   -g "rg-rgomesapp-${ENV}"
 ```
 
@@ -288,6 +313,10 @@ az containerapp update \
   --min-replicas 0
 az containerapp update \
   -n "ca-nettools-${ENV}" \
+  -g "rg-rgomesapp-${ENV}" \
+  --min-replicas 0
+az containerapp update \
+  -n "ca-mathagent-${ENV}" \
   -g "rg-rgomesapp-${ENV}" \
   --min-replicas 0
 ```
