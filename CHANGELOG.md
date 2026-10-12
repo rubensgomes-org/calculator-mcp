@@ -26,7 +26,11 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `ca-mathagent` Azure CLI commands in `docs/DEMO.md`.
+
 ### Changed
+
+- Default `server.host` in `config/config.yaml` is now `0.0.0.0`.
 
 ### Fixed
 

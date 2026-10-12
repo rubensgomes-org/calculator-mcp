@@ -124,7 +124,7 @@ az containerapp show \
   --output tsv
 ```
 
-6. Connect to the  debug container:
+6. Connect to the debug containers:
 
 ```bash
 ENV=dev # rubens azure account
