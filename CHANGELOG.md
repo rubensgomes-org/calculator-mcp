@@ -28,6 +28,9 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Changed
 
+- Renamed workflows: `Build and Deploy to ACA` to `ACA Create and Deploy`,
+  and `Delete Image Repo and ACA` to `ACA Delete and Destroy`.
+
 ### Fixed
 
 ## [0.0.52] - 2026-10-11
