@@ -3,6 +3,8 @@
 import math
 
 import pytest
+from fastmcp import Client
+from fastmcp.exceptions import ToolError
 
 from calculator_mcp.mcp.tools import (
     absolute,
@@ -21,6 +23,7 @@ from calculator_mcp.mcp.tools import (
     round_number,
     sqrt,
     subtract,
+    tools,
 )
 
 # --- Two-operand tools ---
@@ -106,11 +109,29 @@ class TestPower:
 
 
 class TestNthRoot:
+    """Tests for the nth_root tool."""
+
     def test_cube_root(self):
         assert nth_root(27, 3) == pytest.approx(3.0)
 
     def test_square_root(self):
         assert nth_root(16, 2) == pytest.approx(4.0)
+
+    def test_odd_root_of_negative(self):
+        assert nth_root(-8, 3) == pytest.approx(-2.0)
+
+    @pytest.mark.parametrize(
+        ("a", "b"),
+        [(8, 0), (-16, 2), (-8, 2.5)],
+        ids=["zeroth_root", "even_root_of_negative", "fractional_root"],
+    )
+    def test_invalid_input(self, a, b):
+        with pytest.raises(ValueError):
+            nth_root(a, b)
+
+    def test_zero_to_negative_root(self):
+        with pytest.raises(ZeroDivisionError):
+            nth_root(0, -2)
 
 
 class TestModulo:
@@ -233,3 +254,58 @@ class TestRoundNumber:
 
     def test_default_decimals(self):
         assert round_number(3.7) == 4.0
+
+    def test_negative_decimals(self):
+        assert round_number(1234, -2) == 1200.0
+
+
+# --- Non-finite results ---
+
+
+@pytest.mark.parametrize(
+    ("tool", "args"),
+    [
+        (add, (1e308, 1e308)),
+        (subtract, (-1e308, 1e308)),
+        (absolute, (math.inf,)),
+        (round_number, (math.nan, 2)),
+    ],
+    ids=lambda value: getattr(value, "__name__", ""),
+)
+def test_non_finite_result(tool, args):
+    with pytest.raises(ValueError):
+        tool(*args)
+
+
+@pytest.mark.parametrize(
+    ("tool", "value", "error"),
+    [
+        (floor, math.nan, ValueError),
+        (floor, math.inf, OverflowError),
+        (ceil, math.nan, ValueError),
+        (ceil, math.inf, OverflowError),
+    ],
+)
+def test_non_finite_input(tool, value, error):
+    with pytest.raises(error):
+        tool(value)
+
+
+# --- Registration ---
+
+
+async def test_tools_are_registered_with_annotations():
+    async with Client(tools) as client:
+        registered = {tool.name: tool for tool in await client.list_tools()}
+    assert len(registered) == 16
+    add_tool = registered["add"]
+    assert add_tool.description == "Return the sum of two numbers."
+    assert add_tool.annotations.read_only_hint is True
+    assert add_tool.annotations.idempotent_hint is True
+    assert add_tool.annotations.open_world_hint is False
+
+
+async def test_strict_validation_rejects_boolean():
+    async with Client(tools) as client:
+        with pytest.raises(ToolError):
+            await client.call_tool("add", {"a": True, "b": 1})

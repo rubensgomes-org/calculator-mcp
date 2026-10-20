@@ -3,13 +3,13 @@
 import os
 import subprocess
 import sys
-from importlib.metadata import version
+from importlib.metadata import metadata, version
 from unittest.mock import patch
 
 import pytest
 
 from calculator_mcp import DISTRIBUTION_NAME
-from calculator_mcp.cli import main
+from calculator_mcp.cli import PROGRAM_NAME, main
 from tests.test_config import app_config  # pylint: disable=unused-import
 
 
@@ -70,8 +70,17 @@ def test_main_version_prints_and_exits(capsys):
         main(["--version"])
     assert exc_info.value.code == 0
     assert capsys.readouterr().out.strip() == (
-        f"{DISTRIBUTION_NAME} {version(DISTRIBUTION_NAME)}"
+        f"{PROGRAM_NAME} {version(DISTRIBUTION_NAME)}"
     )
+
+
+def test_main_help_prints_and_exits(capsys):
+    with pytest.raises(SystemExit) as exc_info:
+        main(["--help"])
+    assert exc_info.value.code == 0
+    output = capsys.readouterr().out
+    assert output.startswith(f"usage: {PROGRAM_NAME} ")
+    assert metadata(DISTRIBUTION_NAME)["Summary"] in output
 
 
 def test_main_exits_on_invalid_config(tmp_path):
@@ -86,5 +95,5 @@ def test_main_exits_on_invalid_config(tmp_path):
     )
     assert result.returncode == 1
     assert result.stderr.startswith(
-        f"{DISTRIBUTION_NAME}: Invalid config file {missing}"
+        f"{PROGRAM_NAME}: Invalid config file {missing}"
     )

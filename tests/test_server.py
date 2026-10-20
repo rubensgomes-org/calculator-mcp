@@ -1,11 +1,14 @@
-"""Integration tests for calculator MCP server tools."""
+"""In-process tests for the calculator MCP server."""
+
+from unittest.mock import patch
 
 import httpx2
 import pytest
 from fastmcp import Client
 from fastmcp.exceptions import ToolError
 
-from calculator_mcp.server import mcp
+from calculator_mcp.server import mcp, run
+from tests.test_config import app_config  # pylint: disable=unused-import
 
 # --- Two-operand tools ---
 
@@ -143,15 +146,7 @@ async def test_unrepresentable_result(name, arguments):
 
 
 async def test_health_check():
-    """Test that the /health endpoint returns 200 OK.
-
-    ``mcp.http_app()`` builds the Starlette ASGI application that would
-    normally be served by uvicorn in production.  ``httpx2.ASGITransport``
-    lets ``httpx2.AsyncClient`` call that ASGI app directly in-process,
-    bypassing the network entirely.  This exercises the full HTTP stack
-    (routing, middleware, request parsing, response serialization) without
-    requiring a running server, an open port, or any network I/O.
-    """
+    """Test that /health returns 200 OK via the in-process ASGI app."""
     transport = httpx2.ASGITransport(app=mcp.http_app())
     async with httpx2.AsyncClient(
         transport=transport, base_url="http://test"
@@ -159,3 +154,31 @@ async def test_health_check():
         response = await client.get("/health")
     assert response.status_code == 200
     assert response.text == "OK"
+
+
+# --- run() ---
+
+
+def test_run_http_transport(app_config):
+    with (
+        patch("calculator_mcp.server.get_config", return_value=app_config),
+        patch("calculator_mcp.server.mcp") as mock_mcp,
+    ):
+        run()
+    mock_mcp.run.assert_called_once_with(
+        transport="http",
+        host=app_config.server.host,
+        port=app_config.server.port,
+        uvicorn_config={"log_config": None},
+    )
+
+
+def test_run_stdio_transport(app_config):
+    server = app_config.server.model_copy(update={"transport": "stdio"})
+    stdio_config = app_config.model_copy(update={"server": server})
+    with (
+        patch("calculator_mcp.server.get_config", return_value=stdio_config),
+        patch("calculator_mcp.server.mcp") as mock_mcp,
+    ):
+        run()
+    mock_mcp.run.assert_called_once_with(transport="stdio")

@@ -1,4 +1,7 @@
-"""Calculator operations registered as MCP tools on ``tools``."""
+"""Calculator operations registered as MCP tools on ``tools``.
+
+Every tool raises ValueError if its result is not a finite real number.
+"""
 
 import math
 from collections.abc import Callable
@@ -7,9 +10,10 @@ from functools import partial
 from calculator_lib import Calculator
 from fastmcp import FastMCP
 
-_calc = Calculator()
+_calculator = Calculator()
 
-tools = FastMCP("Calculator Tools")
+# Strict validation rejects lax coercions such as JSON true into a number.
+tools = FastMCP("Calculator Tools", strict_input_validation=True)
 
 # Shared settings for every calculator tool.
 _calculator_tool = partial(
@@ -22,7 +26,7 @@ _calculator_tool = partial(
 )
 
 
-def _compute(operation: Callable[..., float], *args: float) -> float:
+def _compute(operation: Callable[..., float | complex], *args: float) -> float:
     """Run ``operation`` and return its result as a finite float.
 
     Raises:
@@ -52,7 +56,7 @@ def add(a: float, b: float) -> float:
     Returns:
         The sum a + b.
     """
-    return _compute(_calc.add, a, b)
+    return _compute(_calculator.add, a, b)
 
 
 @_calculator_tool
@@ -66,7 +70,7 @@ def subtract(a: float, b: float) -> float:
     Returns:
         The difference a - b.
     """
-    return _compute(_calc.subtract, a, b)
+    return _compute(_calculator.subtract, a, b)
 
 
 @_calculator_tool
@@ -80,7 +84,7 @@ def multiply(a: float, b: float) -> float:
     Returns:
         The product a * b.
     """
-    return _compute(_calc.multiply, a, b)
+    return _compute(_calculator.multiply, a, b)
 
 
 @_calculator_tool
@@ -97,7 +101,7 @@ def divide(a: float, b: float) -> float:
     Raises:
         ValueError: If b is zero.
     """
-    return _compute(_calc.divide, a, b)
+    return _compute(_calculator.divide, a, b)
 
 
 @_calculator_tool
@@ -112,11 +116,10 @@ def power(a: float, b: float) -> float:
         The result of a ** b.
 
     Raises:
-        ValueError: If the result is not a finite real number.
         OverflowError: If the result is too large to represent.
         ZeroDivisionError: If a is zero and b is negative.
     """
-    return _compute(_calc.power, a, b)
+    return _compute(_calculator.power, a, b)
 
 
 @_calculator_tool
@@ -131,9 +134,15 @@ def nth_root(a: float, b: float) -> float:
         The b-th root of a.
 
     Raises:
-        ValueError: If the input is invalid (e.g. even root of negative).
+        ValueError: If b is zero, or if a is negative and b is even or
+            not an integer.
+        ZeroDivisionError: If a is zero and b is negative.
     """
-    return _compute(_calc.nth_root, a, b)
+    # Stopgap: calculator_lib returns a real result for a negative a and
+    # a fractional b, whose true root is complex.
+    if a < 0 and not float(b).is_integer():
+        raise ValueError("Cannot take a fractional root of a negative number")
+    return _compute(_calculator.nth_root, a, b)
 
 
 @_calculator_tool
@@ -150,7 +159,7 @@ def modulo(a: float, b: float) -> float:
     Raises:
         ValueError: If b is zero.
     """
-    return _compute(_calc.modulo, a, b)
+    return _compute(_calculator.modulo, a, b)
 
 
 @_calculator_tool
@@ -167,7 +176,7 @@ def floor_divide(a: float, b: float) -> float:
     Raises:
         ValueError: If b is zero.
     """
-    return _compute(_calc.floor_divide, a, b)
+    return _compute(_calculator.floor_divide, a, b)
 
 
 # --- Single-operand tools ---
@@ -186,7 +195,7 @@ def sqrt(a: float) -> float:
     Raises:
         ValueError: If a is negative.
     """
-    return _compute(_calc.sqrt, a)
+    return _compute(_calculator.sqrt, a)
 
 
 @_calculator_tool
@@ -199,7 +208,7 @@ def absolute(a: float) -> float:
     Returns:
         The absolute value of a.
     """
-    return _compute(_calc.absolute, a)
+    return _compute(_calculator.absolute, a)
 
 
 @_calculator_tool
@@ -211,8 +220,12 @@ def floor(a: float) -> float:
 
     Returns:
         The largest integer less than or equal to a.
+
+    Raises:
+        ValueError: If a is NaN.
+        OverflowError: If a is infinite.
     """
-    return _compute(_calc.floor, a)
+    return _compute(_calculator.floor, a)
 
 
 @_calculator_tool
@@ -224,8 +237,12 @@ def ceil(a: float) -> float:
 
     Returns:
         The smallest integer greater than or equal to a.
+
+    Raises:
+        ValueError: If a is NaN.
+        OverflowError: If a is infinite.
     """
-    return _compute(_calc.ceil, a)
+    return _compute(_calculator.ceil, a)
 
 
 @_calculator_tool
@@ -241,7 +258,7 @@ def log10(a: float) -> float:
     Raises:
         ValueError: If a is not positive.
     """
-    return _compute(_calc.log10, a)
+    return _compute(_calculator.log10, a)
 
 
 @_calculator_tool
@@ -257,7 +274,7 @@ def ln(a: float) -> float:
     Raises:
         ValueError: If a is not positive.
     """
-    return _compute(_calc.ln, a)
+    return _compute(_calculator.ln, a)
 
 
 @_calculator_tool
@@ -273,7 +290,7 @@ def exp(a: float) -> float:
     Raises:
         OverflowError: If the result is too large to represent.
     """
-    return _compute(_calc.exp, a)
+    return _compute(_calculator.exp, a)
 
 
 # --- Round tool ---
@@ -290,4 +307,4 @@ def round_number(a: float, decimals: int = 0) -> float:
     Returns:
         The rounded value.
     """
-    return _compute(_calc.round_number, a, decimals)
+    return _compute(_calculator.round_number, a, decimals)

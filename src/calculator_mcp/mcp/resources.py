@@ -19,6 +19,12 @@ def constants() -> dict[str, float]:
     return {"pi": math.pi, "e": math.e, "tau": math.tau}
 
 
+@resources.resource("calculator://operations", mime_type="application/json")
+async def operations() -> list[str]:
+    """Names of the calculator operations, usable in operations/{name}."""
+    return sorted(tool.name for tool in await tools.list_tools())
+
+
 # An explicit description keeps the docstring's Args/Raises sections out
 # of resources/templates/list.
 @resources.resource(
@@ -33,9 +39,7 @@ async def operation(name: str) -> dict[str, object]:
         name: The calculator tool name, e.g. ``nth_root``.
 
     Raises:
-        MCPError: If no calculator tool has that name, with the same
-            ``-32602`` "Resource not found" error FastMCP returns for an
-            unknown URI.
+        MCPError: If no calculator tool has that name.
     """
     tool = await tools.get_tool(name)
     if tool is None:

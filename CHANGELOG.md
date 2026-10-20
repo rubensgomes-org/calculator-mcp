@@ -26,9 +26,22 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+- `calculator://operations` resource listing the calculator tool names.
+
 ### Changed
 
+- CLI usage, `--version`, and error messages use `calculator-mcp`.
+- Tools reject non-number arguments, such as JSON booleans.
+- `solve_word_problem` rejects a blank problem and asks for a final answer.
+- Loosened dependency lower bounds to `major.minor`.
+- Removed AI-assistance notes from files other than `AI_DISCLAIMER.md` and
+  `README.md`.
+
 ### Fixed
+
+- `nth_root` rejects a fractional root of a negative number.
+- Invalid logging config or a non-UTF-8 config file reports a config
+  error instead of a traceback.
 
 ## [0.0.55] - 2026-10-12
 

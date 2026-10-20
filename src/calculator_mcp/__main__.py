@@ -1,6 +1,6 @@
 """Executes the calculator_mcp package code at startup
 
-``poetry run python -m calculator_mcp````
+``poetry run python -m calculator_mcp``
 """
 
 # pylint: disable=invalid-name

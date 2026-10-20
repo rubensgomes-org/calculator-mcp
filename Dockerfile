@@ -1,7 +1,3 @@
-# =============================================================================
-# NOTE: This file was generated with the assistance of an AI tool.
-# =============================================================================
-#
 # Calculator MCP Server — multi-stage container image.
 #
 #   builder : installs the pinned runtime dependencies from poetry.lock into

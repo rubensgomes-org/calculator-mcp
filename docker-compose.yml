@@ -1,7 +1,3 @@
-# =============================================================================
-# NOTE: This file was generated with the assistance of an AI tool.
-# =============================================================================
-#
 # Calculator MCP Server — Docker Compose definition.
 #
 #   docker compose up --build -d

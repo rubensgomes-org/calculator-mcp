@@ -1,6 +1,7 @@
 """calculator_mcp package."""
 
 DISTRIBUTION_NAME = "calculator_mcp_rubens"
+SERVER_NAME = "Calculator MCP Server"
 HOMEPAGE_URL = "https://github.com/rubensgomes-org/calculator-mcp"
 INSTRUCTIONS = (
     "This server provides calculator operations as tools, covering "

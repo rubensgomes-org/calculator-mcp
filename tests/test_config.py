@@ -13,11 +13,16 @@ from calculator_mcp.config import config
 @pytest.fixture(autouse=True)
 def _clear_caches():
     """Isolate each test from the cached config and logging setup."""
-    config.get_config.cache_clear()
-    config.configure_logging.cache_clear()
+    caches = (
+        config._resolve_config_path,  # pylint: disable=protected-access
+        config.get_config,
+        config.configure_logging,
+    )
+    for cached in caches:
+        cached.cache_clear()
     yield
-    config.get_config.cache_clear()
-    config.configure_logging.cache_clear()
+    for cached in caches:
+        cached.cache_clear()
 
 
 @pytest.fixture()
@@ -67,7 +72,7 @@ def test_resolve_config_path_falls_back_to_package(monkeypatch):
     # pylint: disable=protected-access
     result = config._resolve_config_path()
     assert result.name == "config.yaml"
-    assert "calculator_mcp" in str(result)
+    assert result.is_file()
 
 
 # --- load_config ---
@@ -120,6 +125,20 @@ def test_load_config_rejects_invalid_yaml(tmp_path):
         config.load_config(path)
 
 
+def test_load_config_rejects_empty_file(tmp_path):
+    path = tmp_path / "config.yaml"
+    path.write_text("")
+    with pytest.raises(config.ConfigError, match="config.yaml"):
+        config.load_config(path)
+
+
+def test_load_config_rejects_non_utf8_file(tmp_path):
+    path = tmp_path / "config.yaml"
+    path.write_bytes(b'server: "\xff\xfe"\n')
+    with pytest.raises(config.ConfigError, match="config.yaml"):
+        config.load_config(path)
+
+
 def test_config_is_immutable(app_config):
     with pytest.raises(ValidationError):
         app_config.server.port = 1
@@ -149,12 +168,20 @@ def test_configure_logging_applies_config(tmp_path, monkeypatch, cfg):
     cfg["logging"]["root"]["level"] = "ERROR"
     monkeypatch.setenv("CALCULATORMCP_CONFIG", str(_write(tmp_path, cfg)))
     root = logging.getLogger()
-    original_level = root.level
+    original_level, original_handlers = root.level, root.handlers[:]
     try:
         config.configure_logging()
         assert root.level == logging.ERROR
     finally:
         root.setLevel(original_level)
+        root.handlers[:] = original_handlers
+
+
+def test_configure_logging_rejects_invalid_logging(tmp_path, monkeypatch, cfg):
+    cfg["logging"]["root"]["level"] = "LOUD"
+    monkeypatch.setenv("CALCULATORMCP_CONFIG", str(_write(tmp_path, cfg)))
+    with pytest.raises(config.ConfigError, match="Invalid logging config"):
+        config.configure_logging()
 
 
 def test_configure_logging_runs_once(app_config):
