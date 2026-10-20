@@ -26,6 +26,14 @@ an `[Unreleased]` section that still holds only the empty `### Added` /
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.0.56] - 2026-10-20
+
+### Added
+
 - `calculator://operations` resource listing the calculator tool names.
 
 ### Changed
