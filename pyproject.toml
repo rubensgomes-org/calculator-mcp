@@ -31,7 +31,7 @@ dependencies = [
     "mcp (>=2.3,<3)",
     "pydantic (>=2.14,<3)",
     "pyyaml (>=6.0,<7)",
-    "starlette (>=1.9,<2)",
+    "starlette (>=1.10.0,<2)",
 ]
 
 [build-system]
@@ -43,18 +43,18 @@ dev = [
     # see more executable packages in the project documentation
     "black (>=26.10,<27)",
     "flake8 (>=7.4,<8)",
-    "httpx2 (>=2.15,<3)",
+    "httpx2 (>=2.16.0,<3)",
     "isort (>=9.0,<10)",
     "mypy (>=2.4,<3)",
     "pip-audit (>=2.10,<3)",
     "poethepoet (>=0.49,<1)",
     "pylint (>=4.1,<5)",
-    "pysonar (>=1.9,<2)",
+    "pysonar (>=1.10.0.5888,<2)",
     "types-pyyaml (>=6.0,<7)",
-    "uv (>=0.13,<1)",
+    "uv (>=0.13.6,<1)",
 ]
 test = [
-    "coverage (>=7.16,<8)",
+    "coverage (>=7.17.0,<8)",
     "cryptography (>=50.0,<51)",
     "py-key-value-aio (>=0.4,<1)",
     "pytest (>=9.1,<10)",
